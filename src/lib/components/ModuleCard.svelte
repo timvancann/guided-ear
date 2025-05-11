@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { Music } from '@lucide/svelte';
+	import { slide } from 'svelte/transition';
 
-	let { title, description, active = false } = $props();
+	let { title, description, onclick, active = false } = $props();
 </script>
 
-<div
-	class={`rounded-xl p-4 ${active ? 'border border-emerald-400 bg-gray-700' : 'bg-gray-800 hover:bg-gray-700'} transition-colors`}
+<button
+	{onclick}
+	class={`rounded-xl p-4 text-left ${active ? 'border border-emerald-400 bg-gray-700' : 'bg-gray-800 hover:bg-gray-700'} transition-colors`}
 >
 	<div class="flex items-start justify-between">
 		<div>
@@ -16,6 +18,6 @@
 	</div>
 
 	{#if active}
-		<div class="mt-3 text-xs font-medium text-emerald-400">ACTIVE</div>
+		<div transition:slide class="mt-3 text-xs font-medium text-emerald-400">ACTIVE</div>
 	{/if}
-</div>
+</button>
