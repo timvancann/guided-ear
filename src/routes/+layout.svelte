@@ -19,7 +19,8 @@
 	const setupPlayer = async () => {
 		audioState.audioContext = new (window.AudioContext || window.webkitAudioContext)();
 		audioState.player = await new Soundfont(audioState.audioContext, {
-			instrument: 'acoustic_grand_piano'
+			instrument: 'acoustic_grand_piano',
+			volume: 127
 		}).load;
 	};
 </script>

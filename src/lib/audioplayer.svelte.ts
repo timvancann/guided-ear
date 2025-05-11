@@ -1,7 +1,8 @@
 import { Soundfont } from "smplr";
 import { Chord } from 'tonal';
 
-const noteOverlapPercent: number = 0.2; // 20% overlap
+import { chordSettings } from "./state.svelte";
+
 
 export const audioState: { player: Soundfont | null, audioContext: AudioContext | null, speech: SpeechSynthesis | null } = $state({
   player: null,
@@ -30,7 +31,7 @@ export const playChord = (chord: Chord.Chord, options: PlayChordOptions) => {
   const notes = Chord.notes(chord.type, tonic);
   notes.forEach((note, i) => {
     audioState.player?.start({
-      note, time: now, duration, onEnded: () => {
+      note, time: now, duration, velocity: chordSettings.velocity, onEnded: () => {
         if (i === notes.length - 1) callback();
       }
     });
@@ -54,7 +55,7 @@ export const arpeggiateChord = (chord: Chord.Chord, options: PlayChordOptions) =
   }
   notes.forEach((note, i) => {
     audioState.player?.start({
-      note, time: now + i * duration, duration: duration + (i === notes.length - 1 ? duration : 0), onEnded: () => {
+      note, time: now + i * duration, velocity: chordSettings.velocity, duration: duration + (i === notes.length - 1 ? duration : 0), onEnded: () => {
         if (i === notes.length - 1 && options.callback) callback();
       }
     });

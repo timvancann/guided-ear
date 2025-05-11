@@ -1,11 +1,20 @@
 <script lang="ts">
 	import { chordCategories } from '$lib/settings.svelte';
-	import { Check, ChevronDown, ChevronLeft, ChevronUp, Music, Timer } from '@lucide/svelte';
+	import {
+		Check,
+		ChevronDown,
+		ChevronLeft,
+		ChevronUp,
+		Music,
+		Timer,
+		Volume2
+	} from '@lucide/svelte';
 	import { slide } from 'svelte/transition';
 	import { Interval } from 'tonal';
 	import Toggle from './Toggle.svelte';
 	import SettingsSection from '$lib/components/SettingsSection.svelte';
 	import { chordSettings } from '$lib/state.svelte';
+	import RangeSlider from './RangeSlider.svelte';
 
 	let { onclick = $bindable() } = $props();
 
@@ -150,27 +159,19 @@
 				description="Play the notes of the chord one by one"
 				bind:checked={chordSettings.arpegiateChords}
 			/>
-			<div>
-				<div class="flex justify-between">
-					<label class="text-sm font-medium text-gray-300">Questions Per Level</label>
-					<span class="text-sm text-emerald-400">{chordSettings.totalExercises}</span>
-				</div>
-				<p class="mb-2 text-xs text-gray-500">Number of exercises to complete per level</p>
-				<input
-					type="range"
-					min="5"
-					max="50"
-					step="5"
-					value={chordSettings.totalExercises}
-					onchange={(e) => (chordSettings.totalExercises = parseInt(e.target.value))}
-					class="w-full accent-emerald-500"
-				/>
-				<div class="mt-1 flex justify-between text-xs text-gray-500">
-					<span>5 questions</span>
-					<span>25 questions</span>
-					<span>50 questions</span>
-				</div>
-			</div>
+			<RangeSlider
+				title="Questions"
+				description="Number of questions to answer in each level"
+				min={2}
+				max={36}
+				step={2}
+				bind:value={chordSettings.totalExercises}
+			>
+				<span>2</span>
+				<span>12</span>
+				<span>24</span>
+				<span>36</span>
+			</RangeSlider>
 			<Toggle
 				label="Incremental Mode"
 				description="Play chords in incremental levels"
@@ -186,6 +187,33 @@
 				description="Automatically play the next exercise"
 				bind:checked={chordSettings.continuousMode}
 			/>
+		</div>
+	</SettingsSection>
+	<SettingsSection title="Audio Settings" icon={Volume2}>
+		<div class="space-y-3">
+			<RangeSlider
+				title="Volume"
+				description="Volume of the chords and notes"
+				min={0}
+				max={127}
+				step={1}
+				bind:value={chordSettings.velocity}
+			>
+				<span>0</span>
+				<span>127</span>
+			</RangeSlider>
+			<RangeSlider
+				title="Speech Volume"
+				description="Volume of the speech feedback"
+				min={0}
+				max={1}
+				step={0.1}
+				bind:value={chordSettings.voiceVolume}
+			>
+				<span>0</span>
+				<span>0.5</span>
+				<span>1</span>
+			</RangeSlider>
 		</div>
 	</SettingsSection>
 </div>

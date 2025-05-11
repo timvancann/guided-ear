@@ -92,7 +92,7 @@
 			switchState('generating', 'playing');
 		}
 	});
-	
+
 	$effect(() => {
 		if (playState === 'playing') {
 			if (currentChord) {
@@ -135,7 +135,7 @@
 			let utterance = new SpeechSynthesisUtterance(currentChord?.id);
 			utterance.pitch = 1.2;
 			utterance.rate = 0.8;
-			utterance.volume = 0.5;
+			utterance.volume = chordSettings.voiceVolume;
 			utterance.onend = () => {
 				switchState('answering', 'finished');
 			};

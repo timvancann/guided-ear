@@ -19,6 +19,8 @@ interface ChordSettings {
   waitingTimeSeconds: number
   timeBetweenExercises: number
   playMode: PlayMode
+  velocity: number
+  voiceVolume: number
 }
 
 export const chordSettings: ChordSettings = $state({
@@ -32,4 +34,6 @@ export const chordSettings: ChordSettings = $state({
   timeBetweenExercises: 2,
   totalExercises: 12,
   waitingTimeSeconds: 3,
+  velocity: 127,
+  voiceVolume: 0.5,
 })
