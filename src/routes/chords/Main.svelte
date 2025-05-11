@@ -90,6 +90,9 @@
 	$effect(() => {
 		if (playState === 'generating') {
 			randomChord();
+			if (chordSettings.playMode !== 'custom' && started) {
+				chordSettings.progress += 1;
+			}
 			switchState('generating', 'playing');
 		}
 	});
@@ -100,11 +103,14 @@
 				if (chordSettings.arpegiateChords) {
 					arpeggiateChord(currentChord.chord, {
 						callback: () => {
+							if (!isPlaying) return;
 							playChord(currentChord.chord, {
 								callback: () => {
+									if (!isPlaying) return;
 									arpeggiateChord(currentChord.chord, {
 										increment: false,
 										callback: () => {
+											if (!isPlaying) return;
 											playChord(currentChord.chord, {
 												callback: () => {
 													switchState('playing', 'waiting');
@@ -119,6 +125,7 @@
 				} else {
 					playChord(currentChord.chord, {
 						callback: () => {
+							if (!isPlaying) return;
 							playChord(currentChord.chord, {
 								callback: () => {
 									switchState('playing', 'waiting');
@@ -159,26 +166,21 @@
 		}
 	});
 
-	$effect(() => {
-		if (chordSettings.progress >= chordSettings.totalExercises) {
-			if (chordSettings.autoIncrement) {
-				chordSettings.progress = 0;
-				if (chordSettings.playMode === 'incremental') {
-					chordSettings.playMode = 'recap';
-				} else if (chordSettings.playMode === 'recap') {
-					chordSettings.playMode = 'incremental';
-					chordSettings.currentLevel += 1;
-				}
-			}
-		}
-	});
+	$effect(() => {});
 
 	$effect(() => {
 		if (playState === 'idle') {
-			if (chordSettings.playMode === 'incremental' && started) {
-				chordSettings.progress += 1;
+			if (chordSettings.progress >= chordSettings.totalExercises) {
+				if (chordSettings.autoIncrement) {
+					chordSettings.progress = 0;
+					if (chordSettings.playMode === 'incremental') {
+						chordSettings.playMode = 'recap';
+					} else if (chordSettings.playMode === 'recap') {
+						chordSettings.playMode = 'incremental';
+						chordSettings.currentLevel += 1;
+					}
+				}
 			}
-
 			if (chordSettings.continuousMode && started) {
 				switchState('idle', 'generating');
 			}
@@ -215,7 +217,7 @@
 				<div class="flex items-center justify-between">
 					<span class="text-sm text-gray-400">Change Level</span>
 					<PlayerSettingToggle
-						bind:toggle={chordSettings.continuousMode}
+						bind:toggle={chordSettings.autoIncrement}
 						name="Auto increment"
 						label=""
 					/>

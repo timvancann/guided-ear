@@ -12,7 +12,6 @@
 			return category.chords.filter((chord) => chord.level === chordSettings.currentLevel);
 		})
 	);
-	$effect(() => console.log(chordsInLevel));
 </script>
 
 <div
