@@ -12,7 +12,7 @@
 	} from '@lucide/svelte';
 </script>
 
-<div class="flex min-h-screen flex-col bg-gray-900 p-6 font-sans text-white">
+<div class="flex flex-col bg-gray-900 font-sans text-white">
 	<header class="mb-6">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center gap-3">
