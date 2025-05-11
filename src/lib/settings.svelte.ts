@@ -73,12 +73,13 @@ export const chordCategories = $state([basicTriads, seventh, extendedChords, sus
 
 interface Level {
   name: string;
+  level: number;
 }
 
 export const levels: Level[] = $state([
-  { name: "Basic Chords" },
-  { name: "Augmented and Diminished" },
-  { name: "Suspended Chords" },
-  { name: "Basic 7th Chords" },
-  { name: "More 7th Chords" },
+  { name: "Basic Chords", level: 1 },
+  { name: "Augmented and Diminished", level: 2 },
+  { name: "Suspended Chords", level: 3 },
+  { name: "Basic 7th Chords", level: 4 },
+  { name: "More 7th Chords", level: 5 },
 ]);

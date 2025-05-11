@@ -60,7 +60,17 @@
 				No chord types selected
 			{/if}
 		{:else if chordSettings.playMode === 'incremental'}
-			{levels[chordSettings.currentLevel - 1].name}
+			<select
+				value={chordSettings.currentLevel}
+				onchange={(e) => (chordSettings.currentLevel = parseInt(e.target.value))}
+				class="ml-auto cursor-pointer rounded border border-emerald-700/30 bg-transparent px-2 py-1 text-sm text-emerald-300 transition-colors hover:bg-emerald-800/20 focus:border-emerald-500 focus:outline-none"
+			>
+				{#each levels as level (level.level)}
+					<option value={level.level} class="bg-gray-800 text-white">
+						Level {level.level}: {level.name}
+					</option>
+				{/each}
+			</select>
 		{:else if chordSettings.playMode === 'recap'}
 			All previous level chords
 		{/if}
