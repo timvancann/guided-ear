@@ -6,7 +6,7 @@
 <div class="flex flex-col">
 	<header class="mb-8">
 		<div class="flex items-center justify-between">
-			<h1 class="text-3xl font-bold text-emerald-400">Audicate</h1>
+			<h1 class="text-3xl font-bold text-emerald-400">Guided Ear</h1>
 			<div class="flex gap-3">
 				<button class="rounded-full p-2 hover:bg-gray-700">
 					<History size={24} class="text-gray-300" />

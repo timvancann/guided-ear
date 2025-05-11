@@ -80,10 +80,7 @@
 				<!-- Content  -->
 				<div class="absolute inset-0 flex items-center justify-center">
 					<div class=" flex flex-col items-center justify-center text-center">
-						<div class="mb-1 text-sm text-gray-400">Chord playing</div>
-						<div class="mt-1 text-emerald-400">
-							Level {chordSettings.currentLevel}: Dom7, min7, maj7
-						</div>
+						<div class="mb-1 text-emerald-400">Chord playing</div>
 						<AudioBars />
 					</div>
 				</div>

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { ChevronDown, ChevronUp, Pause, Play } from '@lucide/svelte';
-	import { chordSettings } from '$lib/state.svelte';
 
 	let { isPlaying = $bindable(), togglePlay, incrementLevel, decrementLevel } = $props();
 </script>

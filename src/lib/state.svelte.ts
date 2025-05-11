@@ -10,6 +10,7 @@ export const practiceState = $state({
 type PlayMode = 'custom' | 'incremental' | 'recap';
 interface ChordSettings {
   currentLevel: number
+  arpegiateChords: boolean
   autoIncrement: boolean
   continuousMode: boolean
   incrementalMode: boolean
@@ -23,6 +24,7 @@ interface ChordSettings {
 export const chordSettings: ChordSettings = $state({
   autoIncrement: false,
   continuousMode: true,
+  arpegiateChords: true,
   incrementalMode: true,
   currentLevel: 1,
   playMode: 'incremental',

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import '../app.css';
-	import Soundfont from 'soundfont-player';
+	import { Soundfont } from 'smplr';
 	import AudioLoading from './AudioLoading.svelte';
 	import { audioState } from '$lib/audioplayer.svelte';
 	import { onMount } from 'svelte';
@@ -18,7 +18,9 @@
 	});
 	const setupPlayer = async () => {
 		audioState.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-		audioState.player = await Soundfont.instrument(audioState.audioContext, 'acoustic_grand_piano');
+		audioState.player = await new Soundfont(audioState.audioContext, {
+			instrument: 'acoustic_grand_piano'
+		}).load;
 	};
 </script>
 

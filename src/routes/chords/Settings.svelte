@@ -145,11 +145,17 @@
 	</SettingsSection>
 	<SettingsSection title="Excercise Settings" icon={Timer}>
 		<div class="space-y-3">
+			<Toggle
+				label="Arpeggiate Chords"
+				description="Play the notes of the chord one by one"
+				bind:checked={chordSettings.arpegiateChords}
+			/>
 			<div>
-				<div class="mb-2 flex justify-between">
+				<div class="flex justify-between">
 					<label class="text-sm font-medium text-gray-300">Questions Per Level</label>
 					<span class="text-sm text-emerald-400">{chordSettings.totalExercises}</span>
 				</div>
+				<p class="mb-2 text-xs text-gray-500">Number of exercises to complete per level</p>
 				<input
 					type="range"
 					min="5"
@@ -164,7 +170,6 @@
 					<span>25 questions</span>
 					<span>50 questions</span>
 				</div>
-				<p class="mt-1 text-xs text-gray-500">Number of exercises to complete per level</p>
 			</div>
 			<Toggle
 				label="Incremental Mode"

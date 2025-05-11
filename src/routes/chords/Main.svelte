@@ -3,7 +3,7 @@
 	import Controls from './Controls.svelte';
 	import ProgressBar from './ProgressBar.svelte';
 	import PlayingIndicator from './PlayingIndicator.svelte';
-	import { audioState, playChord } from '$lib/audioplayer.svelte';
+	import { audioState, playChord, arpeggiateChord } from '$lib/audioplayer.svelte';
 	import PlayerSettingToggle from './PlayerSettingToggle.svelte';
 	import { chordCategories, type ChordData } from '$lib/settings.svelte';
 	import PracticeStatusPill from './PracticeStatusPill.svelte';
@@ -54,6 +54,8 @@
 		started = !started;
 		if (isPlaying) {
 			playState = 'idle';
+			audioState.speech?.cancel();
+			audioState.player?.stop();
 		} else {
 			playState = 'generating';
 		}
@@ -90,24 +92,50 @@
 			switchState('generating', 'playing');
 		}
 	});
-
+	
 	$effect(() => {
 		if (playState === 'playing') {
 			if (currentChord) {
-				playChord(currentChord?.chord);
-				audioState.player?.on('ended', () => {
-					switchState('playing', 'waiting');
-				});
+				if (chordSettings.arpegiateChords) {
+					arpeggiateChord(currentChord.chord, {
+						callback: () => {
+							playChord(currentChord.chord, {
+								callback: () => {
+									arpeggiateChord(currentChord.chord, {
+										increment: false,
+										callback: () => {
+											playChord(currentChord.chord, {
+												callback: () => {
+													switchState('playing', 'waiting');
+												}
+											});
+										}
+									});
+								}
+							});
+						}
+					});
+				} else {
+					playChord(currentChord.chord, {
+						callback: () => {
+							playChord(currentChord.chord, {
+								callback: () => {
+									switchState('playing', 'waiting');
+								}
+							});
+						}
+					});
+				}
 			}
 		}
 	});
 
 	$effect(() => {
 		if (playState === 'answering') {
-			let utterance = new SpeechSynthesisUtterance(currentChord?.chord.type);
+			let utterance = new SpeechSynthesisUtterance(currentChord?.id);
 			utterance.pitch = 1.2;
 			utterance.rate = 0.8;
-			utterance.volume = 0.2;
+			utterance.volume = 0.5;
 			utterance.onend = () => {
 				switchState('answering', 'finished');
 			};
