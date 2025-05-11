@@ -1,4 +1,5 @@
 import { Chord } from "tonal";
+import { chordSettings } from "./state.svelte";
 
 export interface ChordData {
   level?: number;

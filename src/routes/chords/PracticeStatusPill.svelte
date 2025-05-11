@@ -6,6 +6,13 @@
 	let selectedChords = $derived(
 		chordCategories.flatMap((group) => group.chords).filter((chord) => chord.enabled)
 	);
+
+	const chordsInLevel = $derived(
+		chordCategories.flatMap((category) => {
+			return category.chords.filter((chord) => chord.level === chordSettings.currentLevel);
+		})
+	);
+	$effect(() => console.log(chordsInLevel));
 </script>
 
 <div
@@ -35,7 +42,9 @@
 			>
 				{chordSettings.currentLevel}
 			</div>
-			<span class="text-sm font-medium text-emerald-300">Level {chordSettings.currentLevel}</span>
+			<span class="text-sm font-medium text-emerald-300"
+				>{chordsInLevel.map((c) => c.chord.aliases[0]).join(', ')}</span
+			>
 		{:else if chordSettings.playMode === 'recap'}
 			<RefreshCw size={16} class="text-purple-400" />
 			<span class="text-sm font-medium text-purple-300"
