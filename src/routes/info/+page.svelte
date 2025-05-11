@@ -19,7 +19,7 @@
 				<a class="rounded-full p-2 hover:bg-gray-700" href="/">
 					<ChevronLeft size={24} class="text-gray-300" />
 				</a>
-				<h1 class="text-2xl font-bold text-emerald-400">About EarMaster</h1>
+				<h1 class="text-2xl font-bold text-emerald-400">About Guided Ear</h1>
 			</div>
 		</div>
 	</header>
@@ -109,7 +109,7 @@
 
 		<div class="space-y-3 text-gray-300">
 			<p class="text-sm">
-				EarMaster is completely free to use, with no ads, subscriptions, or in-app purchases. The
+				Guided Ear is completely free to use, with no ads, subscriptions, or in-app purchases. The
 				full source code is available on GitHub.
 			</p>
 
