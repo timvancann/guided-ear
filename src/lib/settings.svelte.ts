@@ -78,7 +78,7 @@ interface Level {
 
 export const levels: Level[] = $state([
   { name: "Basic Chords", level: 1 },
-  { name: "Augmented and Diminished", level: 2 },
+  { name: "More triads", level: 2 },
   { name: "Suspended Chords", level: 3 },
   { name: "Basic 7th Chords", level: 4 },
   { name: "More 7th Chords", level: 5 },

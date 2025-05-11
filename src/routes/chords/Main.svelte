@@ -5,10 +5,11 @@
 	import PlayingIndicator from './PlayingIndicator.svelte';
 	import { audioState, playChord, arpeggiateChord } from '$lib/audioplayer.svelte';
 	import PlayerSettingToggle from './PlayerSettingToggle.svelte';
-	import { chordCategories, type ChordData } from '$lib/settings.svelte';
+	import { chordCategories, levels, type ChordData } from '$lib/settings.svelte';
 	import PracticeStatusPill from './PracticeStatusPill.svelte';
 
 	import { chordSettings } from '$lib/state.svelte';
+	import { fade, slide } from 'svelte/transition';
 
 	type PlayState = 'generating' | 'playing' | 'idle' | 'waiting' | 'answering' | 'finished';
 	let playState: PlayState = $state('idle');
@@ -199,19 +200,38 @@
 	</div>
 </header>
 
-<div class="flex flex-col">
-	<div class="mb-6 flex justify-between">
+<div class="flex flex-col space-y-6">
+	<div class="flex items-center justify-between">
 		<PracticeStatusPill />
-		<div class="flex flex-col items-end gap-2">
-			<PlayerSettingToggle bind:toggle={chordSettings.incrementalMode} name="Level mode" label="" />
-			<PlayerSettingToggle
-				bind:toggle={chordSettings.continuousMode}
-				name="Continuous Mode"
-				label=""
-			/>
-		</div>
+		<PlayerSettingToggle bind:toggle={chordSettings.incrementalMode} name="Level mode" label="" />
 	</div>
 	<PlayingIndicator {playState} {currentChord} />
 	<ProgressBar />
 	<Controls {togglePlay} {isPlaying} {incrementLevel} {decrementLevel} />
+
+	{#if chordSettings.playMode !== 'custom'}
+		<div class="mb-4 rounded-lg bg-gray-800 p-4" transition:slide>
+			<div class="flex flex-col gap-3">
+				<div class="flex items-center justify-between">
+					<span class="text-sm text-gray-400">Change Level</span>
+					<PlayerSettingToggle
+						bind:toggle={chordSettings.continuousMode}
+						name="Auto increment"
+						label=""
+					/>
+				</div>
+				<select
+					value={chordSettings.currentLevel}
+					onchange={(e) => (chordSettings.currentLevel = parseInt(e.target.value))}
+					class="w-full rounded border border-gray-600 bg-gray-700 px-3 py-2 text-white"
+				>
+					{#each levels as level (level.level)}
+						<option value={level.level} class="bg-gray-800 text-white">
+							{level.level}: {level.name}
+						</option>
+					{/each}
+				</select>
+			</div>
+		</div>
+	{/if}
 </div>

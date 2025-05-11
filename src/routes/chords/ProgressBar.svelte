@@ -4,7 +4,7 @@
 	let progressPercentage = $derived((chordSettings.progress / chordSettings.totalExercises) * 100);
 </script>
 
-<div class="my-4">
+<div>
 	<div class="mb-1 flex justify-between text-xs">
 		<span class="text-gray-400">Progress</span>
 		<span class="text-emerald-400">{chordSettings.progress}/{chordSettings.totalExercises}</span>

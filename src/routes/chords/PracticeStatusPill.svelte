@@ -16,63 +16,43 @@
 </script>
 
 <div
-	class={`inline-flex flex-col overflow-hidden rounded-xl ${
+	class={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 ${
 		chordSettings.playMode === 'custom'
-			? 'border border-blue-800/50 bg-blue-900/20'
+			? 'bg-blue-900/30 text-blue-300'
 			: chordSettings.playMode === 'incremental'
-				? 'border border-emerald-800/50 bg-emerald-900/20'
-				: 'border border-purple-800/50 bg-purple-900/20'
+				? 'bg-emerald-900/30 text-emerald-300'
+				: 'bg-purple-900/30 text-purple-300'
 	}`}
 >
-	<div
-		class={`flex items-center gap-3 px-4 py-2 ${
-			chordSettings.playMode === 'custom'
-				? 'bg-blue-900/30'
-				: chordSettings.playMode === 'incremental'
-					? 'bg-emerald-900/30'
-					: 'bg-purple-900/30'
-		}`}
-	>
+	{#if chordSettings.playMode === 'custom'}
+		<Layers size={14} />
+	{:else if chordSettings.playMode === 'incremental'}
+		<div
+			class="flex h-4 w-4 items-center justify-center rounded bg-emerald-600 text-xs font-bold text-white"
+		>
+			{chordSettings.currentLevel}
+		</div>
+	{:else if chordSettings.playMode === 'recap'}
+		<RefreshCw size={14} />
+	{/if}
+
+	<span class="text-sm font-medium">
 		{#if chordSettings.playMode === 'custom'}
-			<Layers size={16} class="text-blue-400" />
-			<span class="text-sm font-medium text-blue-300">Custom Practice</span>
+			Custom
 		{:else if chordSettings.playMode === 'incremental'}
-			<div
-				class="flex h-5 w-5 items-center justify-center rounded bg-emerald-600 text-xs font-bold text-white"
-			>
-				{chordSettings.currentLevel}
-			</div>
-			<span class="text-sm font-medium text-emerald-300"
-				>{chordsInLevel.map((c) => c.chord.aliases[0]).join(', ')}</span
-			>
+			{levels[chordSettings.currentLevel - 1].name}
 		{:else if chordSettings.playMode === 'recap'}
-			<RefreshCw size={16} class="text-purple-400" />
-			<span class="text-sm font-medium text-purple-300"
-				>Level {chordSettings.currentLevel} Recap</span
-			>
+			Recap level {chordSettings.currentLevel}
 		{/if}
-	</div>
-	<div class="px-4 py-2 text-sm text-gray-300">
-		{#if chordSettings.playMode === 'custom'}
-			{#if selectedChords.length > 0}
-				{selectedChords.length} chord types selected
-			{:else}
-				No chord types selected
-			{/if}
-		{:else if chordSettings.playMode === 'incremental'}
-			<select
-				value={chordSettings.currentLevel}
-				onchange={(e) => (chordSettings.currentLevel = parseInt(e.target.value))}
-				class="ml-auto cursor-pointer rounded border border-emerald-700/30 bg-transparent px-2 py-1 text-sm text-emerald-300 transition-colors hover:bg-emerald-800/20 focus:border-emerald-500 focus:outline-none"
-			>
-				{#each levels as level (level.level)}
-					<option value={level.level} class="bg-gray-800 text-white">
-						Level {level.level}: {level.name}
-					</option>
-				{/each}
-			</select>
-		{:else if chordSettings.playMode === 'recap'}
-			All previous level chords
-		{/if}
-	</div>
+	</span>
+
+	{#if chordSettings.playMode === 'incremental'}
+		<span class="text-xs opacity-75"
+			>({chordsInLevel.map((c) => c.chord.aliases[0]).join(', ')})</span
+		>
+	{:else if chordSettings.playMode === 'custom'}
+		<span class="text-xs opacity-75">({selectedChords.length} chords selected)</span>
+	{:else if chordSettings.playMode === 'recap'}
+		<span class="text-xs opacity-75">(All previous chords)</span>
+	{/if}
 </div>

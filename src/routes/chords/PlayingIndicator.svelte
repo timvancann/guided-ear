@@ -52,9 +52,7 @@
 </script>
 
 <div class="flex flex-1 items-center justify-center">
-	<div
-		class="relative mb-8 flex h-64 w-64 items-center justify-center rounded-full focus:outline-none"
-	>
+	<div class="relative flex h-64 w-64 items-center justify-center rounded-full focus:outline-none">
 		<div class="absolute inset-0">
 			{#if playState === 'idle'}
 				<div class="absolute inset-0 rounded-full border-4 border-gray-700">
