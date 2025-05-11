@@ -1,0 +1,105 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@theme {
+    --color-rosePineDawn-base: #191724;
+    --color-rosePineDawn-surface: #1f1d2e;
+    --color-rosePineDawn-overlay: #26233a1;
+    --color-rosePineDawn-muted: #6e6a86;
+    --color-rosePineDawn-subtle: #908caa;
+    --color-rosePineDawn-text: #e0def4;
+    --color-rosePineDawn-love: #eb6f92;
+    --color-rosePineDawn-gold: #f6c177;
+    --color-rosePineDawn-rose: #ebbcba;
+    --color-rosePineDawn-pine: #31748f;
+    --color-rosePineDawn-foam: #9ccfd8;
+    --color-rosePineDawn-iris: #c4a7e7;
+    --color-rosePineDawn-highlightLow: #21202e;
+    --color-rosePineDawn-highlightMed: #403d52;
+    --color-rosePineDawn-highlightHigh: #cecacd;
+}
+
+@layer base {
+    .button-group {
+        @apply flex justify-between gap-4
+    }
+
+    .chord-display {
+        @apply bg-rosePineDawn-highlightMed relative mb-8 flex h-60 w-60 cursor-pointer items-center justify-center overflow-hidden rounded-full shadow-md;
+    }
+
+    .revealing {
+        @apply border-[var(--accent-color)] bg-[var(--accent-color)]/10 shadow-[0px_0px_20px_8px_var(--accent-color)];
+    }
+
+    .chord-display p {
+        @apply text-2xl text-shadow-sm;
+    }
+
+    .setting {
+        @apply border-rosePineDawn-highlightMed bg-rosePineDawn-highlightLow flex flex-col items-center justify-center rounded-sm border-[1px] p-2 text-white;
+    }
+
+    .play-button {
+        @apply bg-rosePineDawn-pine border-rosePineDawn-foam flex cursor-pointer items-center justify-center rounded-md border-1 px-10 py-4 drop-shadow-md;
+    }
+
+    .play-button.active {
+
+        @apply bg-rosePineDawn-love border-rosePineDawn-rose flex cursor-pointer items-center justify-center rounded-md border-1 px-10 py-4 drop-shadow-md;
+    }
+
+    .state-text {
+        @apply text-xl;
+    }
+
+    .chord-type-button {
+        @apply bg-rosePineDawn-surface cursor-pointer rounded-lg border border-transparent px-3 py-2 transition-all;
+    }
+
+    .chord-type-button.selected {
+        @apply border-[var(--accent-color)] bg-[var(--accent-color)]/10 shadow-[0px_0px_6px_0px_var(--accent-color)];
+    }
+
+    .toggle-button {
+        @apply bg-rosePineDawn-highlightMed flex grow cursor-pointer justify-center rounded-lg border border-rosePineDawn-highlightHigh/10 px-4 py-2 transition-all items-center text-sm
+    }
+
+    button.selected {
+        @apply border-[var(--accent-color)] bg-[var(--accent-color)]/10 shadow-[0px_0px_6px_0px_var(--accent-color)] text-[var(--accent-color)];
+    }
+
+    .click-button {
+        @apply flex flex-col items-center justify-center text-sm border rounded-full bg-rosePineDawn-iris text-rosePineDawn-base h-16 w-16 p-3 border-rosePineDawn-text shadow-md cursor-pointer
+    }
+
+    .chord-group {
+        @apply flex flex-col my-2 gap-2 items-center justify-center text-sm border p-2 rounded-lg border-transparent
+    }
+
+    .chord-group.selected {
+        @apply border-[var(--accent-color)] shadow-[0px_0px_6px_0px_var(--accent-color)]
+    }
+}
+
+.noto-sans-400 {
+    font-family: 'Noto Sans', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings: 'wdth' 100;
+}
+
+.noto-serif-200 {
+    font-family: 'Noto Serif', serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+    font-variation-settings: 'wdth' 100;
+}
+
+.noto-music-regular {
+    font-family: 'Noto Music', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
