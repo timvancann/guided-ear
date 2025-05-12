@@ -2,18 +2,15 @@
 	import AudioBars from '$lib/components/AudioBars.svelte';
 	import { Mic, Music } from '@lucide/svelte';
 	import { fade, scale } from 'svelte/transition';
-	import { chordSettings } from '$lib/state.svelte';
+	import { tweened } from 'svelte/motion';
+	import { sineInOut } from 'svelte/easing';
 
 	interface Props {
-		currentChord: ChordData | null;
+		answer: string;
 		playState: 'idle' | 'playing' | 'waiting' | 'answering' | 'finished' | 'generating';
 	}
 
-	let { playState, currentChord }: Props = $props();
-
-	import { tweened } from 'svelte/motion';
-	import { sineInOut } from 'svelte/easing';
-	import type { ChordData } from '$lib/settings.svelte';
+	let { playState, answer }: Props = $props();
 
 	// Create breathing effect
 	const breathingScale = tweened(1, {
@@ -78,7 +75,7 @@
 				<!-- Content  -->
 				<div class="absolute inset-0 flex items-center justify-center">
 					<div class=" flex flex-col items-center justify-center text-center">
-						<div class="mb-1 text-emerald-400">Chord playing</div>
+						<div class="mb-1 text-emerald-400">Playing</div>
 						<AudioBars />
 					</div>
 				</div>
@@ -136,7 +133,7 @@
 				<div class="absolute inset-0 flex items-center justify-center">
 					<div class=" flex flex-col items-center justify-center text-center">
 						<div class="mb-1 text-sm text-emerald-300">Correct answer:</div>
-						<div class="text-4xl font-bold text-emerald-400">{currentChord.id}</div>
+						<div class="text-4xl font-bold text-emerald-400">{answer}</div>
 						<div
 							class="mt-8 flex items-center gap-2 rounded-full bg-emerald-800/50 px-3 py-1 text-sm"
 						>

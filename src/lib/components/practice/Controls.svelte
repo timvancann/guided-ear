@@ -1,9 +1,15 @@
 <script lang="ts">
-	import { levels } from '$lib/settings.svelte';
-	import { chordSettings } from '$lib/state.svelte';
 	import { ChevronDown, ChevronUp, Pause, Play } from '@lucide/svelte';
 
-	let { isPlaying = $bindable(), togglePlay, incrementLevel, decrementLevel } = $props();
+	let {
+		isPlaying = $bindable(),
+		togglePlay,
+		playMode,
+		currentLevel,
+		incrementLevel,
+		decrementLevel,
+		totalLevels
+	} = $props();
 </script>
 
 <div class="mt-auto">
@@ -12,8 +18,7 @@
 			class="flex flex-col items-center justify-center rounded-lg bg-gray-800 p-4 text-gray-400
 	transition-all hover:bg-gray-700 disabled:cursor-not-allowed disabled:bg-gray-800/40 disabled:text-gray-700"
 			onclick={decrementLevel}
-			disabled={(chordSettings.currentLevel <= 1 && chordSettings.playMode !== 'recap') ||
-				chordSettings.playMode === 'custom'}
+			disabled={(currentLevel <= 1 && playMode !== 'recap') || playMode === 'custom'}
 		>
 			<div class="flex flex-col items-center justify-center gap-2">
 				<ChevronDown size={30} />
@@ -37,9 +42,7 @@
 			class="flex flex-col items-center justify-center rounded-lg bg-gray-800 p-4 text-gray-400
 transition-all hover:bg-gray-700 disabled:cursor-not-allowed disabled:bg-gray-800/40 disabled:text-gray-700"
 			onclick={incrementLevel}
-			disabled={(chordSettings.currentLevel === levels.length &&
-				chordSettings.playMode === 'recap') ||
-				chordSettings.playMode === 'custom'}
+			disabled={(currentLevel === totalLevels && playMode === 'recap') || playMode === 'custom'}
 		>
 			<div class="flex flex-col items-center justify-center gap-2">
 				<ChevronUp size={30} />

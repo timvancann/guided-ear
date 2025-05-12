@@ -1,13 +1,17 @@
-import { Soundfont } from "smplr";
-import { Chord } from 'tonal';
+import { Soundfont } from 'smplr';
+import { Chord, Note } from 'tonal';
 
-import { chordSettings } from "./state.svelte";
+import type { IntervalData } from './settings.svelte';
+import { chordSettings, globalSettings } from './state.svelte';
 
-
-export const audioState: { player: Soundfont | null, audioContext: AudioContext | null, speech: SpeechSynthesis | null } = $state({
+export const audioState: {
+  player: Soundfont | null;
+  audioContext: AudioContext | null;
+  speech: SpeechSynthesis | null;
+} = $state({
   player: null,
   audioContext: null,
-  speech: null,
+  speech: null
 });
 
 type PlayChordOptions = {
@@ -15,49 +19,72 @@ type PlayChordOptions = {
   duration?: number;
   increment?: boolean;
   callback?: () => void;
-}
+};
 
-export const playChord = (chord: Chord.Chord, options: PlayChordOptions) => {
-  const { tonic = options.tonic || "C4",
-    duration = options.duration || 2.5,
-    callback = options.callback || (() => { }),
-  } = options;
+const midiChord = (notes: string[], duration: number, callback: () => void) => {
   if (!audioState.audioContext || !audioState.player) {
-    console.error("Audio context is not initialized");
-    return
+    console.error('Audio context is not initialized');
+    return;
   }
-
   const now = audioState.audioContext.currentTime;
-  const notes = Chord.notes(chord.type, tonic);
   notes.forEach((note, i) => {
     audioState.player?.start({
-      note, time: now, duration, velocity: chordSettings.velocity, onEnded: () => {
+      note,
+      time: now,
+      duration,
+      velocity: globalSettings.velocity,
+      onEnded: () => {
         if (i === notes.length - 1) callback();
       }
     });
   });
-}
+};
 
-export const arpeggiateChord = (chord: Chord.Chord, options: PlayChordOptions) => {
-  const { tonic = options.tonic || "C4",
-    duration = options.duration || .8,
-    increment = options.increment || true,
-    callback = options.callback || (() => { }),
-  } = options;
-  if (!audioState.audioContext) {
-    console.error("Audio context is not initialized");
-    return
+const midiArpeggio = (notes: string[], duration: number, callback: () => void) => {
+  if (!audioState.audioContext || !audioState.player) {
+    console.error('Audio context is not initialized');
+    return;
   }
   const now = audioState.audioContext.currentTime;
+  notes.forEach((note, i) => {
+    audioState.player?.start({
+      note,
+      time: now + i * duration,
+      velocity: globalSettings.velocity,
+      duration: duration + (i === notes.length - 1 ? duration : 0),
+      onEnded: () => {
+        if (i === notes.length - 1) callback();
+      }
+    });
+  });
+};
+
+export const playChord = (chord: Chord.Chord, options: PlayChordOptions) => {
+  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.chordDuration, callback = options.callback || (() => {}) } = options;
+  const notes = Chord.notes(chord.type, tonic);
+  midiChord(notes, duration, callback);
+};
+
+export const arpeggiateChord = (chord: Chord.Chord, options: PlayChordOptions) => {
+  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.noteDuration, increment = options.increment || true, callback = options.callback || (() => {}) } = options;
   const notes = Chord.notes(chord.type, tonic);
   if (!increment) {
     notes.reverse();
   }
-  notes.forEach((note, i) => {
-    audioState.player?.start({
-      note, time: now + i * duration, velocity: chordSettings.velocity, duration: duration + (i === notes.length - 1 ? duration : 0), onEnded: () => {
-        if (i === notes.length - 1 && options.callback) callback();
-      }
-    });
-  });
-}
+  midiArpeggio(notes, duration, callback);
+};
+
+export const arpeggiateInterval = (interval: IntervalData, options: PlayChordOptions) => {
+  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.noteDuration, increment = options.increment || true, callback = options.callback || (() => {}) } = options;
+  const notes = [tonic, Note.transpose(tonic, interval.interval)];
+  if (!increment) {
+    notes.reverse();
+  }
+  midiArpeggio(notes, duration, callback);
+};
+
+export const playInterval = (interval: IntervalData, options: PlayChordOptions) => {
+  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.noteDuration, increment = options.increment || true, callback = options.callback || (() => {}) } = options;
+  const notes = [tonic, Note.transpose(tonic, interval.interval)];
+  midiChord(notes, duration, callback);
+};

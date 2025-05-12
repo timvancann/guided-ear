@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { chordSettings } from '$lib/state.svelte';
+	let { progress, total } = $props();
 
-	let progressPercentage = $derived((chordSettings.progress / chordSettings.totalExercises) * 100);
+	let progressPercentage = $derived((progress / total) * 100);
 </script>
 
 <div>
 	<div class="mb-1 flex justify-between text-xs">
 		<span class="text-gray-400">Progress</span>
-		<span class="text-emerald-400">{chordSettings.progress}/{chordSettings.totalExercises}</span>
+		<span class="text-emerald-400">{progress}/{total}</span>
 	</div>
 	<div class="h-2 overflow-hidden rounded-full bg-gray-700">
 		<div
