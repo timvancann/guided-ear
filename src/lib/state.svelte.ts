@@ -1,4 +1,4 @@
-type PlayMode = 'custom' | 'incremental' | 'recap';
+import type { TrainingSettings } from './training/types';
 
 interface GlobalSettings {
   velocity: number;
@@ -10,22 +10,8 @@ export const globalSettings: GlobalSettings = $state({
   voiceVolume: 0.5
 });
 
-interface IntervalSettings {
-  arpegiateChords: boolean;
-  autoIncrement: boolean;
-  chordDuration: number;
-  continuousMode: boolean;
-  currentLevel: number;
-  incrementalMode: boolean;
-  noteDuration: number;
-  playMode: PlayMode;
-  progress: number;
-  timeBetweenExercises: number;
-  totalExercises: number;
-  waitingTimeSeconds: number;
-}
-
-export const intervalSettings: IntervalSettings = $state({
+export const intervalSettings: TrainingSettings = $state({
+  randomRoot: true,
   autoIncrement: false,
   continuousMode: true,
   arpegiateChords: true,
@@ -40,22 +26,24 @@ export const intervalSettings: IntervalSettings = $state({
   noteDuration: 0.8
 });
 
-interface ChordSettings {
-  arpegiateChords: boolean;
-  autoIncrement: boolean;
-  chordDuration: number;
-  continuousMode: boolean;
-  currentLevel: number;
-  incrementalMode: boolean;
-  noteDuration: number;
-  playMode: PlayMode;
-  progress: number;
-  timeBetweenExercises: number;
-  totalExercises: number;
-  waitingTimeSeconds: number;
-}
+export const chordSettings: TrainingSettings = $state({
+  randomRoot: false,
+  autoIncrement: false,
+  continuousMode: true,
+  arpegiateChords: true,
+  incrementalMode: true,
+  currentLevel: 1,
+  playMode: 'incremental',
+  progress: 0,
+  timeBetweenExercises: 2,
+  totalExercises: 12,
+  waitingTimeSeconds: 3,
+  chordDuration: 2.5,
+  noteDuration: 0.8
+});
 
-export const chordSettings: ChordSettings = $state({
+export const inversionSettings: TrainingSettings = $state({
+  randomRoot: true,
   autoIncrement: false,
   continuousMode: true,
   arpegiateChords: true,

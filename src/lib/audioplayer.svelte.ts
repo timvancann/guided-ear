@@ -1,7 +1,7 @@
 import { Soundfont } from 'smplr';
 import { Chord, Note } from 'tonal';
 
-import type { IntervalData } from './settings.svelte';
+import type { IntervalData, InversionData } from './settings.svelte';
 import { chordSettings, globalSettings } from './state.svelte';
 
 export const audioState: {
@@ -87,4 +87,42 @@ export const playInterval = (interval: IntervalData, options: PlayChordOptions) 
   const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.noteDuration, increment = options.increment || true, callback = options.callback || (() => {}) } = options;
   const notes = [tonic, Note.transpose(tonic, interval.interval)];
   midiChord(notes, duration, callback);
+};
+
+export const playInversion = (inversion: InversionData, options: PlayChordOptions) => {
+  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.chordDuration, callback = options.callback || (() => {}) } = options;
+  const chordNotes = Chord.notes(inversion.chord.type, tonic);
+
+  // Create inversion by rotating the chord notes
+  const inversionNotes = [...chordNotes];
+  for (let i = 0; i < inversion.inversion; i++) {
+    const note = inversionNotes.shift();
+    if (note) {
+      // Move the note up an octave when rotating
+      const octaveUp = Note.transpose(note, '8P');
+      inversionNotes.push(octaveUp);
+    }
+  }
+  midiChord(inversionNotes, duration, callback);
+};
+
+export const arpeggiateInversion = (inversion: InversionData, options: PlayChordOptions) => {
+  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.noteDuration, increment = options.increment || true, callback = options.callback || (() => {}) } = options;
+  const chordNotes = Chord.notes(inversion.chord.type, tonic);
+
+  // Create inversion by rotating the chord notes
+  const inversionNotes = [...chordNotes];
+  for (let i = 0; i < inversion.inversion; i++) {
+    const note = inversionNotes.shift();
+    if (note) {
+      // Move the note up an octave when rotating
+      const octaveUp = Note.transpose(note, '8P');
+      inversionNotes.push(octaveUp);
+    }
+  }
+
+  if (!increment) {
+    inversionNotes.reverse();
+  }
+  midiArpeggio(inversionNotes, duration, callback);
 };

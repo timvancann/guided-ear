@@ -17,11 +17,11 @@
       description: 'Identify major, minor, 7th, and other chord types',
       id: 'chords'
     },
-    // {
-    // 	title: 'Chord Inversions',
-    // 	description: 'Detect root position, first and second and other inversions',
-    // 	id: 'inversions'
-    // },
+    {
+      title: 'Chord Inversions',
+      description: 'Detect root position, first and second and other inversions',
+      id: 'inversions'
+    },
     {
       title: 'Interval Training',
       description: 'Recognize intervals from minor 2nd to perfect octave',

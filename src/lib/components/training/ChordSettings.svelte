@@ -1,17 +1,15 @@
 <script lang="ts">
   import { chordCategories } from '$lib/settings.svelte';
-  import { ChevronDown, ChevronUp, Music, Timer } from '@lucide/svelte';
+  import { ChevronDown, ChevronUp, Music } from '@lucide/svelte';
   import { slide } from 'svelte/transition';
   import { Interval } from 'tonal';
-  import { chordSettings } from '$lib/state.svelte';
   import SettingsSection from '$lib/components/settings/SettingsSection.svelte';
   import Toggle from '$lib/components/settings/Toggle.svelte';
-  import SettingsHeader from '$lib/components/settings/SettingsHeader.svelte';
-  import RangeSlider from '$lib/components/settings/RangeSlider.svelte';
-  import GlobalSettings from '$lib/components/settings/GlobalSettings.svelte';
   import PracticeItemCard from '$lib/components/settings/PracticeItemCard.svelte';
+  import TrainingSettings from './TrainingSettings.svelte';
+  import { chordMode } from '$lib/training/modes/chordMode';
 
-  let { setView = $bindable() } = $props();
+  let { setView } = $props();
 
   function toggleChordGroup(groupIndex: number) {
     chordCategories[groupIndex].expanded = !chordCategories[groupIndex].expanded;
@@ -35,9 +33,7 @@
   let showIntervals = $state(false);
 </script>
 
-<div class="flex flex-col gap-6">
-  <SettingsHeader title="Chord Settings" {setView} />
-
+<TrainingSettings mode={chordMode} {setView}>
   <SettingsSection title="Chord Types" icon={Music}>
     <div class="space-y-3">
       {#each chordCategories as group, groupIndex (groupIndex)}
@@ -83,7 +79,6 @@
               <div class="mt-3 grid grid-cols-2 gap-2">
                 {#each group.chords as chord, chordIndex (chordIndex)}
                   <PracticeItemCard toggle={() => toggleChord(groupIndex, chordIndex)} isEnabled={chord.enabled} title={chord.id}>
-                    <!-- Interval content with transition -->
                     {#if showIntervals}
                       <div transition:slide={{ duration: 250 }} class="mt-1 flex origin-top flex-wrap gap-1">
                         {#each chord.chord.notes as note, i (i)}
@@ -103,16 +98,4 @@
       <Toggle label="Show Intervals" description="Display intervals between notes in the chord" bind:checked={showIntervals} />
     </div>
   </SettingsSection>
-  <SettingsSection title="Excercise Settings" icon={Timer}>
-    <div class="space-y-3">
-      <Toggle label="Arpeggiate Chords" description="Play the notes of the chord one by one" bind:checked={chordSettings.arpegiateChords} />
-      <RangeSlider title="Chord Duration" description="Duration of each chord in seconds" min={0.2} max={4.0} step={0.2} bind:value={chordSettings.chordDuration} />
-      <RangeSlider title="Note Duration" description="Duration of each note in seconds" min={0.2} max={2.0} step={0.1} bind:value={chordSettings.noteDuration} />
-      <RangeSlider title="Questions" description="Number of questions to answer in each level" min={2} max={36} step={2} bind:value={chordSettings.totalExercises} />
-      <Toggle label="Level Mode" description="Play chords in incremental levels" bind:checked={chordSettings.incrementalMode} />
-      <Toggle label="Auto Increment" description="Automatically advance to the next level" bind:checked={chordSettings.autoIncrement} />
-      <Toggle label="Continuous Mode" description="Automatically play the next exercise" bind:checked={chordSettings.continuousMode} />
-    </div>
-  </SettingsSection>
-  <GlobalSettings />
-</div>
+</TrainingSettings>
