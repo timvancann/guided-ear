@@ -1,3 +1,4 @@
+<!-- Alternative: Two-line compact PracticeStatusPill.svelte -->
 <script lang="ts">
 	import { Layers, RefreshCw } from '@lucide/svelte';
 
@@ -5,7 +6,7 @@
 </script>
 
 <div
-	class={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 ${
+	class={`inline-flex flex-col gap-1 rounded-lg px-3 py-2 ${
 		playMode === 'custom'
 			? 'bg-blue-900/30 text-blue-300'
 			: playMode === 'incremental'
@@ -13,33 +14,32 @@
 				: 'bg-purple-900/30 text-purple-300'
 	}`}
 >
-	{#if playMode === 'custom'}
-		<Layers size={14} />
-	{:else if playMode === 'incremental'}
-		<div
-			class="flex h-4 w-4 items-center justify-center rounded bg-emerald-600 text-xs font-bold text-white"
-		>
-			{currentLevel}
-		</div>
-	{:else if playMode === 'recap'}
-		<RefreshCw size={14} />
-	{/if}
-
-	<span class="text-sm font-medium">
+	<!-- Main status line -->
+	<div class="flex items-center gap-2">
 		{#if playMode === 'custom'}
-			Custom
+			<Layers size={14} />
+			<span class="text-sm font-medium">Custom</span>
 		{:else if playMode === 'incremental'}
-			{levelName}
+			<div
+				class="flex h-4 w-4 items-center justify-center rounded bg-emerald-600 text-xs font-bold text-white"
+			>
+				{currentLevel}
+			</div>
+			<span class="text-sm font-medium">{levelName}</span>
 		{:else if playMode === 'recap'}
-			Recap level {currentLevel}
+			<RefreshCw size={14} />
+			<span class="text-sm font-medium">Recap Level {currentLevel}</span>
 		{/if}
-	</span>
+	</div>
 
-	{#if playMode === 'incremental'}
-		<span class="text-xs opacity-75">({textIncremental})</span>
-	{:else if playMode === 'custom'}
-		<span class="text-xs opacity-75">({numberCustomSelected} selected)</span>
-	{:else if playMode === 'recap'}
-		<span class="text-xs opacity-75">(All previous exercises)</span>
-	{/if}
+	<!-- Details line -->
+	<div class="text-xs opacity-75">
+		{#if playMode === 'incremental'}
+			{textIncremental}
+		{:else if playMode === 'custom'}
+			{numberCustomSelected} items selected
+		{:else if playMode === 'recap'}
+			All previous exercises
+		{/if}
+	</div>
 </div>

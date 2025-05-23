@@ -229,21 +229,21 @@ const commonProgressions: ProgressionData[] = [
     enabled: true,
     level: 1,
     romanNumerals: ['I', 'V', 'vi', 'IV'],
-    commonName: 'Pop Progression'
+    commonName: 'Pop'
   },
   {
     id: 'vi-IV-I-V',
     enabled: true,
     level: 1,
     romanNumerals: ['vi', 'IV', 'I', 'V'],
-    commonName: 'Pop Progression (variant)'
+    commonName: 'Pop (variant)'
   },
   {
     id: 'I-vi-IV-V',
     enabled: true,
     level: 1,
     romanNumerals: ['I', 'vi', 'IV', 'V'],
-    commonName: '50s Progression'
+    commonName: '50s'
   },
 
   // Level 2 - Jazz Standards
@@ -298,15 +298,23 @@ const commonProgressions: ProgressionData[] = [
     enabled: false,
     level: 4,
     romanNumerals: ['i', 'bVII', 'bVI', 'bVII'],
-    commonName: 'Aeolian Progression'
+    commonName: 'Aeolian '
   },
   {
     id: 'I-bVII-IV-I',
     enabled: false,
     level: 4,
     romanNumerals: ['I', 'bVII', 'IV', 'I'],
-    commonName: 'Mixolydian Progression'
-  }
+    commonName: 'Mixolydian'
+  },
+  {
+      id: 'i-IV-bVII-i',
+      enabled: false,
+      level: 4,
+      romanNumerals: ['i', 'IV', 'bVII', 'i'],
+      commonName: 'Dorian'
+    }
+  
 ];
 
 export const progressions: ProgressionData[] = $state(commonProgressions);
