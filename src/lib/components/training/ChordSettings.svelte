@@ -83,7 +83,7 @@
                       <div transition:slide={{ duration: 250 }} class="mt-1 flex origin-top flex-wrap gap-1">
                         {#each chord.chord.notes as note, i (i)}
                           <span class="rounded bg-gray-800 px-1.5 py-0.5 text-[0.5rem]">
-                            {Interval.distance(chord.chord.tonic, note).toString()}
+                            {chord.chord.tonic ? Interval.distance(chord.chord.tonic, note).toString() : ''}
                           </span>
                         {/each}
                       </div>

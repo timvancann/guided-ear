@@ -1,8 +1,8 @@
 import { Soundfont } from 'smplr';
-import { Chord, Interval, Note, Progression } from 'tonal';
+import { Chord, Note, Progression } from 'tonal';
 
-import { progressions, type IntervalData, type InversionData, type ProgressionData } from './settings.svelte';
-import { chordSettings, globalSettings } from './state.svelte';
+import { type IntervalData, type InversionData, type ProgressionData } from './settings.svelte';
+import { chordSettings, globalSettings, progressionSettings } from './state.svelte';
 
 export const audioState: {
   player: Soundfont | null;
@@ -130,7 +130,7 @@ export const arpeggiateInversion = (inversion: InversionData, options: PlayChord
 export const playProgression = (progression: ProgressionData, options: PlayChordOptions) => {
   const {
     tonic = 'C4',
-    duration = chordSettings.chordDuration,
+    duration = progressionSettings.chordDuration,
     callback = () => { }
   } = options;
 
@@ -168,5 +168,5 @@ export const playProgression = (progression: ProgressionData, options: PlayChord
 
 
   // Call callback after the entire progression finishes
-  setTimeout(callback, (totalDuration - now) * 1000);
+  setTimeout(callback, (totalDuration - now + duration * 2) * 1000);
 };

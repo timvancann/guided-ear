@@ -17,7 +17,7 @@
     }
   });
   const setupPlayer = async () => {
-    audioState.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    audioState.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     audioState.player = await new Soundfont(audioState.audioContext, {
       instrument: 'acoustic_grand_piano',
       volume: 127

@@ -1,5 +1,6 @@
 import { audioState } from '$lib/audioplayer.svelte';
 import { globalSettings } from '$lib/state.svelte';
+import { speak, cancelSpeech } from '$lib/speech.svelte';
 import type { PlayState, TrainingItem, TrainingMode } from './types';
 
 export class TrainingEngine<T extends TrainingItem> {
@@ -51,7 +52,7 @@ export class TrainingEngine<T extends TrainingItem> {
     this.started = !this.started;
     if (this.isPlaying) {
       this.playState = 'idle';
-      audioState.speech?.cancel();
+      cancelSpeech();
       audioState.player?.stop();
     } else {
       this.playState = 'generating';
@@ -159,14 +160,11 @@ export class TrainingEngine<T extends TrainingItem> {
 
   private handleAnswering() {
     if (this.playState === 'answering' && this.currentItem) {
-      const utterance = new SpeechSynthesisUtterance(this.mode.getDisplayText(this.currentItem));
-      utterance.pitch = 1.2;
-      utterance.rate = 0.8;
-      utterance.volume = globalSettings.voiceVolume;
-      utterance.onend = () => {
-        this.switchState('answering', 'finished');
-      };
-      audioState.speech?.speak(utterance);
+      speak(this.currentItem.speech, {
+        onEnd: () => {
+          this.switchState('answering', 'finished');
+        }
+      });
     }
   }
 

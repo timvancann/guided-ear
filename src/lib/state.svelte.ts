@@ -21,9 +21,9 @@ export const intervalSettings: TrainingSettings = $state({
   progress: 0,
   timeBetweenExercises: 2,
   totalExercises: 12,
-  waitingTimeSeconds: 3,
-  chordDuration: 2.5,
-  noteDuration: 0.8
+  waitingTimeSeconds: 2,
+  chordDuration: 1.5,
+  noteDuration: 0.4
 });
 
 export const chordSettings: TrainingSettings = $state({
@@ -38,8 +38,8 @@ export const chordSettings: TrainingSettings = $state({
   timeBetweenExercises: 2,
   totalExercises: 12,
   waitingTimeSeconds: 3,
-  chordDuration: 2.5,
-  noteDuration: 0.8
+  chordDuration: 1.5,
+  noteDuration: 0.4
 });
 
 export const inversionSettings: TrainingSettings = $state({
@@ -54,8 +54,8 @@ export const inversionSettings: TrainingSettings = $state({
   timeBetweenExercises: 2,
   totalExercises: 12,
   waitingTimeSeconds: 3,
-  chordDuration: 2.5,
-  noteDuration: 0.8
+  chordDuration: 1.5,
+  noteDuration: 0.4
 });
 
 export const progressionSettings: TrainingSettings = $state({
@@ -70,6 +70,6 @@ export const progressionSettings: TrainingSettings = $state({
   timeBetweenExercises: 3, // Slightly longer for progressions
   totalExercises: 8, // Fewer exercises since progressions are longer
   waitingTimeSeconds: 5, // More time to think about progressions
-  chordDuration: 1.5, // Slightly faster chord changes
+  chordDuration: 0.5,
   noteDuration: 0.6
 });

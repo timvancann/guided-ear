@@ -15,5 +15,5 @@ export const inversionMode: TrainingMode<InversionData> = {
   playArpeggiated: (item: InversionData, options: AudioPlayOptions) => {
     arpeggiateInversion(item, options);
   },
-  getDisplayText: (item: InversionData) => item.id
+  getDisplayText: (item: InversionData) => item.displayText
 }

@@ -13,9 +13,5 @@ export const progressionMode: TrainingMode<ProgressionData> = {
     playProgression(item, options);
   },
   playArpeggiated: () => { },
-  getDisplayText: (item: ProgressionData) => {
-    // Return both the progression name and roman numerals
-    const romanText = item.romanNumerals.join(' - ');
-    return item.commonName ? `${item.commonName}: ${romanText}` : `${item.id}: ${romanText}`;
-  }
+  getDisplayText: (item: ProgressionData) => item.displayText
 };

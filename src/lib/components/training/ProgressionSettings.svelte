@@ -59,8 +59,7 @@
       {#each progressions as progression (progression.id)}
         <PracticeItemCard 
           toggle={() => (progression.enabled = !progression.enabled)} 
-          title={progression.id}
-          subtitle={progression.commonName}
+          title={progression.commonName || ""}
           isEnabled={progression.enabled} 
         >
           <div class="mt-2 flex flex-wrap gap-1">

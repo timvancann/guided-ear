@@ -69,7 +69,7 @@
 				></div>
 				<div
 					class="absolute inset-0 animate-spin rounded-full border-t-8 border-emerald-500"
-					style={{ animationDuration: '4s' }}
+					style="animation-duration: 4s"
 				></div>
 
 				<!-- Content  -->

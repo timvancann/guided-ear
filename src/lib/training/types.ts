@@ -21,6 +21,8 @@ export interface TrainingItem {
   id: string;
   enabled: boolean;
   level?: number;
+  speech: string;
+  displayText: string;
 }
 
 export interface TrainingLevel {

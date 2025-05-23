@@ -17,5 +17,5 @@ export const chordMode: TrainingMode<ChordData> = {
   playArpeggiated: (item: ChordData, options: AudioPlayOptions) => {
     arpeggiateChord(item.chord, options);
   },
-  getDisplayText: (item: ChordData) => item.id
+  getDisplayText: (item: ChordData) => item.displayText
 };

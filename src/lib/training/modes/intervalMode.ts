@@ -15,5 +15,5 @@ export const intervalMode: TrainingMode<IntervalData> = {
   playArpeggiated: (item: IntervalData, options: AudioPlayOptions) => {
     arpeggiateInterval(item, options);
   },
-  getDisplayText: (item: IntervalData) => item.id
+  getDisplayText: (item: IntervalData) => item.displayText
 };
