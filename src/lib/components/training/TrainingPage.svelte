@@ -5,6 +5,7 @@
   import IntervalSettings from './IntervalSettings.svelte';
   import InversionSettings from './InversionSettings.svelte';
   import type { TrainingItem, TrainingMode } from '$lib/training/types';
+  import ProgressionSettings from './ProgressionSettings.svelte';
 
   type View = 'main' | 'settings';
 
@@ -24,6 +25,8 @@
           <IntervalSettings setView={() => (currentView = 'main')} />
         {:else if mode.name === 'inversions'}
           <InversionSettings setView={() => (currentView = 'main')} />
+        {:else if mode.name === 'progressions'}
+          <ProgressionSettings setView={() => (currentView = 'main')} />
         {/if}
       {/if}
     </div>

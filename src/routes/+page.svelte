@@ -26,12 +26,12 @@
       title: 'Interval Training',
       description: 'Recognize intervals from minor 2nd to perfect octave',
       id: 'intervals'
+    },
+    {
+      title: 'Chord Progressions',
+      description: 'Identify common chord sequences and cadences',
+      id: 'progressions'
     }
-    // {
-    // 	title: 'Chord Progressions',
-    // 	description: 'Identify common chord sequences and cadences',
-    // 	id: 'progressions'
-    // }
   ];
 
   onMount(() => {

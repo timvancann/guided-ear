@@ -1,7 +1,7 @@
 import { Soundfont } from 'smplr';
-import { Chord, Note } from 'tonal';
+import { Chord, Interval, Note, Progression } from 'tonal';
 
-import type { IntervalData, InversionData } from './settings.svelte';
+import { progressions, type IntervalData, type InversionData, type ProgressionData } from './settings.svelte';
 import { chordSettings, globalSettings } from './state.svelte';
 
 export const audioState: {
@@ -60,13 +60,13 @@ const midiArpeggio = (notes: string[], duration: number, callback: () => void) =
 };
 
 export const playChord = (chord: Chord.Chord, options: PlayChordOptions) => {
-  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.chordDuration, callback = options.callback || (() => {}) } = options;
+  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.chordDuration, callback = options.callback || (() => { }) } = options;
   const notes = Chord.notes(chord.type, tonic);
   midiChord(notes, duration, callback);
 };
 
 export const arpeggiateChord = (chord: Chord.Chord, options: PlayChordOptions) => {
-  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.noteDuration, increment = options.increment || true, callback = options.callback || (() => {}) } = options;
+  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.noteDuration, increment = options.increment || true, callback = options.callback || (() => { }) } = options;
   const notes = Chord.notes(chord.type, tonic);
   if (!increment) {
     notes.reverse();
@@ -75,7 +75,7 @@ export const arpeggiateChord = (chord: Chord.Chord, options: PlayChordOptions) =
 };
 
 export const arpeggiateInterval = (interval: IntervalData, options: PlayChordOptions) => {
-  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.noteDuration, increment = options.increment || true, callback = options.callback || (() => {}) } = options;
+  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.noteDuration, increment = options.increment || true, callback = options.callback || (() => { }) } = options;
   const notes = [tonic, Note.transpose(tonic, interval.interval)];
   if (!increment) {
     notes.reverse();
@@ -84,13 +84,13 @@ export const arpeggiateInterval = (interval: IntervalData, options: PlayChordOpt
 };
 
 export const playInterval = (interval: IntervalData, options: PlayChordOptions) => {
-  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.noteDuration, increment = options.increment || true, callback = options.callback || (() => {}) } = options;
+  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.noteDuration, increment = options.increment || true, callback = options.callback || (() => { }) } = options;
   const notes = [tonic, Note.transpose(tonic, interval.interval)];
   midiChord(notes, duration, callback);
 };
 
 export const playInversion = (inversion: InversionData, options: PlayChordOptions) => {
-  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.chordDuration, callback = options.callback || (() => {}) } = options;
+  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.chordDuration, callback = options.callback || (() => { }) } = options;
   const chordNotes = Chord.notes(inversion.chord.type, tonic);
 
   // Create inversion by rotating the chord notes
@@ -107,7 +107,7 @@ export const playInversion = (inversion: InversionData, options: PlayChordOption
 };
 
 export const arpeggiateInversion = (inversion: InversionData, options: PlayChordOptions) => {
-  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.noteDuration, increment = options.increment || true, callback = options.callback || (() => {}) } = options;
+  const { tonic = options.tonic || 'C4', duration = options.duration || chordSettings.noteDuration, increment = options.increment || true, callback = options.callback || (() => { }) } = options;
   const chordNotes = Chord.notes(inversion.chord.type, tonic);
 
   // Create inversion by rotating the chord notes
@@ -125,4 +125,48 @@ export const arpeggiateInversion = (inversion: InversionData, options: PlayChord
     inversionNotes.reverse();
   }
   midiArpeggio(inversionNotes, duration, callback);
+};
+
+export const playProgression = (progression: ProgressionData, options: PlayChordOptions) => {
+  const {
+    tonic = 'C4',
+    duration = chordSettings.chordDuration,
+    callback = () => { }
+  } = options;
+
+  if (!audioState.audioContext || !audioState.player) {
+    console.error('Audio context is not initialized');
+    return;
+  }
+
+  const keyTonic = tonic.replace(/\d/, '');
+  const octave = tonic.match(/\d/)?.[0] || '4';
+
+  // Get the actual chord names from roman numerals
+  const chordNames = Progression.fromRomanNumerals(keyTonic, progression.romanNumerals);
+
+  const now = audioState.audioContext.currentTime;
+  let totalDuration = 0;
+
+  chordNames.forEach((chordName, index) => {
+    const chord = Chord.get(chordName);
+    const chordNotes = Chord.notes(chord.type, chord.tonic + octave);
+    const startTime = now + (index * duration);
+
+    // Play each chord in the progression
+    chordNotes.forEach((note) => {
+      audioState.player?.start({
+        note,
+        time: startTime,
+        duration: duration * 0.9, // Slight gap between chords
+        velocity: globalSettings.velocity
+      });
+    });
+
+    totalDuration = startTime + duration;
+  });
+
+
+  // Call callback after the entire progression finishes
+  setTimeout(callback, (totalDuration - now) * 1000);
 };

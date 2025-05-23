@@ -57,3 +57,19 @@ export const inversionSettings: TrainingSettings = $state({
   chordDuration: 2.5,
   noteDuration: 0.8
 });
+
+export const progressionSettings: TrainingSettings = $state({
+  randomRoot: true,
+  autoIncrement: false,
+  continuousMode: true,
+  arpegiateChords: false,
+  incrementalMode: true,
+  currentLevel: 1,
+  playMode: 'incremental',
+  progress: 0,
+  timeBetweenExercises: 3, // Slightly longer for progressions
+  totalExercises: 8, // Fewer exercises since progressions are longer
+  waitingTimeSeconds: 5, // More time to think about progressions
+  chordDuration: 1.5, // Slightly faster chord changes
+  noteDuration: 0.6
+});

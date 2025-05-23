@@ -214,3 +214,106 @@ export const inversions: InversionData[] = $state([
   { id: 'Domitant 7th 2nd inversion', enabled: false, chord: Chord.get('C7'), inversion: 2, level: 6 },
   { id: 'Domitant 7th 3rd inversion', enabled: false, chord: Chord.get('C7'), inversion: 3, level: 6 }
 ]);
+
+// Add this to src/lib/settings.svelte.ts
+
+export interface ProgressionData extends TrainingItem {
+  romanNumerals: string[];
+  commonName?: string;
+}
+
+const commonProgressions: ProgressionData[] = [
+  // Level 1 - Basic Pop Progressions
+  {
+    id: 'I-V-vi-IV',
+    enabled: true,
+    level: 1,
+    romanNumerals: ['I', 'V', 'vi', 'IV'],
+    commonName: 'Pop Progression'
+  },
+  {
+    id: 'vi-IV-I-V',
+    enabled: true,
+    level: 1,
+    romanNumerals: ['vi', 'IV', 'I', 'V'],
+    commonName: 'Pop Progression (variant)'
+  },
+  {
+    id: 'I-vi-IV-V',
+    enabled: true,
+    level: 1,
+    romanNumerals: ['I', 'vi', 'IV', 'V'],
+    commonName: '50s Progression'
+  },
+
+  // Level 2 - Jazz Standards
+  {
+    id: 'ii-V-I',
+    enabled: false,
+    level: 2,
+    romanNumerals: ['ii7', 'V7', 'IM7'],
+    commonName: 'Jazz Turnaround'
+  },
+  {
+    id: 'I-vi-ii-V',
+    enabled: false,
+    level: 2,
+    romanNumerals: ['IM7', 'vi7', 'ii7', 'V7'],
+    commonName: 'Circle of Fifths'
+  },
+  {
+    id: 'iii-vi-ii-V',
+    enabled: false,
+    level: 2,
+    romanNumerals: ['iii7', 'vi7', 'ii7', 'V7'],
+    commonName: 'Extended Circle'
+  },
+
+  // Level 3 - Classical Cadences
+  {
+    id: 'ii-V-I (Classical)',
+    enabled: false,
+    level: 3,
+    romanNumerals: ['ii', 'V', 'I'],
+    commonName: 'Authentic Cadence'
+  },
+  {
+    id: 'IV-V-I',
+    enabled: false,
+    level: 3,
+    romanNumerals: ['IV', 'V', 'I'],
+    commonName: 'Plagal Cadence'
+  },
+  {
+    id: 'V-vi',
+    enabled: false,
+    level: 3,
+    romanNumerals: ['V', 'vi'],
+    commonName: 'Deceptive Cadence'
+  },
+
+  // Level 4 - Modal and Modern
+  {
+    id: 'i-VII-VI-VII',
+    enabled: false,
+    level: 4,
+    romanNumerals: ['i', 'bVII', 'bVI', 'bVII'],
+    commonName: 'Aeolian Progression'
+  },
+  {
+    id: 'I-bVII-IV-I',
+    enabled: false,
+    level: 4,
+    romanNumerals: ['I', 'bVII', 'IV', 'I'],
+    commonName: 'Mixolydian Progression'
+  }
+];
+
+export const progressions: ProgressionData[] = $state(commonProgressions);
+
+export const progressionLevels: TrainingLevel[] = $state([
+  { name: 'Popular Progressions', level: 1 },
+  { name: 'Jazz Standards', level: 2 },
+  { name: 'Classical Cadences', level: 3 },
+  { name: 'Modal & Modern', level: 4 }
+]);
