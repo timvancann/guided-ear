@@ -32,6 +32,22 @@ export const chordFlowState = $state<ChordFlowState>({
   isChordChangeReady: false
 });
 
+// Auto-save settings when they change (disabled for now as we need to coordinate with metronome/audio settings)
+// $effect(() => {
+//   const completeSettings = {
+//     ...chordFlowState.settings,
+//     // TODO: Get metronome and audio settings from their respective stores
+//     bpm: 120,
+//     timeSignature: '4/4' as const,
+//     clickVolume: 0.5,
+//     chordAudioEnabled: true,
+//     chordVolume: 0.7,
+//     playOnBeat1Only: false,
+//     voicing: 'close' as const
+//   };
+//   chordFlowSettings.autoSave(completeSettings);
+// });
+
 export function setBarsPerChord(bars: number) {
   if (bars >= 1 && bars <= 8) {
     chordFlowState.settings.barsPerChord = bars;

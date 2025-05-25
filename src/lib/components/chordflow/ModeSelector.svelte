@@ -26,7 +26,9 @@
       <!-- Fourths Mode -->
       <button
         onclick={() => handleModeChange('fourths')}
-        class="w-full p-4 rounded-lg border-2 transition-all duration-200 text-left {currentMode === 'fourths' ? 'border-emerald-500 bg-emerald-900/20' : 'border-gray-600 bg-gray-800 hover:border-gray-500'}"
+        class="w-full p-4 rounded-lg border-2 transition-all duration-200 text-left {currentMode === 'fourths'
+          ? 'border-emerald-500 bg-emerald-900/20'
+          : 'border-gray-600 bg-gray-800 hover:border-gray-500'}"
       >
         <div class="flex items-start space-x-3">
           <div class="w-5 h-5 rounded-full border-2 mt-0.5 {currentMode === 'fourths' ? 'border-emerald-500 bg-emerald-500' : 'border-gray-500'}"></div>
@@ -40,7 +42,9 @@
       <!-- Random Mode -->
       <button
         onclick={() => handleModeChange('random')}
-        class="w-full p-4 rounded-lg border-2 transition-all duration-200 text-left {currentMode === 'random' ? 'border-emerald-500 bg-emerald-900/20' : 'border-gray-600 bg-gray-800 hover:border-gray-500'}"
+        class="w-full p-4 rounded-lg border-2 transition-all duration-200 text-left {currentMode === 'random'
+          ? 'border-emerald-500 bg-emerald-900/20'
+          : 'border-gray-600 bg-gray-800 hover:border-gray-500'}"
       >
         <div class="flex items-start space-x-3">
           <div class="w-5 h-5 rounded-full border-2 mt-0.5 {currentMode === 'random' ? 'border-emerald-500 bg-emerald-500' : 'border-gray-500'}"></div>
@@ -70,7 +74,9 @@
       <!-- Custom Mode -->
       <button
         onclick={() => handleModeChange('custom')}
-        class="w-full p-4 rounded-lg border-2 transition-all duration-200 text-left {currentMode === 'custom' ? 'border-emerald-500 bg-emerald-900/20' : 'border-gray-600 bg-gray-800 hover:border-gray-500'}"
+        class="w-full p-4 rounded-lg border-2 transition-all duration-200 text-left {currentMode === 'custom'
+          ? 'border-emerald-500 bg-emerald-900/20'
+          : 'border-gray-600 bg-gray-800 hover:border-gray-500'}"
       >
         <div class="flex items-start space-x-3">
           <div class="w-5 h-5 rounded-full border-2 mt-0.5 {currentMode === 'custom' ? 'border-emerald-500 bg-emerald-500' : 'border-gray-500'}"></div>

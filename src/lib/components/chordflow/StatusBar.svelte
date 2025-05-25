@@ -69,9 +69,7 @@
     if (bpm !== previousBpm) {
       sessionStats.bpmChanges++;
       sessionStats.totalBpmValues.push(bpm);
-      sessionStats.averageBpm = Math.round(
-        sessionStats.totalBpmValues.reduce((sum, val) => sum + val, 0) / sessionStats.totalBpmValues.length
-      );
+      sessionStats.averageBpm = Math.round(sessionStats.totalBpmValues.reduce((sum, val) => sum + val, 0) / sessionStats.totalBpmValues.length);
       previousBpm = bpm;
     }
   });
@@ -103,11 +101,7 @@
       <BarChart3 class="w-4 h-4" />
       <span>Session Statistics</span>
     </h3>
-    <button
-      onclick={resetStats}
-      class="p-1 text-gray-400 hover:text-gray-300 transition-colors"
-      aria-label="Reset statistics"
-    >
+    <button onclick={resetStats} class="p-1 text-gray-400 hover:text-gray-300 transition-colors" aria-label="Reset statistics">
       <RotateCcw class="w-4 h-4" />
     </button>
   </div>

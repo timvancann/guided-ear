@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import { Settings, Keyboard, BarChart3 } from '@lucide/svelte';
+  import { Settings, Keyboard, BarChart3, Bookmark } from '@lucide/svelte';
+  import { chordFlowSettings } from '$lib/chordflow/settings.svelte';
 
   interface Props {
     children: import('svelte').Snippet;
@@ -13,6 +14,7 @@
   let showSettings = $state(false);
   let showStats = $state(false);
   let showKeyboardShortcuts = $state(false);
+  let showPresetQuickAccess = $state(false);
 
   // Keyboard shortcuts
   function handleKeydown(event: KeyboardEvent) {
@@ -105,6 +107,34 @@
           </button>
         </div>
 
+        <!-- Preset Quick Access -->
+        <div class="flex items-center space-x-2">
+          <button
+            onclick={() => (showPresetQuickAccess = !showPresetQuickAccess)}
+            class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white transition-colors duration-200 {showPresetQuickAccess ? 'bg-emerald-600 text-white' : ''}"
+            aria-label="Quick preset access"
+          >
+            <Bookmark class="w-5 h-5" />
+          </button>
+
+          {#if showPresetQuickAccess}
+            <div class="flex items-center space-x-2">
+              {#each chordFlowSettings.getFavoritePresets() as preset (preset.id)}
+                <button
+                  onclick={() => {
+                    chordFlowSettings.loadPreset(preset.id);
+                    showPresetQuickAccess = false;
+                  }}
+                  class="px-3 py-1 text-sm bg-emerald-600 hover:bg-emerald-700 rounded-lg text-white transition-colors"
+                  title={preset.description}
+                >
+                  {preset.name}
+                </button>
+              {/each}
+            </div>
+          {/if}
+        </div>
+
         <!-- Mobile Menu Indicator -->
         <div class="md:hidden">
           {#if showSettings}
@@ -134,13 +164,7 @@
         <!-- Settings Header -->
         <div class="flex items-center justify-between mb-8">
           <h2 class="text-2xl font-semibold text-white">Practice Settings</h2>
-          <button
-            onclick={() => (showSettings = false)}
-            class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white transition-colors"
-            aria-label="Close settings"
-          >
-            ✕
-          </button>
+          <button onclick={() => (showSettings = false)} class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white transition-colors" aria-label="Close settings"> ✕ </button>
         </div>
 
         <!-- Settings Content -->
@@ -151,11 +175,7 @@
     </div>
 
     <!-- Overlay for mobile -->
-    <button
-      class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden cursor-default"
-      onclick={() => (showSettings = false)}
-      aria-label="Close settings overlay"
-    ></button>
+    <button class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden cursor-default" onclick={() => (showSettings = false)} aria-label="Close settings overlay"></button>
   {/if}
 
   <!-- Keyboard Shortcuts Modal -->

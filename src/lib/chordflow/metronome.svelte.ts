@@ -183,30 +183,30 @@ export class MetronomeEngine {
   // Tap tempo functionality
   tapTempo() {
     const now = Date.now();
-    
+
     // Reset if too much time has passed since last tap
     if (now - this.lastTapTime > 3000) {
       this.tapTimes = [];
     }
-    
+
     this.tapTimes.push(now);
     this.lastTapTime = now;
-    
+
     // Keep only the last 4 taps for averaging
     if (this.tapTimes.length > 4) {
       this.tapTimes.shift();
     }
-    
+
     // Need at least 2 taps to calculate BPM
     if (this.tapTimes.length >= 2) {
       const intervals: number[] = [];
       for (let i = 1; i < this.tapTimes.length; i++) {
         intervals.push(this.tapTimes[i] - this.tapTimes[i - 1]);
       }
-      
+
       const avgInterval = intervals.reduce((sum, interval) => sum + interval, 0) / intervals.length;
       const bpm = Math.round(60000 / avgInterval);
-      
+
       // Constrain to valid BPM range
       const constrainedBpm = Math.max(60, Math.min(200, bpm));
       this.setBpm(constrainedBpm);
@@ -229,5 +229,4 @@ export class MetronomeEngine {
       { name: 'Presto', bpm: 180 }
     ];
   }
-
 }

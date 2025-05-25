@@ -36,7 +36,6 @@
       {/each}
     </div>
 
-
     <!-- Beat Counter -->
     <div class="text-sm text-gray-300">
       Beat {currentBeat + 1} of {beatsPerBar}
@@ -62,7 +61,6 @@
         </div>
       {/each}
     </div>
-
 
     <!-- Bar Counter -->
     <div class="text-sm text-gray-300">

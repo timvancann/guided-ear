@@ -4,6 +4,7 @@
   import ModeSelector from './ModeSelector.svelte';
   import MetronomeSettings from './MetronomeSettings.svelte';
   import AudioControls from './AudioControls.svelte';
+  import PresetManager from './PresetManager.svelte';
   import { setBarsPerChord, chordFlowState } from '$lib/chordflow/state.svelte';
 
   interface Props {
@@ -17,7 +18,8 @@
     practiceMode: true,
     timing: true,
     metronome: false,
-    audio: false
+    audio: false,
+    presets: false
   });
 
   function toggleSection(section: keyof typeof sectionsOpen) {
@@ -33,10 +35,7 @@
 <div class="space-y-6">
   <!-- Practice Mode Section -->
   <div class="bg-gray-800/30 rounded-xl border border-gray-700/50">
-    <button
-      onclick={() => toggleSection('practiceMode')}
-      class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-700/30 transition-colors rounded-xl"
-    >
+    <button onclick={() => toggleSection('practiceMode')} class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-700/30 transition-colors rounded-xl">
       <h3 class="text-lg font-semibold text-white">Practice Mode</h3>
       {#if sectionsOpen.practiceMode}
         <ChevronDown class="w-5 h-5 text-gray-400" />
@@ -44,7 +43,7 @@
         <ChevronRight class="w-5 h-5 text-gray-400" />
       {/if}
     </button>
-    
+
     {#if sectionsOpen.practiceMode}
       <div class="px-5 pb-5">
         <ModeSelector />
@@ -54,10 +53,7 @@
 
   <!-- Timing Settings Section -->
   <div class="bg-gray-800/30 rounded-xl border border-gray-700/50">
-    <button
-      onclick={() => toggleSection('timing')}
-      class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-700/30 transition-colors rounded-xl"
-    >
+    <button onclick={() => toggleSection('timing')} class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-700/30 transition-colors rounded-xl">
       <h3 class="text-lg font-semibold text-white">Timing Settings</h3>
       {#if sectionsOpen.timing}
         <ChevronDown class="w-5 h-5 text-gray-400" />
@@ -65,7 +61,7 @@
         <ChevronRight class="w-5 h-5 text-gray-400" />
       {/if}
     </button>
-    
+
     {#if sectionsOpen.timing}
       <div class="px-5 pb-5 space-y-6">
         <!-- Bars per Chord Setting -->
@@ -89,10 +85,12 @@
         <div class="space-y-3">
           <div class="text-sm font-semibold text-gray-300">Quick BPM</div>
           <div class="grid grid-cols-2 gap-3">
-            {#each [80, 100, 120, 140, 160, 180] as bpm}
+            {#each [80, 100, 120, 140, 160, 180] as bpm (bpm)}
               <button
                 onclick={() => metronome.setBpmPreset(bpm)}
-                class="px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg text-base font-medium transition-colors {metronome.currentState.bpm === bpm ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'text-gray-200'}"
+                class="px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg text-base font-medium transition-colors {metronome.currentState.bpm === bpm
+                  ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                  : 'text-gray-200'}"
               >
                 {bpm}
               </button>
@@ -105,10 +103,7 @@
 
   <!-- Advanced Metronome Section -->
   <div class="bg-gray-800/30 rounded-xl border border-gray-700/50">
-    <button
-      onclick={() => toggleSection('metronome')}
-      class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-700/30 transition-colors rounded-xl"
-    >
+    <button onclick={() => toggleSection('metronome')} class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-700/30 transition-colors rounded-xl">
       <h3 class="text-lg font-semibold text-white">Advanced Metronome</h3>
       {#if sectionsOpen.metronome}
         <ChevronDown class="w-5 h-5 text-gray-400" />
@@ -116,7 +111,7 @@
         <ChevronRight class="w-5 h-5 text-gray-400" />
       {/if}
     </button>
-    
+
     {#if sectionsOpen.metronome}
       <div class="px-5 pb-5">
         <MetronomeSettings {metronome} />
@@ -126,10 +121,7 @@
 
   <!-- Audio Settings Section -->
   <div class="bg-gray-800/30 rounded-xl border border-gray-700/50">
-    <button
-      onclick={() => toggleSection('audio')}
-      class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-700/30 transition-colors rounded-xl"
-    >
+    <button onclick={() => toggleSection('audio')} class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-700/30 transition-colors rounded-xl">
       <h3 class="text-lg font-semibold text-white">Audio Settings</h3>
       {#if sectionsOpen.audio}
         <ChevronDown class="w-5 h-5 text-gray-400" />
@@ -137,10 +129,28 @@
         <ChevronRight class="w-5 h-5 text-gray-400" />
       {/if}
     </button>
-    
+
     {#if sectionsOpen.audio}
       <div class="px-5 pb-5">
         <AudioControls />
+      </div>
+    {/if}
+  </div>
+
+  <!-- Presets & Settings Section -->
+  <div class="bg-gray-800/30 rounded-xl border border-gray-700/50">
+    <button onclick={() => toggleSection('presets')} class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-700/30 transition-colors rounded-xl">
+      <h3 class="text-lg font-semibold text-white">Presets & Settings</h3>
+      {#if sectionsOpen.presets}
+        <ChevronDown class="w-5 h-5 text-gray-400" />
+      {:else}
+        <ChevronRight class="w-5 h-5 text-gray-400" />
+      {/if}
+    </button>
+
+    {#if sectionsOpen.presets}
+      <div class="px-5 pb-5">
+        <PresetManager />
       </div>
     {/if}
   </div>

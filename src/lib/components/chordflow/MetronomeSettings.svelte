@@ -28,7 +28,7 @@
   function handleTapTempo() {
     metronome.tapTempo();
     tapCount++;
-    
+
     // Reset tap count display after 3 seconds
     setTimeout(() => {
       tapCount = 0;
@@ -44,11 +44,7 @@
   <!-- Settings Header -->
   <div class="flex items-center justify-between">
     <h3 class="text-lg font-medium text-gray-300">Advanced Settings</h3>
-    <button
-      onclick={() => (showAdvanced = !showAdvanced)}
-      class="p-2 rounded text-gray-400 hover:text-gray-300 transition-colors"
-      aria-label="Toggle advanced settings"
-    >
+    <button onclick={() => (showAdvanced = !showAdvanced)} class="p-2 rounded text-gray-400 hover:text-gray-300 transition-colors" aria-label="Toggle advanced settings">
       <Settings class="w-4 h-4" />
     </button>
   </div>
@@ -61,12 +57,7 @@
           <Clock class="w-4 h-4" />
           <span>Time Signature</span>
         </label>
-        <select
-          id="time-signature"
-          value={metronomeState.timeSignature}
-          onchange={handleTimeSignatureChange}
-          class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white"
-        >
+        <select id="time-signature" value={metronomeState.timeSignature} onchange={handleTimeSignatureChange} class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white">
           <option value="4/4">4/4 (Common Time)</option>
           <option value="3/4">3/4 (Waltz Time)</option>
           <option value="2/4">2/4 (March Time)</option>
@@ -107,10 +98,7 @@
       <div class="space-y-2">
         <div class="text-sm font-medium text-gray-400">Tap Tempo</div>
         <div class="flex items-center space-x-3">
-          <button
-            onclick={handleTapTempo}
-            class="flex-1 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-white font-medium transition-colors duration-200 active:scale-95"
-          >
+          <button onclick={handleTapTempo} class="flex-1 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-white font-medium transition-colors duration-200 active:scale-95">
             Tap Tempo {tapCount > 0 ? `(${tapCount})` : ''}
           </button>
           <div class="text-xs text-gray-500 text-center">
@@ -161,12 +149,7 @@
       <div class="text-sm text-gray-400">
         {metronomeState.timeSignature} • {Math.round(metronomeState.clickVolume * 100)}% volume
       </div>
-      <button
-        onclick={handleTapTempo}
-        class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 rounded text-sm text-white transition-colors duration-200"
-      >
-        Tap
-      </button>
+      <button onclick={handleTapTempo} class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 rounded text-sm text-white transition-colors duration-200"> Tap </button>
     </div>
   {/if}
 </div>

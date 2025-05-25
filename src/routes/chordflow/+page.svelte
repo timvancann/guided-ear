@@ -10,6 +10,7 @@
   import { ChordGenerator } from '$lib/chordflow/chordGenerator.svelte';
   import { chordFlowState, advanceBar, executeChordChange } from '$lib/chordflow/state.svelte';
   import { playChord, chordAudioSettings } from '$lib/chordflow/chordAudio.svelte';
+  import { chordFlowSettings } from '$lib/chordflow/settings.svelte';
 
   let title = 'ChordFlow Practice';
   let chordGenerator = new ChordGenerator();
@@ -17,6 +18,9 @@
 
   // Initialize chord progression and keyboard shortcuts
   onMount(() => {
+    // Initialize settings system
+    chordFlowSettings.initialize();
+
     // Set up initial chord progression
     const { current, next } = chordGenerator.getNextChord(
       chordFlowState.settings.progressionType,
@@ -114,9 +118,6 @@
       playChord(chordFlowState.settings.currentChord);
     }
   }
-
-
-
 </script>
 
 <svelte:head>

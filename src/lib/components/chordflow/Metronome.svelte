@@ -54,7 +54,6 @@
       {/each}
     </div>
 
-
     <!-- Beat Counter with Time Signature -->
     <div class="text-center">
       <div class="text-2xl font-bold text-white">
