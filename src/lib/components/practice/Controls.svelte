@@ -1,7 +1,35 @@
 <script lang="ts">
   import { ChevronDown, ChevronUp, Pause, Play } from '@lucide/svelte';
+  import type { Component } from 'svelte';
 
-  let { isPlaying = $bindable(), togglePlay, playMode, currentLevel, incrementLevel, decrementLevel, totalLevels } = $props();
+  interface Props {
+    isPlaying: boolean;
+    togglePlay: () => void;
+    playMode: string;
+    currentLevel: number;
+    incrementLevel: () => void;
+    decrementLevel: () => void;
+    totalLevels: number;
+    config?: {
+      color: string;
+      icon: Component;
+      title: string;
+    };
+  }
+
+  let { isPlaying = $bindable(), togglePlay, playMode, currentLevel, incrementLevel, decrementLevel, totalLevels, config }: Props = $props();
+
+  function getColorClasses(color: string, type: 'bg' | 'hover' | 'text' | 'border') {
+    const colors: Record<string, Record<string, string>> = {
+      emerald: { bg: 'bg-emerald-600', hover: 'hover:bg-emerald-500', text: 'text-emerald-400', border: 'border-emerald-400' },
+      blue: { bg: 'bg-blue-600', hover: 'hover:bg-blue-500', text: 'text-blue-400', border: 'border-blue-400' },
+      purple: { bg: 'bg-purple-600', hover: 'hover:bg-purple-500', text: 'text-purple-400', border: 'border-purple-400' },
+      orange: { bg: 'bg-orange-600', hover: 'hover:bg-orange-500', text: 'text-orange-400', border: 'border-orange-400' }
+    };
+    return colors[color]?.[type] || '';
+  }
+
+  const accentColor = config?.color || 'emerald';
 </script>
 
 <div class="mt-auto">
@@ -17,7 +45,10 @@
         <span class="text-xs">Level Down</span>
       </div>
     </button>
-    <button class={`flex flex-col items-center justify-center rounded-lg p-4 ${isPlaying ? 'bg-red-600 hover:bg-red-500' : 'bg-emerald-600 hover:bg-emerald-500'}`} onclick={togglePlay}>
+    <button
+      class={`flex flex-col items-center justify-center rounded-lg p-4 ${isPlaying ? 'bg-red-600 hover:bg-red-500' : getColorClasses(accentColor, 'bg') + ' ' + getColorClasses(accentColor, 'hover')}`}
+      onclick={togglePlay}
+    >
       {#if isPlaying}
         <Pause size={28} class="mb-1" />
         <span class="text-xs">Stop</span>

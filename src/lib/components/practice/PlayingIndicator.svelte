@@ -1,6 +1,7 @@
 <script lang="ts">
   import AudioBars from '$lib/components/AudioBars.svelte';
   import { Mic, Music } from '@lucide/svelte';
+  import type { Component } from 'svelte';
   import { fade, scale } from 'svelte/transition';
   import { tweened } from 'svelte/motion';
   import { sineInOut } from 'svelte/easing';
@@ -8,9 +9,27 @@
   interface Props {
     answer: string;
     playState: 'idle' | 'playing' | 'waiting' | 'answering' | 'finished' | 'generating';
+    config?: {
+      color: string;
+      icon: Component;
+      title: string;
+    };
   }
 
-  let { playState, answer }: Props = $props();
+  let { playState, answer, config }: Props = $props();
+
+  function getColorClasses(color: string, type: 'bg' | 'text' | 'border' | 'from' | 'to') {
+    const colors: Record<string, Record<string, string>> = {
+      emerald: { bg: 'bg-emerald-500', text: 'text-emerald-400', border: 'border-emerald-400', from: 'from-emerald-500', to: 'to-emerald-600' },
+      blue: { bg: 'bg-blue-500', text: 'text-blue-400', border: 'border-blue-400', from: 'from-blue-500', to: 'to-blue-600' },
+      purple: { bg: 'bg-purple-500', text: 'text-purple-400', border: 'border-purple-400', from: 'from-purple-500', to: 'to-purple-600' },
+      orange: { bg: 'bg-orange-500', text: 'text-orange-400', border: 'border-orange-400', from: 'from-orange-500', to: 'to-orange-600' }
+    };
+    return colors[color]?.[type] || '';
+  }
+
+  const accentColor = config?.color || 'emerald';
+  const iconComponent = $derived(config?.icon || Music);
 
   // Create breathing effect
   const breathingScale = tweened(1, {
@@ -55,7 +74,7 @@
         <div class="absolute inset-0 rounded-full border-4 border-gray-700">
           <div class="absolute inset-0 flex items-center justify-center text-gray-400">
             <div class="flex items-center justify-center gap-3">
-              <Music size={32} class="text-gray-500" />
+              <iconComponent size={32} class="text-gray-500"></iconComponent>
               <div class="text-left">
                 <div class="text-lg font-medium">Ready</div>
                 <div class="text-sm text-gray-500">Press play to start</div>
@@ -64,19 +83,19 @@
           </div>
         </div>
       {:else if playState === 'playing'}
-        <div class="absolute inset-0 rounded-full border-8 border-emerald-500/20 bg-gray-800 shadow-lg"></div>
-        <div class="absolute inset-0 animate-spin rounded-full border-t-8 border-emerald-500" style="animation-duration: 4s"></div>
+        <div class="absolute inset-0 rounded-full border-8 {getColorClasses(accentColor, 'border')}/20 bg-gray-800 shadow-lg"></div>
+        <div class="absolute inset-0 animate-spin rounded-full border-t-8 {getColorClasses(accentColor, 'border')}" style="animation-duration: 4s"></div>
 
         <!-- Content  -->
         <div class="absolute inset-0 flex items-center justify-center">
           <div class=" flex flex-col items-center justify-center text-center">
-            <div class="mb-1 text-emerald-400">Playing</div>
+            <div class="mb-1 {getColorClasses(accentColor, 'text')}">Playing</div>
             <AudioBars />
           </div>
         </div>
       {:else if playState === 'waiting'}
         <!-- Background -->
-        <div in:fade={{ duration: 400 }} out:fade={{ duration: 200 }} class="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-900/20 to-blue-900/20"></div>
+        <div in:fade={{ duration: 400 }} out:fade={{ duration: 200 }} class="absolute inset-0 rounded-full bg-gradient-to-r {getColorClasses(accentColor, 'from')}/20 to-blue-900/20"></div>
 
         <!-- Breathing border -->
         <div
@@ -84,33 +103,39 @@
           out:scale={{ duration: 300, start: 1.1 }}
           style:transform="scale({$breathingScale})"
           style:opacity={0.8 + 0.2 * ($breathingScale - 1) * 20}
-          class="absolute inset-0 rounded-full border-4 border-blue-500 transition-all duration-100"
+          class="absolute inset-0 rounded-full border-4 {getColorClasses(accentColor, 'border')} transition-all duration-100"
         ></div>
 
         <!-- Inner breathing circle -->
-        <div in:scale={{ delay: 200, duration: 500 }} style:transform="scale({0.9 + 0.1 * ($breathingScale - 1) * 20})" class="absolute inset-4 rounded-full border border-blue-400/30"></div>
+        <div
+          in:scale={{ delay: 200, duration: 500 }}
+          style:transform="scale({0.9 + 0.1 * ($breathingScale - 1) * 20})"
+          class="absolute inset-4 rounded-full border {getColorClasses(accentColor, 'border')}/30"
+        ></div>
 
         <!-- Content -->
         <div in:fade={{ delay: 300, duration: 500 }} out:fade={{ duration: 200 }} class="absolute inset-0 flex items-center justify-center">
           <div class="flex flex-col items-center justify-center text-center">
-            <div in:scale={{ delay: 400, duration: 500, start: 0.8 }} style:opacity={0.7 + 0.3 * ($breathingScale - 1) * 20} class="mb-2 text-lg text-blue-300">Think about it...</div>
+            <div in:scale={{ delay: 400, duration: 500, start: 0.8 }} style:opacity={0.7 + 0.3 * ($breathingScale - 1) * 20} class="mb-2 text-lg {getColorClasses(accentColor, 'text')}">
+              Think about it...
+            </div>
             <div in:fade={{ delay: 600 }} class="text-sm text-gray-400">Take your time</div>
           </div>
         </div>
       {:else if playState === 'answering'}
         <!-- Background gradient -->
-        <div class="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-900/40 to-emerald-700/30"></div>
+        <div class="absolute inset-0 rounded-full bg-gradient-to-r {getColorClasses(accentColor, 'from')}/40 {getColorClasses(accentColor, 'to')}/30"></div>
 
         <!-- Border  -->
-        <div class="absolute inset-0 rounded-full border-4 border-emerald-500"></div>
+        <div class="absolute inset-0 rounded-full border-4 {getColorClasses(accentColor, 'border')}"></div>
 
         <!-- Content  -->
         <div class="absolute inset-0 flex items-center justify-center">
           <div class=" flex flex-col items-center justify-center text-center">
-            <div class="mb-1 text-sm text-emerald-300">Correct answer:</div>
-            <div class="text-4xl font-bold text-emerald-400">{answer}</div>
-            <div class="mt-8 flex items-center gap-2 rounded-full bg-emerald-800/50 px-3 py-1 text-sm">
-              <Mic size={14} class="animate-pulse text-emerald-400" />
+            <div class="mb-1 text-sm {getColorClasses(accentColor, 'text')}">Correct answer:</div>
+            <div class="text-4xl font-bold {getColorClasses(accentColor, 'text')}">{answer}</div>
+            <div class="mt-8 flex items-center gap-2 rounded-full {getColorClasses(accentColor, 'bg')}/20 px-3 py-1 text-sm">
+              <Mic size={14} class="animate-pulse {getColorClasses(accentColor, 'text')}" />
               <span>Speaking...</span>
             </div>
           </div>

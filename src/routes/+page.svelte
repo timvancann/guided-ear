@@ -1,17 +1,5 @@
 <script lang="ts">
-  import { 
-    ChevronRight, 
-    Info, 
-    PlayCircle, 
-    Music, 
-    Volume2, 
-    RotateCcw, 
-    Target,
-    Guitar,
-    Headphones,
-    Users,
-    Award
-  } from '@lucide/svelte';
+  import { ChevronRight, Info, PlayCircle, Music, Volume2, RotateCcw, Target, Guitar, Headphones, Users, Award } from '@lucide/svelte';
   import { onMount } from 'svelte';
 
   let selection: Card | null = null;
@@ -68,7 +56,6 @@
     }
   ];
 
-
   onMount(() => {
     selection = cards[0];
   });
@@ -120,7 +107,7 @@
   <!-- Background Pattern -->
   <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-950 to-black opacity-50"></div>
   <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.1)_0%,transparent_50%)]"></div>
-  
+
   <!-- Header -->
   <header class="relative z-10 flex items-center justify-between mb-12">
     <div class="flex items-center space-x-4">
@@ -128,26 +115,22 @@
         <Headphones class="w-6 h-6 text-white" />
       </div>
       <div>
-        <h1 class="text-4xl font-bold bg-gradient-to-r from-emerald-400 via-emerald-300 to-emerald-500 bg-clip-text text-transparent">
-          Guided Ear
-        </h1>
+        <h1 class="text-4xl font-bold bg-gradient-to-r from-emerald-400 via-emerald-300 to-emerald-500 bg-clip-text text-transparent">Guided Ear</h1>
         <p class="text-gray-400 text-lg">Professional ear training for musicians</p>
       </div>
     </div>
-    <a 
-      class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors" 
-      href="/info"
-      aria-label="App information"
-    >
+    <a class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors" href="/info" aria-label="App information">
       <Info class="w-5 h-5 text-gray-300" />
     </a>
   </header>
 
-
   <!-- Continue Training CTA -->
   {#if selection}
-    <a 
-      class="relative z-10 group block mb-12 p-6 bg-gradient-to-r {getColorClasses(selection.color, 'from')} {getColorClasses(selection.color, 'to')} rounded-2xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]"
+    <a
+      class="relative z-10 group block mb-12 p-6 bg-gradient-to-r {getColorClasses(selection.color, 'from')} {getColorClasses(
+        selection.color,
+        'to'
+      )} rounded-2xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]"
       href="/{selection.id}"
     >
       <div class="flex items-center justify-between">
@@ -173,7 +156,7 @@
     <Award class="w-6 h-6 text-emerald-400" />
     <h2 class="text-2xl font-bold text-white">Training Modules</h2>
   </div>
-  
+
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     {#each cards as card}
       <button
@@ -187,7 +170,12 @@
         <!-- Icon and Title -->
         <div class="flex items-start justify-between mb-4">
           <div class="flex items-center space-x-4">
-            <div class="flex items-center justify-center w-12 h-12 bg-gradient-to-br {getColorClasses(card.color, 'from')} {getColorClasses(card.color, 'to')} rounded-xl group-hover:scale-110 transition-transform">
+            <div
+              class="flex items-center justify-center w-12 h-12 bg-gradient-to-br {getColorClasses(card.color, 'from')} {getColorClasses(
+                card.color,
+                'to'
+              )} rounded-xl group-hover:scale-110 transition-transform"
+            >
               <card.icon class="w-6 h-6 text-white" />
             </div>
             <div>
@@ -197,7 +185,7 @@
               <p class="text-gray-400 text-sm mt-1">{card.description}</p>
             </div>
           </div>
-          
+
           {#if selection?.id === card.id}
             <div class="flex items-center space-x-1 px-2 py-1 bg-emerald-500/20 border border-emerald-400/30 rounded-full">
               <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
@@ -218,18 +206,19 @@
 
         <!-- Launch Button -->
         <div class="mt-6 flex items-center justify-between">
-          <a 
+          <a
             href="/{card.id}"
-            class="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r {getColorClasses(card.color, 'from')} {getColorClasses(card.color, 'to')} rounded-lg text-white font-medium hover:shadow-lg transition-all duration-300 hover:scale-105"
+            class="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r {getColorClasses(card.color, 'from')} {getColorClasses(
+              card.color,
+              'to'
+            )} rounded-lg text-white font-medium hover:shadow-lg transition-all duration-300 hover:scale-105"
             onclick={(e) => e.stopPropagation()}
           >
             <span>Start Training</span>
             <ChevronRight class="w-4 h-4" />
           </a>
-          
-          <div class="text-xs text-gray-500">
-            Click to select • Click button to start
-          </div>
+
+          <div class="text-xs text-gray-500">Click to select • Click button to start</div>
         </div>
       </button>
     {/each}
@@ -243,7 +232,7 @@
     <span class="text-lg font-semibold text-white">Built for Musicians, by Musicians</span>
   </div>
   <p class="text-gray-400 max-w-2xl mx-auto">
-    Guided Ear provides comprehensive ear training modules designed to improve your musical listening skills. 
-    From basic chord recognition to advanced progression analysis, develop your musical ear with professional-grade training tools.
+    Guided Ear provides comprehensive ear training modules designed to improve your musical listening skills. From basic chord recognition to advanced progression analysis, develop your musical ear
+    with professional-grade training tools.
   </p>
 </div>

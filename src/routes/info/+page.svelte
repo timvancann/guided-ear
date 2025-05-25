@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { 
-    ChevronLeft, 
-    Code, 
-    ExternalLink, 
-    Github, 
-    Headphones, 
-    Heart, 
-    Mic, 
+  import {
+    ChevronLeft,
+    Code,
+    ExternalLink,
+    Github,
+    Headphones,
+    Heart,
+    Mic,
     Music,
     Target,
     RotateCcw,
@@ -89,15 +89,11 @@
   <!-- Background Pattern -->
   <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-950 to-black opacity-50"></div>
   <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.1)_0%,transparent_50%)]"></div>
-  
+
   <!-- Header -->
   <header class="relative z-10 mb-12">
     <div class="flex items-center justify-between mb-8">
-      <a 
-        class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors group" 
-        href="/"
-        aria-label="Back to home"
-      >
+      <a class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors group" href="/" aria-label="Back to home">
         <ChevronLeft class="w-5 h-5 text-gray-300 group-hover:-translate-x-0.5 transition-transform" />
       </a>
     </div>
@@ -106,12 +102,8 @@
       <div class="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl mx-auto mb-6">
         <Headphones class="w-10 h-10 text-white" />
       </div>
-      <h1 class="text-5xl font-bold bg-gradient-to-r from-emerald-400 via-emerald-300 to-emerald-500 bg-clip-text text-transparent mb-4">
-        About Guided Ear
-      </h1>
-      <p class="text-xl text-gray-400 max-w-2xl mx-auto">
-        Professional ear training designed for musicians who want to practice anywhere, anytime
-      </p>
+      <h1 class="text-5xl font-bold bg-gradient-to-r from-emerald-400 via-emerald-300 to-emerald-500 bg-clip-text text-transparent mb-4">About Guided Ear</h1>
+      <p class="text-xl text-gray-400 max-w-2xl mx-auto">Professional ear training designed for musicians who want to practice anywhere, anytime</p>
     </div>
   </header>
 </div>
@@ -122,12 +114,17 @@
     <Sparkles class="w-6 h-6 text-emerald-400" />
     <h2 class="text-3xl font-bold text-white">Key Features</h2>
   </div>
-  
+
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {#each features as feature}
       <div class="group relative p-6 bg-gray-800/50 hover:bg-gray-800/70 border border-gray-700/50 hover:border-gray-600/50 rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
         <div class="flex items-center space-x-4 mb-4">
-          <div class="flex items-center justify-center w-12 h-12 bg-gradient-to-br {getColorClasses(feature.color, 'from')} {getColorClasses(feature.color, 'to')} rounded-xl group-hover:scale-110 transition-transform">
+          <div
+            class="flex items-center justify-center w-12 h-12 bg-gradient-to-br {getColorClasses(feature.color, 'from')} {getColorClasses(
+              feature.color,
+              'to'
+            )} rounded-xl group-hover:scale-110 transition-transform"
+          >
             <feature.icon class="w-6 h-6 text-white" />
           </div>
           <h3 class="text-lg font-bold text-white group-hover:{getColorClasses(feature.color, 'text')} transition-colors">
@@ -146,7 +143,7 @@
     <Code class="w-6 h-6 text-emerald-400" />
     <h2 class="text-3xl font-bold text-white">Built With Modern Technology</h2>
   </div>
-  
+
   <div class="bg-gray-800/30 border border-gray-700/50 rounded-2xl p-8">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       {#each techStack as tech}
@@ -170,7 +167,7 @@
     <Coffee class="w-6 h-6 text-emerald-400" />
     <h2 class="text-3xl font-bold text-white">About the Developer</h2>
   </div>
-  
+
   <div class="bg-gradient-to-r from-gray-800/50 to-gray-800/30 border border-gray-700/50 rounded-2xl p-8">
     <div class="flex items-start space-x-6">
       <div class="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl">
@@ -179,16 +176,15 @@
       <div class="flex-1">
         <h3 class="text-xl font-bold text-white mb-3">Created by a Musician, for Musicians</h3>
         <p class="text-gray-300 mb-6 leading-relaxed">
-          Guided Ear was created by a musician and developer who wanted a distraction-free way to practice ear training 
-          during commutes, walks, and other moments when hands are busy. The goal was to build something that actually 
-          helps musicians improve their skills without getting in the way of daily life.
+          Guided Ear was created by a musician and developer who wanted a distraction-free way to practice ear training during commutes, walks, and other moments when hands are busy. The goal was to
+          build something that actually helps musicians improve their skills without getting in the way of daily life.
         </p>
-        
+
         <div class="flex items-center space-x-4">
-          <a 
-            href="https://github.com/timvancann" 
-            target="_blank" 
-            rel="noopener noreferrer" 
+          <a
+            href="https://github.com/timvancann"
+            target="_blank"
+            rel="noopener noreferrer"
             class="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 rounded-lg text-white transition-all duration-300 hover:scale-105"
           >
             <Github class="w-4 h-4" />
@@ -207,7 +203,7 @@
     <Heart class="w-6 h-6 text-emerald-400" />
     <h2 class="text-3xl font-bold text-white">Free & Open Source</h2>
   </div>
-  
+
   <div class="bg-gradient-to-r from-emerald-900/20 to-emerald-800/10 border border-emerald-600/20 rounded-2xl p-8">
     <div class="flex items-start space-x-6 mb-8">
       <div class="flex items-center justify-center w-16 h-16 bg-emerald-500/20 rounded-xl">
@@ -216,10 +212,9 @@
       <div class="flex-1">
         <h3 class="text-xl font-bold text-emerald-300 mb-3">Completely Free Forever</h3>
         <p class="text-gray-300 leading-relaxed mb-6">
-          Guided Ear is completely free to use, with no ads, subscriptions, or in-app purchases. 
-          The full source code is available on GitHub for transparency, contributions, and learning.
+          Guided Ear is completely free to use, with no ads, subscriptions, or in-app purchases. The full source code is available on GitHub for transparency, contributions, and learning.
         </p>
-        
+
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div class="flex items-center space-x-2 text-emerald-300">
             <Shield class="w-4 h-4" />
@@ -274,8 +269,7 @@
     </div>
     <h3 class="text-2xl font-bold text-white mb-4">Have Feedback or Suggestions?</h3>
     <p class="text-gray-300 mb-6 max-w-2xl mx-auto">
-      Your input helps make this app better for everyone! Whether it's a bug report, feature request, 
-      or just general feedback, we'd love to hear from you.
+      Your input helps make this app better for everyone! Whether it's a bug report, feature request, or just general feedback, we'd love to hear from you.
     </p>
     <a
       href="https://github.com/timvancann/guided-ear/issues/new"
@@ -297,8 +291,6 @@
       <span class="text-lg font-semibold text-white">Guided Ear</span>
     </div>
     <p class="text-gray-400 mb-2">Built with ♥ for musicians everywhere</p>
-    <p class="text-sm text-gray-500">
-      Made with SvelteKit 5, TypeScript, Tailwind CSS, and Web Audio API
-    </p>
+    <p class="text-sm text-gray-500">Made with SvelteKit 5, TypeScript, Tailwind CSS, and Web Audio API</p>
   </div>
 </div>
