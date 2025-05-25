@@ -16,42 +16,37 @@ export interface ChordFlowState {
   isChordChangeReady: boolean;
 }
 
+import { createPersistedState } from '../storage.svelte';
+
+// Create persisted ChordFlow settings
+const chordFlowSettingsState = createPersistedState('guided-ear-chordflow-settings', {
+  barsPerChord: 2,
+  progressionType: 'fourths' as const,
+  currentChord: 'B',
+  nextChord: 'E',
+  selectedQualities: ['', 'm', '7'], // Default: Major, Minor, Dominant 7th
+  diatonicKey: 'C',
+  diatonicOption: 'incremental' as const,
+  customProgression: 'C Am F G'
+} as ChordFlowSettings);
+
 export const chordFlowState = $state<ChordFlowState>({
-  settings: {
-    barsPerChord: 2,
-    progressionType: 'fourths',
-    currentChord: 'B',
-    nextChord: 'E',
-    selectedQualities: ['', 'm', '7'], // Default: Major, Minor, Dominant 7th
-    diatonicKey: 'C',
-    diatonicOption: 'incremental',
-    customProgression: 'C Am F G'
-  },
+  settings: chordFlowSettingsState.value,
   currentBar: 0,
   barsSinceLastChord: 0,
   isChordChangeReady: false
 });
 
-// Auto-save settings when they change (disabled for now as we need to coordinate with metronome/audio settings)
-// $effect(() => {
-//   const completeSettings = {
-//     ...chordFlowState.settings,
-//     // TODO: Get metronome and audio settings from their respective stores
-//     bpm: 120,
-//     timeSignature: '4/4' as const,
-//     clickVolume: 0.5,
-//     chordAudioEnabled: true,
-//     chordVolume: 0.7,
-//     playOnBeat1Only: false,
-//     voicing: 'close' as const
-//   };
-//   chordFlowSettings.autoSave(completeSettings);
-// });
+// Update the persisted state when settings change
+export function updateChordFlowSettings() {
+  chordFlowSettingsState.value = chordFlowState.settings;
+}
 
 export function setBarsPerChord(bars: number) {
   if (bars >= 1 && bars <= 8) {
     chordFlowState.settings.barsPerChord = bars;
     resetChordProgress();
+    updateChordFlowSettings();
   }
 }
 
@@ -59,6 +54,7 @@ export function setProgressionType(type: 'fourths' | 'random' | 'diatonic' | 'cu
   if (chordFlowState.settings.progressionType !== type) {
     chordFlowState.settings.progressionType = type;
     resetChordProgress();
+    updateChordFlowSettings();
   }
 }
 
@@ -82,6 +78,7 @@ export function executeChordChange(newChord: string, nextChord: string) {
   chordFlowState.settings.nextChord = nextChord;
   chordFlowState.barsSinceLastChord = 0;
   chordFlowState.isChordChangeReady = false;
+  updateChordFlowSettings();
 }
 
 export function toggleQuality(quality: string) {
@@ -97,23 +94,28 @@ export function toggleQuality(quality: string) {
       qualities.splice(index, 1);
     }
   }
+  updateChordFlowSettings();
 }
 
 export function setSelectedQualities(qualities: string[]) {
   chordFlowState.settings.selectedQualities = qualities.length > 0 ? qualities : [''];
+  updateChordFlowSettings();
 }
 
 export function setDiatonicKey(key: string) {
   chordFlowState.settings.diatonicKey = key;
   resetChordProgress();
+  updateChordFlowSettings();
 }
 
 export function setDiatonicOption(option: 'incremental' | 'random') {
   chordFlowState.settings.diatonicOption = option;
   resetChordProgress();
+  updateChordFlowSettings();
 }
 
 export function setCustomProgression(progression: string) {
   chordFlowState.settings.customProgression = progression;
   resetChordProgress();
+  updateChordFlowSettings();
 }

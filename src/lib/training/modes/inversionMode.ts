@@ -8,7 +8,7 @@ export const inversionMode: TrainingMode<InversionData> = {
   title: 'Inversion Training',
   items: inversions,
   levels: inversionLevels,
-  settings: inversionSettings,
+  settings: inversionSettings.value,
   playAudio: (item: InversionData, options: AudioPlayOptions) => {
     playInversion(item, options);
   },

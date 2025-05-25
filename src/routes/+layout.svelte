@@ -6,6 +6,7 @@
   import AudioLoading from './AudioLoading.svelte';
   import { audioState } from '$lib/audioplayer.svelte';
   import { onMount } from 'svelte';
+  import StorageDebugger from '$lib/components/settings/StorageDebugger.svelte';
 
   let { children } = $props();
 
@@ -37,4 +38,7 @@
       {@render children()}
     </div>
   {/if}
+  
+  <!-- Development storage debugger -->
+  <!-- <StorageDebugger /> -->
 {/if}

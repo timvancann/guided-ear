@@ -7,7 +7,7 @@
 
 <SettingsSection title="Audio Settings" icon={Volume2}>
   <div class="space-y-3">
-    <RangeSlider title="Volume" description="Volume of the chords and notes" min={0} max={127} step={1} bind:value={globalSettings.velocity} />
-    <RangeSlider title="Speech Volume" description="Volume of the speech feedback" min={0} max={1} step={0.1} bind:value={globalSettings.voiceVolume} />
+    <RangeSlider title="Volume" description="Volume of the chords and notes" min={0} max={127} step={1} bind:value={globalSettings.value.velocity} />
+    <RangeSlider title="Speech Volume" description="Volume of the speech feedback" min={0} max={1} step={0.1} bind:value={globalSettings.value.voiceVolume} />
   </div>
 </SettingsSection>

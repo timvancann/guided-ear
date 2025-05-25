@@ -1,5 +1,6 @@
 import { audioState } from '$lib/audioplayer.svelte';
 import type { PlayState, TrainingItem, TrainingMode } from './types';
+import { storage, createDefaultStats } from '../storage.svelte';
 
 // Extended play state for interactive mode
 export type InteractivePlayState = PlayState | 'selecting' | 'feedback';
@@ -44,7 +45,9 @@ export class InteractiveTrainingEngine<T extends TrainingItem> {
   private playingItemId: string | null = null;
   private selectionStartTime: number | null = null;
 
-  constructor(private mode: TrainingMode<T>) {}
+  constructor(private mode: TrainingMode<T>) {
+    this.loadStats();
+  }
 
   get isPlaying() {
     return this.playState !== 'idle';
@@ -213,6 +216,9 @@ export class InteractiveTrainingEngine<T extends TrainingItem> {
     if (this.stats.responses.length > 100) {
       this.stats.responses.shift();
     }
+    
+    // Save stats to localStorage
+    this.saveStats();
   }
 
   incrementLevel() {
@@ -235,6 +241,40 @@ export class InteractiveTrainingEngine<T extends TrainingItem> {
       this.mode.settings.currentLevel -= 1;
       this.mode.settings.playMode = 'recap';
     }
+  }
+
+  private loadStats() {
+    if (typeof window === 'undefined') return;
+    
+    const stored = storage.load();
+    if (stored?.interactiveStats?.[this.mode.name as keyof typeof stored.interactiveStats]) {
+      this.stats = stored.interactiveStats[this.mode.name as keyof typeof stored.interactiveStats];
+    } else {
+      this.stats = createDefaultStats();
+    }
+  }
+
+  private saveStats() {
+    if (typeof window === 'undefined') return;
+    
+    const existing = storage.load() || {};
+    if (!existing.interactiveStats) {
+      existing.interactiveStats = {
+        chords: createDefaultStats(),
+        intervals: createDefaultStats(),
+        inversions: createDefaultStats(),
+        progressions: createDefaultStats()
+      };
+    }
+    
+    existing.interactiveStats[this.mode.name as keyof typeof existing.interactiveStats] = this.stats;
+    storage.save(existing);
+  }
+
+  // Method to reset stats
+  resetStats() {
+    this.stats = createDefaultStats();
+    this.saveStats();
   }
 
   private handleGenerating() {
@@ -360,16 +400,4 @@ export class InteractiveTrainingEngine<T extends TrainingItem> {
     }
   }
 
-  // Reset statistics
-  resetStats() {
-    this.stats = {
-      totalAnswers: 0,
-      correctAnswers: 0,
-      incorrectAnswers: 0,
-      averageResponseTime: 0,
-      currentStreak: 0,
-      bestStreak: 0,
-      responses: []
-    };
-  }
 }

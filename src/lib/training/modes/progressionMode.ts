@@ -8,7 +8,7 @@ export const progressionMode: TrainingMode<ProgressionData> = {
   title: 'Chord Progressions',
   items: progressions,
   levels: progressionLevels,
-  settings: progressionSettings,
+  settings: progressionSettings.value,
   playAudio: (item: ProgressionData, options: AudioPlayOptions) => {
     playProgression(item, options);
   },

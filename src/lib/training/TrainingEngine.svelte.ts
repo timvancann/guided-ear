@@ -1,14 +1,43 @@
 import { audioState } from '$lib/audioplayer.svelte';
 import { cancelSpeech, speak } from '$lib/speech.svelte';
 import type { PlayState, TrainingItem, TrainingMode } from './types';
+import { storage, createDefaultStats } from '../storage.svelte';
+
+export interface HandsfreeStats {
+  totalExercises: number;
+  completedSessions: number;
+  totalPracticeTime: number; // in seconds
+  lastSessionDate: number;
+  exerciseHistory: Array<{
+    timestamp: number;
+    level: number;
+    playMode: string;
+    exerciseCount: number;
+    duration: number;
+  }>;
+}
 
 export class TrainingEngine<T extends TrainingItem> {
   playState: PlayState = $state('idle');
   started = $state(false);
   currentItem: T | null = $state(null);
   private playingItemId: string | null = null;
+  
+  // Handsfree training stats
+  stats: HandsfreeStats = $state({
+    totalExercises: 0,
+    completedSessions: 0,
+    totalPracticeTime: 0,
+    lastSessionDate: 0,
+    exerciseHistory: []
+  });
+  
+  private sessionStartTime: number | null = null;
+  private sessionExerciseCount = 0;
 
-  constructor(private mode: TrainingMode<T>) {}
+  constructor(private mode: TrainingMode<T>) {
+    this.loadStats();
+  }
 
   get isPlaying() {
     return this.playState !== 'idle';
@@ -53,7 +82,9 @@ export class TrainingEngine<T extends TrainingItem> {
       this.playState = 'idle';
       cancelSpeech();
       audioState.player?.stop();
+      this.endSession();
     } else {
+      this.startSession();
       this.playState = 'generating';
     }
   }
@@ -177,6 +208,8 @@ export class TrainingEngine<T extends TrainingItem> {
 
   private handleFinished() {
     if (this.playState === 'finished') {
+      this.recordExercise();
+      this.mode.settings.progress += 1;
       setTimeout(() => {
         this.switchState('finished', 'idle');
       }, this.mode.settings.timeBetweenExercises * 1000);
@@ -219,5 +252,83 @@ export class TrainingEngine<T extends TrainingItem> {
     } else {
       this.mode.settings.playMode = 'custom';
     }
+  }
+
+  // Statistics methods
+  private loadStats() {
+    if (typeof window === 'undefined') return;
+    
+    const stored = storage.load();
+    const statsKey = `handsfree_${this.mode.name}` as keyof typeof stored;
+    
+    if (stored?.[statsKey]) {
+      this.stats = stored[statsKey] as HandsfreeStats;
+    } else {
+      this.stats = {
+        totalExercises: 0,
+        completedSessions: 0,
+        totalPracticeTime: 0,
+        lastSessionDate: 0,
+        exerciseHistory: []
+      };
+    }
+  }
+
+  private saveStats() {
+    if (typeof window === 'undefined') return;
+    
+    const existing = storage.load() || {};
+    const statsKey = `handsfree_${this.mode.name}`;
+    existing[statsKey as keyof typeof existing] = this.stats as any;
+    storage.save(existing);
+  }
+
+  startSession() {
+    this.sessionStartTime = Date.now();
+    this.sessionExerciseCount = 0;
+  }
+
+  endSession() {
+    if (this.sessionStartTime) {
+      const duration = Math.floor((Date.now() - this.sessionStartTime) / 1000);
+      
+      this.stats.completedSessions++;
+      this.stats.totalPracticeTime += duration;
+      this.stats.lastSessionDate = Date.now();
+      
+      // Add to history
+      this.stats.exerciseHistory.push({
+        timestamp: Date.now(),
+        level: this.mode.settings.currentLevel,
+        playMode: this.mode.settings.playMode,
+        exerciseCount: this.sessionExerciseCount,
+        duration
+      });
+      
+      // Keep only last 50 sessions
+      if (this.stats.exerciseHistory.length > 50) {
+        this.stats.exerciseHistory = this.stats.exerciseHistory.slice(-50);
+      }
+      
+      this.saveStats();
+      this.sessionStartTime = null;
+    }
+  }
+
+  recordExercise() {
+    this.stats.totalExercises++;
+    this.sessionExerciseCount++;
+    this.saveStats();
+  }
+
+  resetStats() {
+    this.stats = {
+      totalExercises: 0,
+      completedSessions: 0,
+      totalPracticeTime: 0,
+      lastSessionDate: 0,
+      exerciseHistory: []
+    };
+    this.saveStats();
   }
 }

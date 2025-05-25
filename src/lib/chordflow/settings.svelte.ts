@@ -54,8 +54,8 @@ const DEFAULT_PRESETS: ChordFlowPreset[] = [
       timeSignature: '4/4',
       clickVolume: 0.3,
       chordAudioEnabled: true,
-      chordVolume: 0.5,
-      playOnBeat1Only: true,
+      chordVolume: 0.8,
+      playOnBeat1Only: false,
       voicing: 'shell'
     },
     createdAt: Date.now(),

@@ -8,7 +8,7 @@ export const intervalMode: TrainingMode<IntervalData> = {
   title: 'Interval Training',
   items: intervals,
   levels: intervalLevels,
-  settings: intervalSettings,
+  settings: intervalSettings.value,
   playAudio: (item: IntervalData, options: AudioPlayOptions) => {
     playInterval(item, options);
   },

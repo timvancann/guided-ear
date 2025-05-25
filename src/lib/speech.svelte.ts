@@ -29,7 +29,7 @@ export function speak(text: string, options: SpeechOptions = {}) {
   // Set default options
   utterance.pitch = options.pitch ?? 1.2;
   utterance.rate = options.rate ?? 0.8;
-  utterance.volume = options.volume ?? globalSettings.voiceVolume;
+  utterance.volume = options.volume ?? globalSettings.value.voiceVolume;
   utterance.voice = options.voice ?? null;
 
   // Set event handlers

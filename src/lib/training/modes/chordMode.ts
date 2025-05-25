@@ -10,7 +10,7 @@ export const chordMode: TrainingMode<ChordData> = {
     return chordCategories.flatMap((category) => category.chords);
   },
   levels: chordLevels,
-  settings: chordSettings,
+  settings: chordSettings.value,
   playAudio: (item: ChordData, options: AudioPlayOptions) => {
     playChord(item.chord, options);
   },
