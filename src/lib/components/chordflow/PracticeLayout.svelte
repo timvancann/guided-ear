@@ -72,7 +72,7 @@
   });
 </script>
 
-<div class="min-h-screen bg-gray-950 text-white relative">
+<div class="min-h-screen bg-gray-950 text-white relative w-full overflow-x-hidden">
   <!-- Main Content Area -->
   <div class="transition-all duration-300 {showSettings ? 'mr-96' : ''}">
     <div class="container mx-auto px-4 py-8">

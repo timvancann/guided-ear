@@ -1,5 +1,6 @@
 <script lang="ts">
   import { browser } from '$app/environment';
+  import { page } from '$app/stores';
   import '../app.css';
   import { Soundfont } from 'smplr';
   import AudioLoading from './AudioLoading.svelte';
@@ -28,5 +29,12 @@
 {#if !browser}
   <AudioLoading />
 {:else}
-  {@render children()}
+  <!-- ChordFlow and training pages handle their own layout, other pages need padding -->
+  {#if $page.route.id === '/chordflow' || $page.route.id?.includes('/training/') || $page.route.id?.includes('/chords') || $page.route.id?.includes('/intervals') || $page.route.id?.includes('/inversions') || $page.route.id?.includes('/progressions')}
+    {@render children()}
+  {:else}
+    <div class="p-6">
+      {@render children()}
+    </div>
+  {/if}
 {/if}

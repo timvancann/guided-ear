@@ -20,6 +20,10 @@
 }
 
 @layer base {
+  html, body {
+    @apply bg-gray-950;
+  }
+  
   .button-group {
     @apply flex justify-between gap-4;
   }
