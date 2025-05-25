@@ -18,8 +18,8 @@
   <!-- Current Chord Display -->
   <div class="text-center">
     <h2 class="text-lg font-medium text-gray-300 mb-2">Current Chord</h2>
-    <div class="bg-gray-800 rounded-xl p-8 border-2 transition-colors duration-300 {isChordChangeReady ? 'border-emerald-400 bg-emerald-900/20' : 'border-gray-600'}">
-      <div class="text-6xl font-bold text-white font-mono tracking-wider">
+    <div class="bg-gray-800 rounded-xl p-12 border-2 transition-all duration-300 {isChordChangeReady ? 'border-emerald-400 bg-emerald-900/20 scale-105' : 'border-gray-600'}">
+      <div class="text-7xl md:text-8xl font-bold text-white font-mono tracking-wider leading-none">
         {currentDisplayName}
       </div>
     </div>
@@ -36,9 +36,9 @@
 
   <!-- Next Chord Display -->
   <div class="text-center">
-    <h3 class="text-lg font-medium text-gray-300 mb-2">Next Chord</h3>
-    <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
-      <div class="text-4xl font-bold text-gray-400 font-mono tracking-wider">
+    <h3 class="text-lg font-medium text-gray-300 mb-3">Next Chord</h3>
+    <div class="bg-gray-900 rounded-xl p-8 border border-gray-700 hover:border-gray-600 transition-colors">
+      <div class="text-5xl md:text-6xl font-bold text-gray-400 font-mono tracking-wider">
         {nextDisplayName}
       </div>
     </div>
