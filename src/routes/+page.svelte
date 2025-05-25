@@ -31,6 +31,11 @@
       title: 'Chord Progressions',
       description: 'Identify common chord sequences and cadences',
       id: 'progressions'
+    },
+    {
+      title: 'ChordFlow Practice',
+      description: 'Guitar chord progression practice with metronome',
+      id: 'chordflow'
     }
   ];
 
