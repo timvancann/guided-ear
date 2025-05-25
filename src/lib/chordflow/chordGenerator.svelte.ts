@@ -1,4 +1,4 @@
-import { Note, Interval, Scale, Chord } from 'tonal';
+import { Note, Scale } from 'tonal';
 import { parseProgression } from './progressionParser';
 
 // Fourths progression cycle: B → E → A → D → G → C → F → Bb → Eb → Ab → Db → Gb → B
@@ -34,11 +34,11 @@ export class ChordGenerator {
    */
   generateFourthsChord(): { current: string; next: string } {
     const current = FOURTHS_CYCLE[this.currentFourthsIndex];
-    
+
     // Advance to next chord in cycle
     this.currentFourthsIndex = (this.currentFourthsIndex + 1) % FOURTHS_CYCLE.length;
     const next = FOURTHS_CYCLE[this.currentFourthsIndex];
-    
+
     return { current, next };
   }
 
@@ -47,29 +47,29 @@ export class ChordGenerator {
    */
   generateRandomChord(selectedQualities: string[] = ['']): { current: string; next: string } {
     const allRoots = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-    
+
     // Ensure we have at least one quality
     const qualities = selectedQualities.length > 0 ? selectedQualities : [''];
-    
+
     // Pick random root and quality
     const currentRoot = allRoots[Math.floor(Math.random() * allRoots.length)];
     const currentQuality = qualities[Math.floor(Math.random() * qualities.length)];
     const current = currentRoot + currentQuality;
-    
+
     // Generate next chord (different from current)
     let nextRoot = currentRoot;
     let nextQuality = currentQuality;
     let attempts = 0;
-    
+
     // Try to generate a different chord (different root or quality)
-    while ((nextRoot === currentRoot && nextQuality === currentQuality) && attempts < 10) {
+    while (nextRoot === currentRoot && nextQuality === currentQuality && attempts < 10) {
       nextRoot = allRoots[Math.floor(Math.random() * allRoots.length)];
       nextQuality = qualities[Math.floor(Math.random() * qualities.length)];
       attempts++;
     }
-    
+
     const next = nextRoot + nextQuality;
-    
+
     return { current, next };
   }
 
@@ -80,7 +80,7 @@ export class ChordGenerator {
     // Get the major scale for the key
     const scaleName = `${key} major`;
     const scaleChords = Scale.scaleChords(scaleName);
-    
+
     if (scaleChords.length === 0) {
       // Fallback if scale not found
       return { current: key, next: key };
@@ -98,7 +98,7 @@ export class ChordGenerator {
       // Random selection from diatonic chords
       const currentIndex = Math.floor(Math.random() * scaleChords.length);
       currentChord = scaleChords[currentIndex];
-      
+
       // Pick a different chord for next
       let nextIndex = currentIndex;
       while (nextIndex === currentIndex && scaleChords.length > 1) {
@@ -115,13 +115,13 @@ export class ChordGenerator {
    */
   generateCustomChord(progressionText: string): { current: string; next: string } {
     const parsed = parseProgression(progressionText);
-    
+
     if (!parsed.isValid || parsed.chords.length === 0) {
       // Fallback to simple progression
       return { current: 'C', next: 'Am' };
     }
 
-    const validChords = parsed.chords.filter(chord => chord.isValid);
+    const validChords = parsed.chords.filter((chord) => chord.isValid);
     if (validChords.length === 0) {
       return { current: 'C', next: 'Am' };
     }
@@ -138,7 +138,7 @@ export class ChordGenerator {
    * Get chord progression based on type
    */
   getNextChord(
-    type: 'fourths' | 'random' | 'diatonic' | 'custom', 
+    type: 'fourths' | 'random' | 'diatonic' | 'custom',
     selectedQualities: string[] = [''],
     diatonicKey: string = 'C',
     diatonicOption: 'incremental' | 'random' = 'incremental',
@@ -183,7 +183,7 @@ export class ChordGenerator {
    * Set specific position in fourths cycle
    */
   setFourthsPosition(chordName: string) {
-    const index = FOURTHS_CYCLE.findIndex(chord => chord === chordName);
+    const index = FOURTHS_CYCLE.findIndex((chord) => chord === chordName);
     if (index !== -1) {
       this.currentFourthsIndex = index;
     }
@@ -216,13 +216,13 @@ export class ChordGenerator {
       // Extract root note and quality
       const rootMatch = chordName.match(/^[A-G][#b]?/);
       if (!rootMatch) return chordName;
-      
+
       const root = rootMatch[0];
       const quality = chordName.slice(root.length);
-      
+
       // Normalize the root note
       const normalizedRoot = Note.simplify(root);
-      
+
       return normalizedRoot + quality;
     } catch {
       return chordName;

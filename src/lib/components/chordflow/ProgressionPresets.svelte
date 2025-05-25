@@ -1,6 +1,5 @@
 <script lang="ts">
   import { PROGRESSION_PRESETS } from '$lib/chordflow/progressionParser';
-  import { chordFlowState } from '$lib/chordflow/state.svelte';
 
   interface Props {
     onSelectProgression: (progression: string) => void;
@@ -9,13 +8,16 @@
   let { onSelectProgression }: Props = $props();
 
   // Group presets by category
-  const categories = PROGRESSION_PRESETS.reduce((acc, preset) => {
-    if (!acc[preset.category]) {
-      acc[preset.category] = [];
-    }
-    acc[preset.category].push(preset);
-    return acc;
-  }, {} as Record<string, typeof PROGRESSION_PRESETS>);
+  const categories = PROGRESSION_PRESETS.reduce(
+    (acc, preset) => {
+      if (!acc[preset.category]) {
+        acc[preset.category] = [];
+      }
+      acc[preset.category].push(preset);
+      return acc;
+    },
+    {} as Record<string, typeof PROGRESSION_PRESETS>
+  );
 
   function selectPreset(progression: string) {
     onSelectProgression(progression);
@@ -26,15 +28,12 @@
   <h4 class="text-md font-medium text-gray-300">Progression Presets</h4>
 
   <div class="space-y-4">
-    {#each Object.entries(categories) as [category, presets]}
+    {#each Object.entries(categories) as [category, presets] (category)}
       <div>
         <h5 class="text-sm font-medium text-gray-400 mb-2">{category}</h5>
         <div class="grid grid-cols-1 gap-2">
-          {#each presets as preset}
-            <button
-              onclick={() => selectPreset(preset.progression)}
-              class="p-3 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 transition-colors duration-200 text-left"
-            >
+          {#each presets as preset (preset.name)}
+            <button onclick={() => selectPreset(preset.progression)} class="p-3 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 transition-colors duration-200 text-left">
               <div class="flex items-start justify-between">
                 <div class="flex-1">
                   <div class="text-sm font-medium text-white">{preset.name}</div>

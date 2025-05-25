@@ -1,6 +1,5 @@
 import { audioState } from '$lib/audioplayer.svelte';
-import { globalSettings } from '$lib/state.svelte';
-import { speak, cancelSpeech } from '$lib/speech.svelte';
+import { cancelSpeech, speak } from '$lib/speech.svelte';
 import type { PlayState, TrainingItem, TrainingMode } from './types';
 
 export class TrainingEngine<T extends TrainingItem> {
@@ -109,10 +108,10 @@ export class TrainingEngine<T extends TrainingItem> {
         return;
       }
       this.playingItemId = currentItemId;
-      
+
       const tonic = this.getTonic();
       const options = { tonic };
-      
+
       if (this.mode.settings.arpegiateChords) {
         this.mode.playArpeggiated(this.currentItem, {
           ...options,
@@ -222,4 +221,3 @@ export class TrainingEngine<T extends TrainingItem> {
     }
   }
 }
-

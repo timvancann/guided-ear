@@ -55,7 +55,7 @@ export function resetChordProgress() {
 export function advanceBar() {
   chordFlowState.currentBar++;
   chordFlowState.barsSinceLastChord++;
-  
+
   if (chordFlowState.barsSinceLastChord >= chordFlowState.settings.barsPerChord) {
     chordFlowState.isChordChangeReady = true;
   }
@@ -71,7 +71,7 @@ export function executeChordChange(newChord: string, nextChord: string) {
 export function toggleQuality(quality: string) {
   const qualities = chordFlowState.settings.selectedQualities;
   const index = qualities.indexOf(quality);
-  
+
   if (index === -1) {
     // Add quality
     qualities.push(quality);

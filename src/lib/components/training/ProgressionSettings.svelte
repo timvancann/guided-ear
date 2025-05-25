@@ -57,11 +57,7 @@
     </div>
     <div class="mt-3 grid grid-cols-1 gap-2">
       {#each progressions as progression (progression.id)}
-        <PracticeItemCard 
-          toggle={() => (progression.enabled = !progression.enabled)} 
-          title={progression.commonName || ""}
-          isEnabled={progression.enabled} 
-        >
+        <PracticeItemCard toggle={() => (progression.enabled = !progression.enabled)} title={progression.commonName || ''} isEnabled={progression.enabled}>
           <div class="mt-2 flex flex-wrap gap-1">
             {#each progression.romanNumerals as numeral, i (i)}
               <span class="rounded bg-gray-700 px-2 py-1 text-xs font-mono text-emerald-300">

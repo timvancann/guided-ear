@@ -1,13 +1,13 @@
-import { playChord, arpeggiateChord } from '$lib/audioplayer.svelte';
+import { arpeggiateChord, playChord } from '$lib/audioplayer.svelte';
 import { chordCategories, chordLevels, type ChordData } from '$lib/settings.svelte';
 import { chordSettings } from '$lib/state.svelte';
-import type { TrainingMode, AudioPlayOptions } from '../types';
+import type { AudioPlayOptions, TrainingMode } from '../types';
 
 export const chordMode: TrainingMode<ChordData> = {
   name: 'chords',
   title: 'Chord Recognition',
   get items() {
-    return chordCategories.flatMap(category => category.chords);
+    return chordCategories.flatMap((category) => category.chords);
   },
   levels: chordLevels,
   settings: chordSettings,

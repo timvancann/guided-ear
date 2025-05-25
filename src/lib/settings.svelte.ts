@@ -211,29 +211,29 @@ export const inversions: InversionData[] = $state([
   { id: 'Major Root inversion', enabled: true, chord: Chord.get('C'), inversion: 0, level: 1, speech: 'Major triad root position', displayText: 'Major Root' },
   { id: 'Major 1st inversion', enabled: true, chord: Chord.get('C'), inversion: 1, level: 1, speech: 'Major triad first inversion', displayText: 'Major 1st' },
   { id: 'Major 2nd inversion', enabled: true, chord: Chord.get('C'), inversion: 2, level: 1, speech: 'Major triad second inversion', displayText: 'Major 2nd' },
-  
+
   // Minor triad inversions - Level 2
   { id: 'Minor Root inversion', enabled: true, chord: Chord.get('Cm'), inversion: 0, level: 2, speech: 'Minor triad root position', displayText: 'Minor Root' },
   { id: 'Minor 1st inversion', enabled: true, chord: Chord.get('Cm'), inversion: 1, level: 2, speech: 'Minor triad first inversion', displayText: 'Minor 1st' },
   { id: 'Minor 2nd inversion', enabled: true, chord: Chord.get('Cm'), inversion: 2, level: 2, speech: 'Minor triad second inversion', displayText: 'Minor 2nd' },
-  
+
   // Diminished triad inversions - Level 3
   { id: 'Diminished Root inversion', enabled: false, chord: Chord.get('Cdim'), inversion: 0, level: 3, speech: 'Diminished triad root position', displayText: 'Diminished Root' },
   { id: 'Diminished 1st inversion', enabled: false, chord: Chord.get('Cdim'), inversion: 1, level: 3, speech: 'Diminished triad first inversion', displayText: 'Diminished 1st' },
   { id: 'Diminished 2nd inversion', enabled: false, chord: Chord.get('Cdim'), inversion: 2, level: 3, speech: 'Diminished triad second inversion', displayText: 'Diminished 2nd' },
-  
+
   // Major 7th inversions - Level 4
   { id: 'Major 7th Root inversion', enabled: false, chord: Chord.get('Cmaj7'), inversion: 0, level: 4, speech: 'Major seventh chord root position', displayText: 'Major 7th Root' },
   { id: 'Major 7th 1st inversion', enabled: false, chord: Chord.get('Cmaj7'), inversion: 1, level: 4, speech: 'Major seventh chord first inversion', displayText: 'Major 7th 1st' },
   { id: 'Major 7th 2nd inversion', enabled: false, chord: Chord.get('Cmaj7'), inversion: 2, level: 4, speech: 'Major seventh chord second inversion', displayText: 'Major 7th 2nd' },
   { id: 'Major 7th 3rd inversion', enabled: false, chord: Chord.get('Cmaj7'), inversion: 3, level: 4, speech: 'Major seventh chord third inversion', displayText: 'Major 7th 3rd' },
-  
+
   // Minor 7th inversions - Level 5
   { id: 'Minor 7th Root inversion', enabled: false, chord: Chord.get('Cm7'), inversion: 0, level: 5, speech: 'Minor seventh chord root position', displayText: 'Minor 7th Root' },
   { id: 'Minor 7th 1st inversion', enabled: false, chord: Chord.get('Cm7'), inversion: 1, level: 5, speech: 'Minor seventh chord first inversion', displayText: 'Minor 7th 1st' },
   { id: 'Minor 7th 2nd inversion', enabled: false, chord: Chord.get('Cm7'), inversion: 2, level: 5, speech: 'Minor seventh chord second inversion', displayText: 'Minor 7th 2nd' },
   { id: 'Minor 7th 3rd inversion', enabled: false, chord: Chord.get('Cm7'), inversion: 3, level: 5, speech: 'Minor seventh chord third inversion', displayText: 'Minor 7th 3rd' },
-  
+
   // Dominant 7th inversions - Level 6
   { id: 'Dominant 7th Root inversion', enabled: false, chord: Chord.get('C7'), inversion: 0, level: 6, speech: 'Dominant seventh chord root position', displayText: 'Dominant 7th Root' },
   { id: 'Dominant 7th 1st inversion', enabled: false, chord: Chord.get('C7'), inversion: 1, level: 6, speech: 'Dominant seventh chord first inversion', displayText: 'Dominant 7th 1st' },
@@ -356,14 +356,14 @@ const commonProgressions: ProgressionData[] = [
     displayText: 'I-♭VII-IV-I (Mixolydian)'
   },
   {
-      id: 'i-IV-bVII-i',
-      enabled: false,
-      level: 4,
-      romanNumerals: ['i', 'IV', 'bVII', 'i'],
-      commonName: 'Dorian',
-      speech: 'One four flat seven one dorian progression',
-      displayText: 'i-IV-♭VII-i (Dorian)'
-    }
+    id: 'i-IV-bVII-i',
+    enabled: false,
+    level: 4,
+    romanNumerals: ['i', 'IV', 'bVII', 'i'],
+    commonName: 'Dorian',
+    speech: 'One four flat seven one dorian progression',
+    displayText: 'i-IV-♭VII-i (Dorian)'
+  }
 ];
 
 export const progressions: ProgressionData[] = $state(commonProgressions);

@@ -31,17 +31,17 @@ export async function playChord(chordName: string, settings: ChordAudioSettings 
     }
 
     // Get chord notes and apply voicing
-    let notes = getChordVoicing(chord.notes, settings.voicing);
-    
+    const notes = getChordVoicing(chord.notes, settings.voicing);
+
     // Convert to MIDI note format (with octave)
     const octave = 4;
-    const midiNotes = notes.map(note => `${note}${octave}`);
+    const midiNotes = notes.map((note) => `${note}${octave}`);
 
     const now = audioState.audioContext.currentTime;
     const duration = 1.0; // 1 second duration
 
     // Play each note of the chord
-    midiNotes.forEach((note, index) => {
+    midiNotes.forEach((note) => {
       audioState.player?.start({
         note,
         time: now,
@@ -49,7 +49,6 @@ export async function playChord(chordName: string, settings: ChordAudioSettings 
         velocity: Math.floor(settings.volume * 127)
       });
     });
-
   } catch (error) {
     console.error(`Error playing chord ${chordName}:`, error);
   }
@@ -65,14 +64,14 @@ function getChordVoicing(notes: string[], voicing: 'close' | 'open' | 'shell'): 
     case 'close':
       // Keep notes as-is (close position)
       return notes;
-      
+
     case 'open':
       // Spread notes across wider range
       if (notes.length >= 3) {
         return [notes[0], notes[2], notes[1], ...notes.slice(3)];
       }
       return notes;
-      
+
     case 'shell':
       // Just root and 7th (if available) or root and 3rd
       if (notes.length >= 4) {
@@ -82,7 +81,7 @@ function getChordVoicing(notes: string[], voicing: 'close' | 'open' | 'shell'): 
       } else {
         return notes.slice(0, 2); // Root and whatever else
       }
-      
+
     default:
       return notes;
   }
@@ -102,7 +101,7 @@ export function playMetronomeClick(isDownbeat: boolean = false, volume: number =
 
   // Different frequency for downbeat vs other beats
   clickOsc.frequency.value = isDownbeat ? 1200 : 800;
-  
+
   const now = audioState.audioContext.currentTime;
   clickGain.gain.setValueAtTime(volume, now);
   clickGain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);

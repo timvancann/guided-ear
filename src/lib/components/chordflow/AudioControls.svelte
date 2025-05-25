@@ -21,11 +21,7 @@
 <div class="space-y-4">
   <div class="flex items-center justify-between">
     <h4 class="text-md font-medium text-gray-300">Audio Settings</h4>
-    <button
-      onclick={toggleChordAudio}
-      class="p-1 rounded text-gray-400 hover:text-gray-300"
-      aria-label="Toggle chord audio"
-    >
+    <button onclick={toggleChordAudio} class="p-1 rounded text-gray-400 hover:text-gray-300" aria-label="Toggle chord audio">
       {#if chordAudioSettings.enabled}
         <Volume2 class="w-4 h-4" />
       {:else}
@@ -71,20 +67,13 @@
     <!-- Chord Voicing -->
     <div class="space-y-2">
       <label for="chord-voicing" class="text-sm font-medium text-gray-400">Chord Voicing</label>
-      <select 
-        id="chord-voicing"
-        value={chordAudioSettings.voicing}
-        onchange={handleVoicingChange}
-        class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white text-sm"
-      >
+      <select id="chord-voicing" value={chordAudioSettings.voicing} onchange={handleVoicingChange} class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white text-sm">
         <option value="close">Close Position</option>
         <option value="open">Open Position</option>
         <option value="shell">Shell Voicing</option>
       </select>
       <div class="text-xs text-gray-500">
-        {chordAudioSettings.voicing === 'close' ? 'Notes close together' :
-         chordAudioSettings.voicing === 'open' ? 'Notes spread wider' :
-         'Root + 7th only'}
+        {chordAudioSettings.voicing === 'close' ? 'Notes close together' : chordAudioSettings.voicing === 'open' ? 'Notes spread wider' : 'Root + 7th only'}
       </div>
     </div>
 
@@ -103,10 +92,7 @@
 
     <!-- Test Button -->
     <div class="pt-2">
-      <button
-        onclick={testChordAudio}
-        class="flex items-center space-x-2 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 rounded text-white text-sm transition-colors duration-200"
-      >
+      <button onclick={testChordAudio} class="flex items-center space-x-2 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 rounded text-white text-sm transition-colors duration-200">
         <Play class="w-4 h-4" />
         <span>Test Current Chord</span>
       </button>

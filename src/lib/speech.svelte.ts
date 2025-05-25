@@ -1,5 +1,5 @@
-import { globalSettings } from '$lib/state.svelte';
 import { audioState } from '$lib/audioplayer.svelte';
+import { globalSettings } from '$lib/state.svelte';
 
 export interface SpeechOptions {
   pitch?: number;
@@ -25,7 +25,7 @@ export function speak(text: string, options: SpeechOptions = {}) {
   audioState.speech.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
-  
+
   // Set default options
   utterance.pitch = options.pitch ?? 1.2;
   utterance.rate = options.rate ?? 0.8;
@@ -56,14 +56,14 @@ export function getVoices(): SpeechSynthesisVoice[] {
 
 export function findVoice(criteria: { lang?: string; name?: string }): SpeechSynthesisVoice | null {
   const voices = getVoices();
-  
+
   if (criteria.name) {
-    return voices.find(voice => voice.name === criteria.name) ?? null;
+    return voices.find((voice) => voice.name === criteria.name) ?? null;
   }
-  
+
   if (criteria.lang) {
-    return voices.find(voice => voice.lang.startsWith(criteria.lang!)) ?? null;
+    return voices.find((voice) => voice.lang.startsWith(criteria.lang!)) ?? null;
   }
-  
+
   return null;
 }

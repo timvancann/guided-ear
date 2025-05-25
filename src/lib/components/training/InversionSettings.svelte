@@ -49,7 +49,6 @@
       inversion.enabled = inversion.inversion === 0;
     });
   };
-
 </script>
 
 <TrainingSettings mode={inversionMode} {setView}>
@@ -65,11 +64,7 @@
     </div>
     <div class="mt-3 grid grid-cols-2 gap-2">
       {#each inversions as inversion (inversion.id)}
-        <PracticeItemCard 
-          toggle={() => (inversion.enabled = !inversion.enabled)} 
-          title={inversion.id}
-          isEnabled={inversion.enabled} 
-        />
+        <PracticeItemCard toggle={() => (inversion.enabled = !inversion.enabled)} title={inversion.id} isEnabled={inversion.enabled} />
       {/each}
     </div>
   </SettingsSection>

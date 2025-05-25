@@ -1,7 +1,7 @@
-import { playInversion, arpeggiateInversion } from '$lib/audioplayer.svelte';
-import { inversions, inversionLevels, type InversionData } from '$lib/settings.svelte';
+import { arpeggiateInversion, playInversion } from '$lib/audioplayer.svelte';
+import { inversionLevels, inversions, type InversionData } from '$lib/settings.svelte';
 import { inversionSettings } from '$lib/state.svelte';
-import type { TrainingMode, AudioPlayOptions } from '../types';
+import type { AudioPlayOptions, TrainingMode } from '../types';
 
 export const inversionMode: TrainingMode<InversionData> = {
   name: 'inversions',
@@ -16,4 +16,4 @@ export const inversionMode: TrainingMode<InversionData> = {
     arpeggiateInversion(item, options);
   },
   getDisplayText: (item: InversionData) => item.displayText
-}
+};

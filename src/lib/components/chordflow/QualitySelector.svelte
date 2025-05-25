@@ -9,7 +9,7 @@
   }
 
   function selectAll() {
-    chordFlowState.settings.selectedQualities = CHORD_QUALITIES.map(q => q.symbol);
+    chordFlowState.settings.selectedQualities = CHORD_QUALITIES.map((q) => q.symbol);
   }
 
   function selectNone() {
@@ -26,29 +26,14 @@
   <div class="flex items-center justify-between">
     <h4 class="text-md font-medium text-gray-300">Chord Qualities</h4>
     <div class="flex space-x-2 text-xs">
-      <button 
-        onclick={selectBasic}
-        class="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded text-gray-300"
-      >
-        Basic
-      </button>
-      <button 
-        onclick={selectAll}
-        class="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded text-gray-300"
-      >
-        All
-      </button>
-      <button 
-        onclick={selectNone}
-        class="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded text-gray-300"
-      >
-        Reset
-      </button>
+      <button onclick={selectBasic} class="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded text-gray-300"> Basic </button>
+      <button onclick={selectAll} class="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded text-gray-300"> All </button>
+      <button onclick={selectNone} class="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded text-gray-300"> Reset </button>
     </div>
   </div>
 
   <div class="grid grid-cols-2 gap-3">
-    {#each CHORD_QUALITIES as quality}
+    {#each CHORD_QUALITIES as quality (quality.symbol)}
       {@const isSelected = selectedQualities.includes(quality.symbol)}
       <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-800/50">
         <input
@@ -76,7 +61,7 @@
 
 <style>
   /* Custom checkbox styling */
-  input[type="checkbox"]:checked {
+  input[type='checkbox']:checked {
     background-color: #10b981;
     border-color: #10b981;
   }

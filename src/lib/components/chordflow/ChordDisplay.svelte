@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ChordGenerator } from '$lib/chordflow/chordGenerator.svelte';
-  
+
   interface Props {
     currentChord: string;
     nextChord: string;
@@ -18,9 +18,7 @@
   <!-- Current Chord Display -->
   <div class="text-center">
     <h2 class="text-lg font-medium text-gray-300 mb-2">Current Chord</h2>
-    <div class="bg-gray-800 rounded-xl p-8 border-2 transition-colors duration-300 {isChordChangeReady 
-      ? 'border-emerald-400 bg-emerald-900/20' 
-      : 'border-gray-600'}">
+    <div class="bg-gray-800 rounded-xl p-8 border-2 transition-colors duration-300 {isChordChangeReady ? 'border-emerald-400 bg-emerald-900/20' : 'border-gray-600'}">
       <div class="text-6xl font-bold text-white font-mono tracking-wider">
         {currentDisplayName}
       </div>

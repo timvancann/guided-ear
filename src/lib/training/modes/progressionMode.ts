@@ -1,7 +1,7 @@
 import { playProgression } from '$lib/audioplayer.svelte';
-import { progressions, progressionLevels, type ProgressionData } from '$lib/settings.svelte';
+import { progressionLevels, progressions, type ProgressionData } from '$lib/settings.svelte';
 import { progressionSettings } from '$lib/state.svelte';
-import type { TrainingMode, AudioPlayOptions } from '../types';
+import type { AudioPlayOptions, TrainingMode } from '../types';
 
 export const progressionMode: TrainingMode<ProgressionData> = {
   name: 'progressions',
@@ -12,6 +12,6 @@ export const progressionMode: TrainingMode<ProgressionData> = {
   playAudio: (item: ProgressionData, options: AudioPlayOptions) => {
     playProgression(item, options);
   },
-  playArpeggiated: () => { },
+  playArpeggiated: () => {},
   getDisplayText: (item: ProgressionData) => item.displayText
 };

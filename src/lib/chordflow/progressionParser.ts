@@ -44,8 +44,11 @@ export function parseProgression(input: string): ParsedProgression {
       .replace(/\s+/g, ' '); // Normalize spaces
 
     // Split by bars if they exist, otherwise treat as single bar
-    const bars = normalized.includes('|') 
-      ? normalized.split('|').map(bar => bar.trim()).filter(bar => bar)
+    const bars = normalized.includes('|')
+      ? normalized
+          .split('|')
+          .map((bar) => bar.trim())
+          .filter((bar) => bar)
       : [normalized];
 
     for (let barIndex = 0; barIndex < bars.length; barIndex++) {
@@ -55,7 +58,6 @@ export function parseProgression(input: string): ParsedProgression {
       // Split bar content by spaces
       const tokens = barContent.split(/\s+/);
       let currentChord: string | null = null;
-      let beatCount = 0;
 
       for (const token of tokens) {
         if (token === '.') {
@@ -64,7 +66,7 @@ export function parseProgression(input: string): ParsedProgression {
             errors.push(`Bar ${barIndex + 1}: Dot (.) found without preceding chord`);
             continue;
           }
-          beatCount++;
+          // Beat count would be incremented here if needed
         } else {
           // New chord
           if (currentChord !== null) {
@@ -80,7 +82,7 @@ export function parseProgression(input: string): ParsedProgression {
             }
           }
           currentChord = token;
-          beatCount = 1;
+          // Beat count would be reset here if needed
         }
       }
 
@@ -104,7 +106,6 @@ export function parseProgression(input: string): ParsedProgression {
     if (!normalized.includes('|') && chords.length > 0) {
       totalBars = chords.length;
     }
-
   } catch (error) {
     errors.push(`Parse error: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
@@ -142,14 +143,7 @@ function isValidChord(chordName: string): boolean {
  * Get example progression formats for help text
  */
 export function getProgressionExamples(): string[] {
-  return [
-    'C Am F G',
-    'C | Am | F | G',
-    'Cmaj7 Am7 Dm7 G7',
-    'C . Am . | F . G .',
-    'I vi IV V',
-    'Em Am D G'
-  ];
+  return ['C Am F G', 'C | Am | F | G', 'Cmaj7 Am7 Dm7 G7', 'C . Am . | F . G .', 'I vi IV V', 'Em Am D G'];
 }
 
 /**
@@ -177,7 +171,7 @@ export const PROGRESSION_PRESETS = [
   {
     name: 'Canon Progression',
     progression: 'C G Am Em F C F G',
-    description: 'Pachelbel\'s Canon chord sequence',
+    description: "Pachelbel's Canon chord sequence",
     category: 'Classical'
   },
   {

@@ -47,4 +47,3 @@ export interface TrainingMode<T extends TrainingItem> {
   playArpeggiated: (item: T, options: AudioPlayOptions) => void;
   getDisplayText: (item: T) => string;
 }
-

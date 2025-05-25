@@ -10,7 +10,7 @@
   import { slide } from 'svelte/transition';
 
   let { mode, setView }: { mode: TrainingMode<T>; setView: () => void } = $props();
-  
+
   const engine = new TrainingEngine(mode);
 
   // Reactive effects
@@ -38,14 +38,14 @@
   </div>
   <PlayingIndicator playState={engine.playState} answer={engine.currentItem ? mode.getDisplayText(engine.currentItem) : ''} />
   <ProgressBar total={mode.settings.totalExercises} progress={mode.settings.progress} />
-  <Controls 
-    togglePlay={engine.togglePlay.bind(engine)} 
-    isPlaying={engine.isPlaying} 
-    incrementLevel={engine.incrementLevel.bind(engine)} 
-    decrementLevel={engine.decrementLevel.bind(engine)} 
-    currentLevel={mode.settings.currentLevel} 
-    playMode={mode.settings.playMode} 
-    totalLevels={mode.levels.length} 
+  <Controls
+    togglePlay={engine.togglePlay.bind(engine)}
+    isPlaying={engine.isPlaying}
+    incrementLevel={engine.incrementLevel.bind(engine)}
+    decrementLevel={engine.decrementLevel.bind(engine)}
+    currentLevel={mode.settings.currentLevel}
+    playMode={mode.settings.playMode}
+    totalLevels={mode.levels.length}
   />
 
   {#if mode.settings.playMode !== 'custom'}

@@ -48,14 +48,14 @@
       >
         −
       </button>
-      
+
       <div class="text-center">
         <div class="text-3xl font-bold text-emerald-400">
           {metronomeState.bpm}
         </div>
         <div class="text-sm text-gray-400">BPM</div>
       </div>
-      
+
       <button
         onclick={increaseBpm}
         class="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 transition-colors duration-200 flex items-center justify-center text-white font-bold"
@@ -67,15 +67,7 @@
 
     <!-- BPM Slider -->
     <div class="w-64">
-      <input
-        type="range"
-        min="60"
-        max="200"
-        step="5"
-        value={metronomeState.bpm}
-        oninput={handleBpmChange}
-        class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
-      />
+      <input type="range" min="60" max="200" step="5" value={metronomeState.bpm} oninput={handleBpmChange} class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider" />
       <div class="flex justify-between text-xs text-gray-500 mt-1">
         <span>60</span>
         <span>200</span>
@@ -84,11 +76,7 @@
   </div>
 
   <!-- Reset Button -->
-  <button
-    onclick={() => metronome.reset()}
-    class="flex items-center space-x-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors duration-200"
-    aria-label="Reset metronome"
-  >
+  <button onclick={() => metronome.reset()} class="flex items-center space-x-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors duration-200" aria-label="Reset metronome">
     <RotateCcw class="w-4 h-4" />
     <span>Reset</span>
   </button>
