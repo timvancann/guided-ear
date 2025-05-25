@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ChevronRight, Info, PlayCircle, Music, Volume2, RotateCcw, Target, Guitar, Headphones, Users, Award } from '@lucide/svelte';
+  import { ChevronRight, Info, PlayCircle, Music, Volume2, RotateCcw, Target, Guitar, Headphones, Users, Award, MousePointer, Clock } from '@lucide/svelte';
   import { onMount } from 'svelte';
 
   let selection: Card | null = null;
@@ -13,39 +13,77 @@
     features: string[];
   };
 
-  let cards: Card[] = [
+  let handsfreeCards: Card[] = [
     {
       title: 'Chord Recognition',
       description: 'Master chord identification with progressive difficulty levels',
-      id: 'chords',
+      id: 'handsfree/chords',
       icon: Music,
       color: 'emerald',
       features: ['Major & Minor Chords', '7th & Extended Chords', 'Progressive Difficulty']
     },
     {
-      title: 'Chord Inversions',
-      description: 'Develop skills in recognizing chord inversions and voicings',
-      id: 'inversions',
-      icon: RotateCcw,
-      color: 'blue',
-      features: ['Root Position', 'First & Second Inversions', 'Advanced Voicings']
-    },
-    {
       title: 'Interval Training',
       description: 'Perfect your interval recognition from unison to octave',
-      id: 'intervals',
+      id: 'handsfree/intervals',
       icon: Target,
       color: 'purple',
       features: ['All Interval Types', 'Ascending & Descending', 'Custom Practice']
     },
     {
+      title: 'Chord Inversions',
+      description: 'Develop skills in recognizing chord inversions and voicings',
+      id: 'handsfree/inversions',
+      icon: RotateCcw,
+      color: 'blue',
+      features: ['Root Position', 'First & Second Inversions', 'Advanced Voicings']
+    },
+    {
       title: 'Chord Progressions',
       description: 'Learn to identify common chord sequences and cadences',
-      id: 'progressions',
+      id: 'handsfree/progressions',
       icon: Volume2,
       color: 'orange',
       features: ['Common Progressions', 'Jazz & Classical', 'Cadence Recognition']
+    }
+  ];
+
+  let interactiveCards: Card[] = [
+    {
+      title: 'Chord Recognition',
+      description: 'Click-based chord identification with instant feedback',
+      id: 'interactive/chords',
+      icon: Music,
+      color: 'emerald',
+      features: ['Multiple Choice', 'Instant Feedback', 'Progress Tracking']
     },
+    {
+      title: 'Interval Training',
+      description: 'Interactive interval recognition with visual answers',
+      id: 'interactive/intervals',
+      icon: Target,
+      color: 'purple',
+      features: ['Visual Interface', 'Score System', 'Custom Levels']
+    },
+    {
+      title: 'Chord Inversions',
+      description: 'Interactive inversion practice with answer selection',
+      id: 'interactive/inversions',
+      icon: RotateCcw,
+      color: 'blue',
+      features: ['Visual Feedback', 'Timed Challenges', 'Leaderboards']
+    },
+    {
+      title: 'Chord Progressions',
+      description: 'Interactive progression analysis with step-by-step guidance',
+      id: 'interactive/progressions',
+      icon: Volume2,
+      color: 'orange',
+      features: ['Step-by-Step', 'Analysis Tools', 'Performance Metrics']
+    }
+  ];
+
+  let practiceCards: Card[] = [
     {
       title: 'ChordFlow Practice',
       description: 'Guitar chord progression practice with professional metronome',
@@ -57,7 +95,7 @@
   ];
 
   onMount(() => {
-    selection = cards[0];
+    selection = handsfreeCards[0];
   });
 
   function getColorClasses(color: string, type: 'bg' | 'text' | 'border' | 'from' | 'to') {
@@ -150,75 +188,203 @@
   {/if}
 </div>
 
-<!-- Training Modules Section -->
-<div class="mb-12">
-  <div class="flex items-center space-x-3 mb-8">
-    <Award class="w-6 h-6 text-emerald-400" />
-    <h2 class="text-2xl font-bold text-white">Training Modules</h2>
+<!-- Handsfree Training Section -->
+<div class="mb-16">
+  <div class="flex items-center space-x-3 mb-4">
+    <Headphones class="w-6 h-6 text-emerald-400" />
+    <h2 class="text-2xl font-bold text-white">Handsfree Training</h2>
   </div>
+  <p class="text-gray-400 mb-8">Practice without looking at the screen - perfect for focused listening sessions</p>
 
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-    {#each cards as card}
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+    {#each handsfreeCards as card}
       <button
         onclick={() => (selection = card)}
-        class="group relative p-6 bg-gray-800/50 hover:bg-gray-800/70 border border-gray-700/50 hover:border-gray-600/50 rounded-2xl transition-all duration-300 text-left hover:scale-[1.02] hover:shadow-xl"
+        class="group relative p-4 sm:p-6 bg-gray-800/50 hover:bg-gray-800/70 border border-gray-700/50 hover:border-gray-600/50 rounded-xl sm:rounded-2xl transition-all duration-300 text-left hover:scale-[1.02] hover:shadow-xl"
         class:ring-2={selection?.id === card.id}
         class:ring-offset-2={selection?.id === card.id}
         class:ring-offset-gray-950={selection?.id === card.id}
         class:ring-emerald-400={selection?.id === card.id}
       >
         <!-- Icon and Title -->
-        <div class="flex items-start justify-between mb-4">
-          <div class="flex items-center space-x-4">
+        <div class="flex items-start justify-between mb-3 sm:mb-4">
+          <div class="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
             <div
-              class="flex items-center justify-center w-12 h-12 bg-gradient-to-br {getColorClasses(card.color, 'from')} {getColorClasses(
+              class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br {getColorClasses(card.color, 'from')} {getColorClasses(
                 card.color,
                 'to'
-              )} rounded-xl group-hover:scale-110 transition-transform"
+              )} rounded-lg sm:rounded-xl group-hover:scale-110 transition-transform flex-shrink-0"
             >
-              <card.icon class="w-6 h-6 text-white" />
+              <card.icon class="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
-            <div>
-              <h3 class="text-xl font-bold text-white group-hover:{getColorClasses(card.color, 'text')} transition-colors">
+            <div class="min-w-0 flex-1">
+              <h3 class="text-lg sm:text-xl font-bold text-white group-hover:{getColorClasses(card.color, 'text')} transition-colors truncate">
                 {card.title}
               </h3>
-              <p class="text-gray-400 text-sm mt-1">{card.description}</p>
+              <p class="text-gray-400 text-xs sm:text-sm mt-1 line-clamp-2">{card.description}</p>
             </div>
           </div>
 
           {#if selection?.id === card.id}
-            <div class="flex items-center space-x-1 px-2 py-1 bg-emerald-500/20 border border-emerald-400/30 rounded-full">
-              <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-              <span class="text-xs text-emerald-400 font-medium">SELECTED</span>
+            <div class="flex items-center space-x-1 px-2 py-1 bg-emerald-500/20 border border-emerald-400/30 rounded-full flex-shrink-0 ml-2">
+              <div class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
+              <span class="text-xs text-emerald-400 font-medium hidden sm:inline">SELECTED</span>
             </div>
           {/if}
         </div>
 
-        <!-- Features List -->
-        <div class="space-y-2">
-          {#each card.features as feature}
-            <div class="flex items-center space-x-2 text-sm text-gray-300">
-              <div class="w-1.5 h-1.5 {getColorClasses(card.color, 'bg')} rounded-full"></div>
-              <span>{feature}</span>
+        <!-- Features List - Compact on mobile -->
+        <div class="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6">
+          {#each card.features.slice(0, 3) as feature}
+            <div class="flex items-center space-x-2 text-xs sm:text-sm text-gray-300">
+              <div class="w-1 h-1 sm:w-1.5 sm:h-1.5 {getColorClasses(card.color, 'bg')} rounded-full flex-shrink-0"></div>
+              <span class="truncate">{feature}</span>
             </div>
           {/each}
         </div>
 
         <!-- Launch Button -->
-        <div class="mt-6 flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
           <a
             href="/{card.id}"
-            class="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r {getColorClasses(card.color, 'from')} {getColorClasses(
+            class="inline-flex items-center justify-center sm:justify-start space-x-2 px-4 py-2.5 sm:py-2 bg-gradient-to-r {getColorClasses(card.color, 'from')} {getColorClasses(
               card.color,
               'to'
-            )} rounded-lg text-white font-medium hover:shadow-lg transition-all duration-300 hover:scale-105"
+            )} rounded-lg text-white font-medium hover:shadow-lg transition-all duration-300 hover:scale-105 text-sm sm:text-base"
             onclick={(e) => e.stopPropagation()}
           >
             <span>Start Training</span>
             <ChevronRight class="w-4 h-4" />
           </a>
 
-          <div class="text-xs text-gray-500">Click to select • Click button to start</div>
+          <div class="text-xs text-gray-500 text-center sm:text-right hidden sm:block">Click to select • Click button to start</div>
+        </div>
+      </button>
+    {/each}
+  </div>
+</div>
+
+<!-- Interactive Training Section -->
+<div class="mb-16">
+  <div class="flex items-center space-x-3 mb-4">
+    <MousePointer class="w-6 h-6 text-blue-400" />
+    <h2 class="text-2xl font-bold text-white">Interactive Training</h2>
+    <span class="px-3 py-1 bg-blue-500/20 border border-blue-400/30 rounded-full text-blue-300 text-xs font-medium">COMING SOON</span>
+  </div>
+  <p class="text-gray-400 mb-8">Click-based training with instant feedback and visual interfaces</p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+    {#each interactiveCards as card}
+      <div class="group relative p-4 sm:p-6 bg-gray-800/30 border border-gray-700/30 rounded-xl sm:rounded-2xl opacity-75">
+        <!-- Icon and Title -->
+        <div class="flex items-start justify-between mb-3 sm:mb-4">
+          <div class="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
+            <div
+              class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br {getColorClasses(card.color, 'from')} {getColorClasses(
+                card.color,
+                'to'
+              )} rounded-lg sm:rounded-xl opacity-60 flex-shrink-0"
+            >
+              <card.icon class="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            </div>
+            <div class="min-w-0 flex-1">
+              <h3 class="text-lg sm:text-lg font-semibold text-white mb-1 truncate">{card.title}</h3>
+              <p class="text-gray-400 text-xs sm:text-sm leading-relaxed line-clamp-2">{card.description}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Features List - Compact on mobile -->
+        <div class="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6">
+          {#each card.features.slice(0, 3) as feature}
+            <div class="flex items-center space-x-2 text-xs sm:text-sm text-gray-400">
+              <div class="w-1 h-1 sm:w-1.5 sm:h-1.5 {getColorClasses(card.color, 'bg')} rounded-full opacity-60 flex-shrink-0"></div>
+              <span class="truncate">{feature}</span>
+            </div>
+          {/each}
+        </div>
+
+        <!-- Coming Soon Button -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+          <div class="inline-flex items-center justify-center sm:justify-start space-x-2 px-4 py-2.5 sm:py-2 bg-gray-700 rounded-lg text-gray-400 font-medium cursor-not-allowed text-sm sm:text-base">
+            <span>Coming Soon</span>
+            <Clock class="w-4 h-4" />
+          </div>
+          <div class="text-xs text-gray-600 text-center sm:text-right hidden sm:block">Interactive mode in development</div>
+        </div>
+      </div>
+    {/each}
+  </div>
+</div>
+
+<!-- Practice Tools Section -->
+<div class="mb-16">
+  <div class="flex items-center space-x-3 mb-4">
+    <Guitar class="w-6 h-6 text-rose-400" />
+    <h2 class="text-2xl font-bold text-white">Practice Tools</h2>
+  </div>
+  <p class="text-gray-400 mb-8">Professional tools for structured practice sessions</p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+    {#each practiceCards as card}
+      <button
+        onclick={() => (selection = card)}
+        class="group relative p-4 sm:p-6 bg-gray-800/50 hover:bg-gray-800/70 border border-gray-700/50 hover:border-gray-600/50 rounded-xl sm:rounded-2xl transition-all duration-300 text-left hover:scale-[1.02] hover:shadow-xl"
+        class:ring-2={selection?.id === card.id}
+        class:ring-offset-2={selection?.id === card.id}
+        class:ring-offset-gray-950={selection?.id === card.id}
+        class:ring-emerald-400={selection?.id === card.id}
+      >
+        <!-- Icon and Title -->
+        <div class="flex items-start justify-between mb-3 sm:mb-4">
+          <div class="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
+            <div
+              class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br {getColorClasses(card.color, 'from')} {getColorClasses(
+                card.color,
+                'to'
+              )} rounded-lg sm:rounded-xl group-hover:scale-110 transition-transform flex-shrink-0"
+            >
+              <card.icon class="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            </div>
+            <div class="min-w-0 flex-1">
+              <h3 class="text-lg sm:text-lg font-semibold text-white mb-1 truncate">{card.title}</h3>
+              <p class="text-gray-400 text-xs sm:text-sm leading-relaxed line-clamp-2">{card.description}</p>
+            </div>
+          </div>
+
+          {#if selection?.id === card.id}
+            <div class="flex items-center space-x-1 px-2 py-1 bg-emerald-500/20 border border-emerald-400/30 rounded-full flex-shrink-0 ml-2">
+              <div class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
+              <span class="text-xs text-emerald-400 font-medium hidden sm:inline">SELECTED</span>
+            </div>
+          {/if}
+        </div>
+
+        <!-- Features List - Compact on mobile -->
+        <div class="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6">
+          {#each card.features.slice(0, 3) as feature}
+            <div class="flex items-center space-x-2 text-xs sm:text-sm text-gray-300">
+              <div class="w-1 h-1 sm:w-1.5 sm:h-1.5 {getColorClasses(card.color, 'bg')} rounded-full flex-shrink-0"></div>
+              <span class="truncate">{feature}</span>
+            </div>
+          {/each}
+        </div>
+
+        <!-- Launch Button -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+          <a
+            href="/{card.id}"
+            class="inline-flex items-center justify-center sm:justify-start space-x-2 px-4 py-2.5 sm:py-2 bg-gradient-to-r {getColorClasses(card.color, 'from')} {getColorClasses(
+              card.color,
+              'to'
+            )} rounded-lg text-white font-medium hover:shadow-lg transition-all duration-300 hover:scale-105 text-sm sm:text-base"
+            onclick={(e) => e.stopPropagation()}
+          >
+            <span>Start Training</span>
+            <ChevronRight class="w-4 h-4" />
+          </a>
+
+          <div class="text-xs text-gray-500 text-center sm:text-right hidden sm:block">Click to select • Click button to start</div>
         </div>
       </button>
     {/each}

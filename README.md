@@ -13,12 +13,14 @@ Experience the full application live on Vercel - no installation required!
 ## ✨ Features
 
 ### 🎼 Core Training Modules
+
 - **Chord Recognition** - Master identification of major, minor, diminished, augmented, and extended chords
 - **Interval Training** - Practice recognizing musical intervals from unison to octave
 - **Chord Inversions** - Learn to identify root position, first, and second inversions
 - **Chord Progressions** - Develop skills in recognizing chord sequences and harmonic movement
 
 ### 🎹 ChordFlow Practice System
+
 - **Multiple Progression Types**:
   - Cycle of Fourths (classic jazz progression pattern)
   - Random Chords (practice with selected chord qualities)
@@ -29,6 +31,7 @@ Experience the full application live on Vercel - no installation required!
 - **Preset Library** - Common progressions organized by category (Popular, Jazz, Blues, etc.)
 
 ### 🧠 Intelligent Training System
+
 - **Progressive Difficulty** - Incremental learning with customizable levels
 - **Multiple Play Modes** - Custom selection, incremental progression, and recap modes
 - **Audio Feedback** - High-quality SoundFont-based playback with speech synthesis
@@ -38,7 +41,8 @@ Experience the full application live on Vercel - no installation required!
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - pnpm (recommended) or npm
 
 ### Installation
@@ -116,6 +120,7 @@ src/
 ```
 
 ### State Management
+
 - **Svelte 5 Runes** - Modern reactive state with `$state` and `$derived`
 - **Global Audio State** - Centralized SoundFont player and AudioContext
 - **Persistent Settings** - localStorage-based configuration management
@@ -126,7 +131,7 @@ src/
 The application features a modern, professional design with:
 
 - **Color-Coded Training Modes** - Each module has its own theme
-- **Responsive Layout** - Optimized for all screen sizes  
+- **Responsive Layout** - Optimized for all screen sizes
 - **Dark Theme** - Easy on the eyes for extended practice sessions
 - **Smooth Animations** - Enhanced user experience with subtle transitions
 - **Professional Typography** - Noto Sans font family for clarity

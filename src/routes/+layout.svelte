@@ -30,7 +30,7 @@
   <AudioLoading />
 {:else}
   <!-- ChordFlow and training pages handle their own layout, other pages need padding -->
-  {#if $page.route.id === '/chordflow' || $page.route.id?.includes('/training/') || $page.route.id?.includes('/chords') || $page.route.id?.includes('/intervals') || $page.route.id?.includes('/inversions') || $page.route.id?.includes('/progressions')}
+  {#if $page.route.id === '/chordflow' || $page.route.id?.includes('/training/') || $page.route.id?.includes('/handsfree/') || $page.route.id?.includes('/interactive/')}
     {@render children()}
   {:else}
     <div class="p-6">
