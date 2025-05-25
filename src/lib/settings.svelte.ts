@@ -15,10 +15,10 @@ const basicTriads: ChordCategory = {
   name: 'Basic Triads',
   expanded: false,
   chords: [
-    { id: 'Major', enabled: true, chord: Chord.get('C'), level: 1, speech: 'Major triad', displayText: 'Major' },
-    { id: 'Minor', enabled: true, chord: Chord.get('Cm'), level: 1, speech: 'Minor triad', displayText: 'Minor' },
-    { id: 'Diminished', enabled: false, chord: Chord.get('Cdim'), level: 2, speech: 'Diminished triad', displayText: 'Diminished' },
-    { id: 'Augmented', enabled: false, chord: Chord.get('Caug'), level: 2, speech: 'Augmented triad', displayText: 'Augmented' }
+    { id: 'Major', enabled: true, chord: Chord.get('C'), level: 1, speech: 'Major triad', displayText: 'maj' },
+    { id: 'Minor', enabled: true, chord: Chord.get('Cm'), level: 1, speech: 'Minor triad', displayText: 'm' },
+    { id: 'Diminished', enabled: false, chord: Chord.get('Cdim'), level: 2, speech: 'Diminished triad', displayText: 'dim' },
+    { id: 'Augmented', enabled: false, chord: Chord.get('Caug'), level: 2, speech: 'Augmented triad', displayText: 'aug' }
   ]
 };
 
@@ -26,12 +26,12 @@ const seventh: ChordCategory = {
   name: 'Seventh Chords',
   expanded: false,
   chords: [
-    { id: 'Major 7th', enabled: true, chord: Chord.get('Cmaj7'), level: 4, speech: 'Major seventh chord', displayText: 'Major 7th' },
-    { id: 'Minor 7th', enabled: true, chord: Chord.get('Cm7'), level: 4, speech: 'Minor seventh chord', displayText: 'Minor 7th' },
-    { id: 'Dominant 7th', enabled: true, chord: Chord.get('C7'), level: 4, speech: 'Dominant seventh chord', displayText: 'Dominant 7th' },
-    { id: 'Minor 7th flat 5', enabled: false, chord: Chord.get('Cm7b5'), level: 5, speech: 'Minor seventh flat five chord', displayText: 'Minor 7th flat 5' },
-    { id: 'Diminished 7th', enabled: false, chord: Chord.get('Cdim7'), level: 5, speech: 'Diminished seventh chord', displayText: 'Diminished 7th' },
-    { id: 'Minor Major 7th', enabled: false, chord: Chord.get('CmMaj7'), level: 5, speech: 'Minor major seventh chord', displayText: 'Minor Major 7th' }
+    { id: 'Major 7th', enabled: true, chord: Chord.get('Cmaj7'), level: 4, speech: 'Major seventh chord', displayText: 'maj7' },
+    { id: 'Minor 7th', enabled: true, chord: Chord.get('Cm7'), level: 4, speech: 'Minor seventh chord', displayText: 'm7' },
+    { id: 'Dominant 7th', enabled: true, chord: Chord.get('C7'), level: 4, speech: 'Dominant seventh chord', displayText: '7' },
+    { id: 'Minor 7th flat 5', enabled: false, chord: Chord.get('Cm7b5'), level: 5, speech: 'Minor seventh flat five chord', displayText: 'm7♭5' },
+    { id: 'Diminished 7th', enabled: false, chord: Chord.get('Cdim7'), level: 5, speech: 'Diminished seventh chord', displayText: 'dim7' },
+    { id: 'Minor Major 7th', enabled: false, chord: Chord.get('CmMaj7'), level: 5, speech: 'Minor major seventh chord', displayText: 'mMaj7' }
   ]
 };
 
@@ -39,11 +39,11 @@ const extendedChords: ChordCategory = {
   name: 'Extended Chords',
   expanded: false,
   chords: [
-    { id: 'Major 9th', enabled: false, chord: Chord.get('Cmaj9'), speech: 'Major ninth chord', displayText: 'Major 9th' },
-    { id: 'Minor 9th', enabled: false, chord: Chord.get('Cm9'), speech: 'Minor ninth chord', displayText: 'Minor 9th' },
-    { id: 'Dominant 9th', enabled: false, chord: Chord.get('C9'), speech: 'Dominant ninth chord', displayText: 'Dominant 9th' },
-    { id: 'Major 11th', enabled: false, chord: Chord.get('C11'), speech: 'Major eleventh chord', displayText: 'Major 11th' },
-    { id: 'Minor 11th', enabled: false, chord: Chord.get('Cm11'), speech: 'Minor eleventh chord', displayText: 'Minor 11th' }
+    { id: 'Major 9th', enabled: false, chord: Chord.get('Cmaj9'), speech: 'Major ninth chord', displayText: 'maj9' },
+    { id: 'Minor 9th', enabled: false, chord: Chord.get('Cm9'), speech: 'Minor ninth chord', displayText: 'm9' },
+    { id: 'Dominant 9th', enabled: false, chord: Chord.get('C9'), speech: 'Dominant ninth chord', displayText: '9' },
+    { id: 'Major 11th', enabled: false, chord: Chord.get('C11'), speech: 'Major eleventh chord', displayText: 'maj11' },
+    { id: 'Minor 11th', enabled: false, chord: Chord.get('Cm11'), speech: 'Minor eleventh chord', displayText: 'm11' }
   ]
 };
 
@@ -51,17 +51,17 @@ const susChords: ChordCategory = {
   name: 'Sus and Add Chords',
   expanded: false,
   chords: [
-    { id: 'Sus2', enabled: false, chord: Chord.get('Csus2'), level: 3, speech: 'Suspended second chord', displayText: 'Sus2' },
-    { id: 'Sus4', enabled: false, chord: Chord.get('Csus4'), level: 3, speech: 'Suspended fourth chord', displayText: 'Sus4' },
-    { id: 'Add9', enabled: false, chord: Chord.get('Cadd9'), speech: 'Add ninth chord', displayText: 'Add9' },
-    { id: 'Add13', enabled: false, chord: Chord.get('Cadd13'), speech: 'Add thirteenth chord', displayText: 'Add13' }
+    { id: 'Sus2', enabled: false, chord: Chord.get('Csus2'), level: 3, speech: 'Suspended second chord', displayText: 'sus2' },
+    { id: 'Sus4', enabled: false, chord: Chord.get('Csus4'), level: 3, speech: 'Suspended fourth chord', displayText: 'sus4' },
+    { id: 'Add9', enabled: false, chord: Chord.get('Cadd9'), speech: 'Add ninth chord', displayText: 'add9' },
+    { id: 'Add13', enabled: false, chord: Chord.get('Cadd13'), speech: 'Add thirteenth chord', displayText: 'add13' }
   ]
 };
 
 const otherChords: ChordCategory = {
   name: 'Other Chords',
   expanded: false,
-  chords: [{ id: 'Five', enabled: true, chord: Chord.get('C5'), level: 1, speech: 'Power chord', displayText: 'Power Chord' }]
+  chords: [{ id: 'Five', enabled: true, chord: Chord.get('C5'), level: 1, speech: 'Power chord', displayText: '5' }]
 };
 
 export const chordCategories = $state([basicTriads, seventh, extendedChords, susChords, otherChords]);
