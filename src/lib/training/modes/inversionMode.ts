@@ -3,7 +3,7 @@ import { inversionLevels, inversions, type InversionData } from '$lib/settings.s
 import { inversionSettings } from '$lib/state.svelte';
 import type { AudioPlayOptions, TrainingMode } from '../types';
 
-export const inversionMode: TrainingMode<InversionData> = {
+export const inversionMode: TrainingMode = {
   name: 'inversions',
   title: 'Inversion Training',
   items: inversions,

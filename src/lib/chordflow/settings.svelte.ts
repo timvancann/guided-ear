@@ -256,7 +256,7 @@ export function loadPreset(presetId: string): ChordFlowPreset | null {
 }
 
 // Update an existing preset
-export function updatePreset(presetId: string, updates: Partial<ChordFlowPreset>): boolean {
+export function updatePreset(presetId: string, updates: Partial): boolean {
   const index = settingsState.presets.findIndex((p) => p.id === presetId);
   if (index !== -1) {
     settingsState.presets[index] = { ...settingsState.presets[index], ...updates };

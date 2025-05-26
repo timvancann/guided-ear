@@ -3,7 +3,7 @@ import { chordCategories, chordLevels, type ChordData } from '$lib/settings.svel
 import { chordSettings } from '$lib/state.svelte';
 import type { AudioPlayOptions, TrainingMode } from '../types';
 
-export const chordMode: TrainingMode<ChordData> = {
+export const chordMode: TrainingMode = {
   name: 'chords',
   title: 'Chord Recognition',
   get items() {

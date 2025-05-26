@@ -3,7 +3,7 @@ import { progressionLevels, progressions, type ProgressionData } from '$lib/sett
 import { progressionSettings } from '$lib/state.svelte';
 import type { AudioPlayOptions, TrainingMode } from '../types';
 
-export const progressionMode: TrainingMode<ProgressionData> = {
+export const progressionMode: TrainingMode = {
   name: 'progressions',
   title: 'Chord Progressions',
   items: progressions,

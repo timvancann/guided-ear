@@ -1,6 +1,6 @@
-import type { TrainingSettings } from './training/types';
 import type { ChordFlowSettings } from './chordflow/state.svelte';
 import type { InteractiveStats } from './training/InteractiveTrainingEngine.svelte';
+import type { TrainingSettings } from './training/types';
 
 export interface StorageData {
   globalSettings: {
@@ -23,99 +23,84 @@ export interface StorageData {
   chordCategories: {
     [categoryName: string]: {
       expanded: boolean;
-      chords: Array<{
-        id: string;
-        enabled: boolean;
-        level?: number;
-      }>;
+      chords: Array;
     };
   };
-  intervals: Array<{
-    id: string;
-    enabled: boolean;
-    level?: number;
-  }>;
-  inversions: Array<{
-    id: string;
-    enabled: boolean;
-    level?: number;
-  }>;
+  intervals: Array;
+  inversions: Array;
 }
 
 class LocalStorageManager {
   private readonly STORAGE_KEY = 'guided-ear-settings';
   private readonly STORAGE_VERSION = '1.0';
-  
+
   // Load data from localStorage
-  load(): Partial<StorageData> | null {
+  load(): Partial | null {
     if (typeof window === 'undefined') return null;
-    
+
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       if (!stored) return null;
-      
+
       const data = JSON.parse(stored);
-      
+
       // Version check - migrate if needed
       if (data.version !== this.STORAGE_VERSION) {
         console.log('Storage version mismatch, migrating...');
         return this.migrate(data);
       }
-      
+
       return data.data;
     } catch (error) {
       console.error('Failed to load settings from localStorage:', error);
       return null;
     }
   }
-  
+
   // Save data to localStorage
-  save(data: Partial<StorageData>): void {
+  save(data: Partial): void {
     if (typeof window === 'undefined') return;
-    
+
     try {
       const storageObject = {
         version: this.STORAGE_VERSION,
         timestamp: Date.now(),
         data
       };
-      
+
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(storageObject));
     } catch (error) {
       console.error('Failed to save settings to localStorage:', error);
     }
   }
-  
+
   // Update specific section
-  updateSection<K extends keyof StorageData>(
-    section: K,
-    data: StorageData[K]
-  ): void {
+  updateSection<K extends keyof StorageData>(section: K, data: StorageData[K]): void {
     const existing = this.load() || {};
     existing[section] = data;
     this.save(existing);
   }
-  
+
   // Clear all data
   clear(): void {
     if (typeof window === 'undefined') return;
     localStorage.removeItem(this.STORAGE_KEY);
   }
-  
+
   // Migrate from older versions
-  private migrate(oldData: any): Partial<StorageData> | null {
+  private migrate(oldData: any): Partial | null {
     // For now, just return null to use defaults
     // In the future, implement migration logic here
     console.log('Migration not implemented, using defaults');
     return null;
   }
-  
+
   // Export settings as JSON for backup
   export(): string {
     const data = this.load();
     return JSON.stringify(data, null, 2);
   }
-  
+
   // Import settings from JSON
   import(jsonString: string): boolean {
     try {
@@ -132,16 +117,11 @@ class LocalStorageManager {
 export const storage = new LocalStorageManager();
 
 // Reactive storage utilities for Svelte 5
-export function createPersistedState<T>(
-  key: string,
-  defaultValue: T,
-  serialize?: (value: T) => string,
-  deserialize?: (value: string) => T
-) {
+export function createPersistedState<T>(key: string, defaultValue: T, serialize?: (value: T) => string, deserialize?: (value: string) => T) {
   // Get initial value from localStorage
   const getInitialValue = (): T => {
     if (typeof window === 'undefined') return defaultValue;
-    
+
     try {
       const item = localStorage.getItem(key);
       if (item === null) return defaultValue;
@@ -155,10 +135,12 @@ export function createPersistedState<T>(
   let value = $state(getInitialValue());
 
   return {
-    get value() { return value; },
-    set value(newValue: T) { 
+    get value() {
+      return value;
+    },
+    set value(newValue: T) {
       value = newValue;
-      
+
       // Save to localStorage
       if (typeof window !== 'undefined') {
         try {

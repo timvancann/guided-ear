@@ -60,12 +60,12 @@
       </div>
       <PlayerSettingToggle bind:toggle={mode.settings.incrementalMode} name="Level mode" label="" />
     </div>
-    
+
     <PracticeStatusPill
       playMode={mode.settings.playMode}
       currentLevel={mode.settings.currentLevel}
       levelName={mode.levels[mode.settings.currentLevel - 1].name}
-      textIncremental={engine.itemsInLevel.map((item) => mode.getDisplayText(item)).join(', ')}
+      textIncremental={engine.itemsInLevel.map((item) => mode.getDisplayText(item as T)).join(', ')}
       numberCustomSelected={engine.selectedItems.length}
       {config}
     />
@@ -87,9 +87,9 @@
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
   <!-- Audio Player -->
   <div class="bg-gray-800/20 border border-gray-700/30 rounded-3xl p-6">
-    <InteractivePlayingIndicator 
-      playState={engine.playState} 
-      answer={engine.currentItem ? mode.getDisplayText(engine.currentItem) : ''} 
+    <InteractivePlayingIndicator
+      playState={engine.playState}
+      answer={engine.currentItem ? mode.getDisplayText(engine.currentItem as T) : ''}
       showFeedback={engine.showFeedback}
       lastAnswerCorrect={engine.lastAnswerCorrect}
       selectedAnswer={engine.selectedAnswer}
@@ -99,9 +99,9 @@
 
   <!-- Answer Buttons -->
   <div class="bg-gray-800/20 border border-gray-700/30 rounded-3xl p-6">
-    <AnswerButtons 
+    <AnswerButtons
       options={engine.answerOptions}
-      correctAnswer={engine.currentItem ? mode.getDisplayText(engine.currentItem) : ''}
+      correctAnswer={engine.currentItem ? mode.getDisplayText(engine.currentItem as T) : ''}
       playState={engine.playState}
       selectedAnswer={engine.selectedAnswer}
       showFeedback={engine.showFeedback}
@@ -119,7 +119,7 @@
     </div>
     <h3 class="text-lg font-semibold text-white">Performance Statistics</h3>
   </div>
-  
+
   <InteractiveStats stats={engine.stats} {config} />
 </div>
 
@@ -131,7 +131,7 @@
     </div>
     <h3 class="text-lg font-semibold text-white">Practice Controls</h3>
   </div>
-  
+
   <Controls
     togglePlay={engine.togglePlay.bind(engine)}
     isPlaying={engine.isPlaying}

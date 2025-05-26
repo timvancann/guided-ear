@@ -219,7 +219,7 @@ export class MetronomeEngine {
   }
 
   // Get common BPM presets
-  static getBpmPresets(): Array<{ name: string; bpm: number }> {
+  static getBpmPresets(): Array {
     return [
       { name: 'Largo', bpm: 60 },
       { name: 'Andante', bpm: 80 },

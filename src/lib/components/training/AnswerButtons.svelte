@@ -89,7 +89,7 @@
       >
         <div class="flex items-center justify-center relative">
           <span class="text-center flex-1">{option}</span>
-          
+
           {#if showFeedback}
             <div class="absolute -top-1 -right-1">
               {#if option === selectedAnswer && option === correctAnswer}

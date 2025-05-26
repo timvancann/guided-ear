@@ -1,20 +1,14 @@
 import { audioState } from '$lib/audioplayer.svelte';
 import { cancelSpeech, speak } from '$lib/speech.svelte';
+import { storage } from '../storage.svelte';
 import type { PlayState, TrainingItem, TrainingMode } from './types';
-import { storage, createDefaultStats } from '../storage.svelte';
 
 export interface HandsfreeStats {
   totalExercises: number;
   completedSessions: number;
   totalPracticeTime: number; // in seconds
   lastSessionDate: number;
-  exerciseHistory: Array<{
-    timestamp: number;
-    level: number;
-    playMode: string;
-    exerciseCount: number;
-    duration: number;
-  }>;
+  exerciseHistory: Array;
 }
 
 export class TrainingEngine<T extends TrainingItem> {
@@ -22,7 +16,8 @@ export class TrainingEngine<T extends TrainingItem> {
   started = $state(false);
   currentItem: T | null = $state(null);
   private playingItemId: string | null = null;
-  
+  private lastProcessedState: PlayState | null = null;
+
   // Handsfree training stats
   stats: HandsfreeStats = $state({
     totalExercises: 0,
@@ -31,11 +26,11 @@ export class TrainingEngine<T extends TrainingItem> {
     lastSessionDate: 0,
     exerciseHistory: []
   });
-  
+
   private sessionStartTime: number | null = null;
   private sessionExerciseCount = 0;
 
-  constructor(private mode: TrainingMode<T>) {
+  constructor(private mode: TrainingMode) {
     this.loadStats();
   }
 
@@ -114,9 +109,6 @@ export class TrainingEngine<T extends TrainingItem> {
   private handleGenerating() {
     if (this.playState === 'generating') {
       this.randomItem();
-      if (this.mode.settings.playMode !== 'custom' && this.started) {
-        this.mode.settings.progress += 1;
-      }
       this.switchState('generating', 'playing');
     }
   }
@@ -237,12 +229,33 @@ export class TrainingEngine<T extends TrainingItem> {
 
   // Effect handlers - these should be called from $effect in components
   handleStateEffects() {
-    this.handleGenerating();
-    this.handlePlaying();
-    this.handleAnswering();
-    this.handleWaiting();
-    this.handleFinished();
-    this.handleIdle();
+    // Only process if state has actually changed
+    if (this.playState === this.lastProcessedState) {
+      return;
+    }
+
+    this.lastProcessedState = this.playState;
+
+    switch (this.playState) {
+      case 'generating':
+        this.handleGenerating();
+        break;
+      case 'playing':
+        this.handlePlaying();
+        break;
+      case 'answering':
+        this.handleAnswering();
+        break;
+      case 'waiting':
+        this.handleWaiting();
+        break;
+      case 'finished':
+        this.handleFinished();
+        break;
+      case 'idle':
+        this.handleIdle();
+        break;
+    }
   }
 
   // Effect for play mode sync
@@ -257,10 +270,10 @@ export class TrainingEngine<T extends TrainingItem> {
   // Statistics methods
   private loadStats() {
     if (typeof window === 'undefined') return;
-    
+
     const stored = storage.load();
     const statsKey = `handsfree_${this.mode.name}` as keyof typeof stored;
-    
+
     if (stored?.[statsKey]) {
       this.stats = stored[statsKey] as HandsfreeStats;
     } else {
@@ -276,7 +289,7 @@ export class TrainingEngine<T extends TrainingItem> {
 
   private saveStats() {
     if (typeof window === 'undefined') return;
-    
+
     const existing = storage.load() || {};
     const statsKey = `handsfree_${this.mode.name}`;
     existing[statsKey as keyof typeof existing] = this.stats as any;
@@ -291,25 +304,25 @@ export class TrainingEngine<T extends TrainingItem> {
   endSession() {
     if (this.sessionStartTime) {
       const duration = Math.floor((Date.now() - this.sessionStartTime) / 1000);
-      
+
       this.stats.completedSessions++;
       this.stats.totalPracticeTime += duration;
       this.stats.lastSessionDate = Date.now();
-      
+
       // Add to history
       this.stats.exerciseHistory.push({
+        mode: this.mode.name,
         timestamp: Date.now(),
-        level: this.mode.settings.currentLevel,
-        playMode: this.mode.settings.playMode,
+        sessionNumber: this.stats.completedSessions,
         exerciseCount: this.sessionExerciseCount,
-        duration
+        practiceDuration: duration
       });
-      
+
       // Keep only last 50 sessions
       if (this.stats.exerciseHistory.length > 50) {
         this.stats.exerciseHistory = this.stats.exerciseHistory.slice(-50);
       }
-      
+
       this.saveStats();
       this.sessionStartTime = null;
     }

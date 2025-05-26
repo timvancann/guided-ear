@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ChevronRight, Info, PlayCircle, Music, Volume2, RotateCcw, Target, Guitar, Headphones, Users, Award, MousePointer, Clock } from '@lucide/svelte';
+  import { ChevronRight, Info, Music, Volume2, RotateCcw, Target, Guitar, Headphones, Users, MousePointer, Clock } from '@lucide/svelte';
 
   type TrainingCard = {
     title: string;
@@ -58,7 +58,7 @@
     }
   ];
 
-  let selection = $state<typeof practiceCards[0] | null>(null);
+  let selection = $state<(typeof practiceCards)[0] | null>(null);
 
   function getColorClasses(color: string, type: 'bg' | 'text' | 'border' | 'from' | 'to') {
     const colors: Record<string, Record<string, string>> = {
@@ -127,8 +127,10 @@
   <p class="text-gray-400 mb-8">Choose your preferred training mode for each module</p>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
-    {#each trainingCards as card}
-      <div class="group relative p-4 sm:p-6 bg-gray-800/50 hover:bg-gray-800/70 border border-gray-700/50 hover:border-gray-600/50 rounded-xl sm:rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+    {#each trainingCards as card (card.title)}
+      <div
+        class="group relative p-4 sm:p-6 bg-gray-800/50 hover:bg-gray-800/70 border border-gray-700/50 hover:border-gray-600/50 rounded-xl sm:rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
+      >
         <!-- Icon and Title -->
         <div class="flex items-start justify-between mb-3 sm:mb-4">
           <div class="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
@@ -151,7 +153,7 @@
 
         <!-- Features List -->
         <div class="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6">
-          {#each card.features.slice(0, 3) as feature}
+          {#each card.features.slice(0, 3) as feature (feature)}
             <div class="flex items-center space-x-2 text-xs sm:text-sm text-gray-300">
               <div class="w-1 h-1 sm:w-1.5 sm:h-1.5 {getColorClasses(card.color, 'bg')} rounded-full flex-shrink-0"></div>
               <span class="truncate">{feature}</span>
@@ -218,7 +220,7 @@
   <p class="text-gray-400 mb-8">Professional tools for structured practice sessions</p>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
-    {#each practiceCards as card}
+    {#each practiceCards as card, i (i)}
       <button
         onclick={() => (selection = card)}
         class="group relative p-4 sm:p-6 bg-gray-800/50 hover:bg-gray-800/70 border border-gray-700/50 hover:border-gray-600/50 rounded-xl sm:rounded-2xl transition-all duration-300 text-left hover:scale-[1.02] hover:shadow-xl"
@@ -254,7 +256,7 @@
 
         <!-- Features List - Compact on mobile -->
         <div class="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6">
-          {#each card.features.slice(0, 3) as feature}
+          {#each card.features.slice(0, 3) as feature (feature)}
             <div class="flex items-center space-x-2 text-xs sm:text-sm text-gray-300">
               <div class="w-1 h-1 sm:w-1.5 sm:h-1.5 {getColorClasses(card.color, 'bg')} rounded-full flex-shrink-0"></div>
               <span class="truncate">{feature}</span>

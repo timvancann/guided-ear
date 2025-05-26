@@ -26,7 +26,7 @@
 
   const accentColor = config?.color || 'emerald';
 
-  const accuracy = $derived(stats.totalAnswers > 0 ? ((stats.correctAnswers / stats.totalAnswers) * 100) : 0);
+  const accuracy = $derived(stats.totalAnswers > 0 ? (stats.correctAnswers / stats.totalAnswers) * 100 : 0);
   const avgResponseTime = $derived(stats.averageResponseTime / 1000); // Convert to seconds
 </script>
 
@@ -42,13 +42,10 @@
         <div class="text-xl font-bold text-white">{accuracy.toFixed(1)}%</div>
       </div>
     </div>
-    
+
     <!-- Progress bar -->
     <div class="w-full bg-gray-600 rounded-full h-2">
-      <div 
-        class="h-2 rounded-full {getColorClasses(accentColor, 'bg')} transition-all duration-500"
-        style="width: {accuracy}%"
-      ></div>
+      <div class="h-2 rounded-full {getColorClasses(accentColor, 'bg')} transition-all duration-500" style="width: {accuracy}%"></div>
     </div>
   </div>
 
@@ -63,7 +60,7 @@
         <div class="text-xl font-bold text-white">{stats.totalAnswers}</div>
       </div>
     </div>
-    
+
     <div class="text-xs text-gray-500">
       {stats.correctAnswers} correct • {stats.incorrectAnswers} incorrect
     </div>
@@ -80,7 +77,7 @@
         <div class="text-xl font-bold text-white">{stats.currentStreak}</div>
       </div>
     </div>
-    
+
     <div class="text-xs text-gray-500">
       Best: {stats.bestStreak}
     </div>
@@ -97,10 +94,8 @@
         <div class="text-xl font-bold text-white">{avgResponseTime.toFixed(1)}s</div>
       </div>
     </div>
-    
-    <div class="text-xs text-gray-500">
-      Response time
-    </div>
+
+    <div class="text-xs text-gray-500">Response time</div>
   </div>
 </div>
 

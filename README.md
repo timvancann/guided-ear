@@ -2,7 +2,8 @@
 
 > **Practice and improve your musical ear with interactive training modules**
 
-A modern, comprehensive ear training application built with Svelte 5 that helps musicians develop their listening skills through progressive practice sessions. Features both hands-free voice training and interactive click-based practice modes.
+A modern, comprehensive ear training application built with Svelte 5 that helps musicians develop their listening skills through progressive practice sessions. Features both hands-free voice training
+and interactive click-based practice modes.
 
 ## 🌐 Live Demo
 
@@ -17,6 +18,7 @@ Experience the full application live on Vercel - no installation required!
 ### 🎼 Dual Training Paradigms
 
 #### **Handsfree Training** 🎤
+
 - **Voice-Guided Practice** - Listen and learn without manual interaction
 - **Speech Synthesis** - Automatic answers and feedback
 - **Continuous Practice** - Uninterrupted flow for immersive sessions
@@ -24,7 +26,8 @@ Experience the full application live on Vercel - no installation required!
 
 ![Handsfree Training](./docs/handsfree_training.png)
 
-#### **Interactive Training** 🖱️ *NEW*
+#### **Interactive Training** 🖱️ _NEW_
+
 - **Click-Based Answers** - Multiple choice with visual feedback
 - **Comprehensive Options** - See all available chord types, no elimination
 - **Real-Time Statistics** - Track accuracy, response time, and streaks
@@ -39,8 +42,8 @@ Experience the full application live on Vercel - no installation required!
 - **Chord Inversions** - Learn to identify root position, first, and second inversions
 - **Chord Progressions** - Develop skills in recognizing chord sequences and harmonic movement
 
-| Handsfree Chord Recognition | Interactive Chord Recognition |
-|:---:|:---:|
+|                      Handsfree Chord Recognition                       |                        Interactive Chord Recognition                         |
+| :--------------------------------------------------------------------: | :--------------------------------------------------------------------------: |
 | ![Handsfree Chord Recognition](./docs/handsfree_chord_recognition.png) | ![Interactive Chord Recognition](./docs/interactive%20chord_recognition.png) |
 
 ### 🎹 ChordFlow Practice System
@@ -58,6 +61,7 @@ Experience the full application live on Vercel - no installation required!
 ![ChordFlow Practice](./docs/chordflow.png)
 
 #### ChordFlow Mode Selection
+
 ![ChordFlow Modes](./docs/chordflow_modes.png)
 
 ### 🧠 Intelligent Training System
@@ -121,6 +125,73 @@ pnpm check:watch        # Run type checking in watch mode
 pnpm lint               # Run ESLint and Prettier checks
 pnpm format             # Format code with Prettier
 ```
+
+### CI/CD Pipeline
+
+This project uses GitHub Actions for continuous integration. The pipeline automatically runs on:
+
+- Every push to the `main` branch
+- Every pull request targeting the `main` branch
+
+The CI pipeline performs the following checks:
+
+- **Linting**: Runs ESLint and Prettier checks (`pnpm lint`)
+- **Type Checking**: Validates TypeScript types (`pnpm check`)
+- **Building**: Ensures the project builds successfully (`pnpm build`)
+- **Testing**: Runs tests if available (`pnpm test`)
+
+#### Setting up Branch Protection
+
+To ensure code quality, configure branch protection rules for the `main` branch:
+
+1. Go to Settings → Branches in your GitHub repository
+2. Add a branch protection rule for `main`
+3. Enable the following:
+   - ✅ Require a pull request before merging
+   - ✅ Require status checks to pass before merging
+   - ✅ Require branches to be up to date before merging
+   - Select these required status checks:
+     - `test (20.x)`
+     - `test (22.x)`
+   - ✅ Require conversation resolution before merging
+   - ✅ Do not allow bypassing the above settings
+
+This ensures all code changes are properly reviewed and pass CI checks before being merged.
+
+### Pre-commit Hooks
+
+For local development, we use [pre-commit](https://pre-commit.com/) to run the same checks before every commit:
+
+#### Setup
+
+```bash
+# Install pre-commit (if not already installed)
+pip install pre-commit
+# or
+brew install pre-commit
+
+# Install the git hook scripts
+pnpm pre-commit:install
+
+# (Optional) Run against all files
+pnpm pre-commit:run
+```
+
+#### What it checks
+
+The pre-commit hooks will automatically:
+
+- ✅ Fix trailing whitespace and end-of-file issues
+- ✅ Validate YAML and JSON files
+- ✅ Check for merge conflicts and large files
+- ✅ Detect private keys
+- ✅ Run Prettier formatting
+- ✅ Run ESLint with auto-fix (warnings only for existing issues)
+- ✅ Run a full build check (on git push only)
+
+Note: TypeScript type checking is available via `pnpm check` but temporarily disabled in pre-commit hooks due to type declaration conflicts with prettier.
+
+If any check fails, the commit will be aborted and you'll need to fix the issues before committing.
 
 ### Tech Stack
 
@@ -198,6 +269,7 @@ The application features a modern, professional design with:
 ## 📊 Statistics & Analytics
 
 ### Interactive Mode
+
 - **Real-Time Accuracy** - Live percentage tracking during practice
 - **Response Time Analysis** - Average response time with performance trends
 - **Streak Tracking** - Current and best answer streaks
@@ -205,6 +277,7 @@ The application features a modern, professional design with:
 - **Performance Insights** - Visual feedback on correct/incorrect answers
 
 ### Handsfree Mode
+
 - **Session Analytics** - Total practice time and session count
 - **Exercise Tracking** - Completed exercises across all training modes
 - **Practice History** - Last 50 sessions with detailed metrics

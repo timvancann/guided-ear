@@ -61,12 +61,7 @@
 
 {#if import.meta.env.DEV}
   <div class="fixed bottom-4 right-4 z-50">
-    <button
-      onclick={() => showDebugger = !showDebugger}
-      class="bg-gray-800 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors"
-    >
-      🔧 Storage Debug
-    </button>
+    <button onclick={() => (showDebugger = !showDebugger)} class="bg-gray-800 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors"> 🔧 Storage Debug </button>
   </div>
 
   {#if showDebugger}
@@ -75,42 +70,17 @@
         <div class="bg-gray-50 px-6 py-4 border-b">
           <div class="flex items-center justify-between">
             <h2 class="text-lg font-semibold text-gray-900">Storage Debugger</h2>
-            <button
-              onclick={() => showDebugger = false}
-              class="text-gray-500 hover:text-gray-700"
-            >
-              ✕
-            </button>
+            <button onclick={() => (showDebugger = false)} class="text-gray-500 hover:text-gray-700"> ✕ </button>
           </div>
         </div>
 
         <div class="p-6 overflow-y-auto max-h-[60vh]">
           <div class="space-y-4">
             <div class="flex gap-2">
-              <button
-                onclick={loadData}
-                class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                Refresh Data
-              </button>
-              <button
-                onclick={exportData}
-                class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-              >
-                Export Settings
-              </button>
-              <button
-                onclick={importData}
-                class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600"
-              >
-                Import Settings
-              </button>
-              <button
-                onclick={clearData}
-                class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-              >
-                Clear All Data
-              </button>
+              <button onclick={loadData} class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"> Refresh Data </button>
+              <button onclick={exportData} class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"> Export Settings </button>
+              <button onclick={importData} class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600"> Import Settings </button>
+              <button onclick={clearData} class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"> Clear All Data </button>
             </div>
 
             {#if storageData}

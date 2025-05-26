@@ -1,6 +1,5 @@
 import { Chord, Interval, type IntervalName } from 'tonal';
 import type { TrainingItem, TrainingLevel } from './training/types';
-import { storage } from './storage.svelte';
 
 export interface ChordData extends TrainingItem {
   chord: Chord.Chord;
@@ -382,34 +381,34 @@ export const progressionLevels: TrainingLevel[] = $state([
 // Export functions to save/load individual items
 export function saveChordState() {
   if (typeof window === 'undefined') return;
-  
-  const chordData = chordCategories.map(category => ({
+
+  const chordData = chordCategories.map((category) => ({
     name: category.name,
     expanded: category.expanded,
-    chords: category.chords.map(chord => ({
+    chords: category.chords.map((chord) => ({
       id: chord.id,
       enabled: chord.enabled,
       level: chord.level
     }))
   }));
-  
+
   localStorage.setItem('guided-ear-chord-categories', JSON.stringify(chordData));
 }
 
 export function loadChordState() {
   if (typeof window === 'undefined') return;
-  
+
   try {
     const stored = localStorage.getItem('guided-ear-chord-categories');
     if (!stored) return;
-    
+
     const storedData = JSON.parse(stored);
     for (const categoryData of storedData) {
-      const category = chordCategories.find(cat => cat.name === categoryData.name);
+      const category = chordCategories.find((cat) => cat.name === categoryData.name);
       if (category) {
         category.expanded = categoryData.expanded;
         for (const chordData of categoryData.chords) {
-          const chord = category.chords.find(c => c.id === chordData.id);
+          const chord = category.chords.find((c) => c.id === chordData.id);
           if (chord) {
             chord.enabled = chordData.enabled;
           }
@@ -423,26 +422,26 @@ export function loadChordState() {
 
 export function saveIntervalState() {
   if (typeof window === 'undefined') return;
-  
-  const intervalData = intervals.map(interval => ({
+
+  const intervalData = intervals.map((interval) => ({
     id: interval.id,
     enabled: interval.enabled,
     level: interval.level
   }));
-  
+
   localStorage.setItem('guided-ear-intervals', JSON.stringify(intervalData));
 }
 
 export function loadIntervalState() {
   if (typeof window === 'undefined') return;
-  
+
   try {
     const stored = localStorage.getItem('guided-ear-intervals');
     if (!stored) return;
-    
+
     const storedData = JSON.parse(stored);
     for (const intervalData of storedData) {
-      const interval = intervals.find(i => i.id === intervalData.id);
+      const interval = intervals.find((i) => i.id === intervalData.id);
       if (interval) {
         interval.enabled = intervalData.enabled;
       }
@@ -454,26 +453,26 @@ export function loadIntervalState() {
 
 export function saveInversionState() {
   if (typeof window === 'undefined') return;
-  
-  const inversionData = inversions.map(inversion => ({
+
+  const inversionData = inversions.map((inversion) => ({
     id: inversion.id,
     enabled: inversion.enabled,
     level: inversion.level
   }));
-  
+
   localStorage.setItem('guided-ear-inversions', JSON.stringify(inversionData));
 }
 
 export function loadInversionState() {
   if (typeof window === 'undefined') return;
-  
+
   try {
     const stored = localStorage.getItem('guided-ear-inversions');
     if (!stored) return;
-    
+
     const storedData = JSON.parse(stored);
     for (const inversionData of storedData) {
-      const inversion = inversions.find(i => i.id === inversionData.id);
+      const inversion = inversions.find((i) => i.id === inversionData.id);
       if (inversion) {
         inversion.enabled = inversionData.enabled;
       }

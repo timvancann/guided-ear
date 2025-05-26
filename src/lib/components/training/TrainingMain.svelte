@@ -26,7 +26,9 @@
     engine.handlePlayModeSync();
   });
 
+  // Only run state effects when playState changes
   $effect(() => {
+    const currentState = engine.playState;
     engine.handleStateEffects();
   });
 
@@ -59,7 +61,7 @@
       playMode={mode.settings.playMode}
       currentLevel={mode.settings.currentLevel}
       levelName={mode.levels[mode.settings.currentLevel - 1].name}
-      textIncremental={engine.itemsInLevel.map((item) => mode.getDisplayText(item)).join(', ')}
+      textIncremental={engine.itemsInLevel.map((item) => mode.getDisplayText(item as T)).join(', ')}
       numberCustomSelected={engine.selectedItems.length}
       {config}
     />
@@ -79,7 +81,7 @@
 
 <!-- Main Practice Area -->
 <div class="bg-gray-800/20 border border-gray-700/30 rounded-3xl p-8 mb-8">
-  <PlayingIndicator playState={engine.playState} answer={engine.currentItem ? mode.getDisplayText(engine.currentItem) : ''} {config} />
+  <PlayingIndicator playState={engine.playState} answer={engine.currentItem ? mode.getDisplayText(engine.currentItem as T) : ''} {config} />
 </div>
 
 <!-- Controls Section -->

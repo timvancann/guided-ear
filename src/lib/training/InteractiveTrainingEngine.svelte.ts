@@ -1,6 +1,6 @@
 import { audioState } from '$lib/audioplayer.svelte';
+import { createDefaultStats, storage } from '../storage.svelte';
 import type { PlayState, TrainingItem, TrainingMode } from './types';
-import { storage, createDefaultStats } from '../storage.svelte';
 
 // Extended play state for interactive mode
 export type InteractivePlayState = PlayState | 'selecting' | 'feedback';
@@ -13,14 +13,7 @@ export interface InteractiveStats {
   averageResponseTime: number;
   currentStreak: number;
   bestStreak: number;
-  responses: Array<{
-    item: TrainingItem;
-    selectedAnswer: string;
-    correctAnswer: string;
-    isCorrect: boolean;
-    responseTime: number;
-    timestamp: number;
-  }>;
+  responses: Array;
 }
 
 export class InteractiveTrainingEngine<T extends TrainingItem> {
@@ -30,7 +23,8 @@ export class InteractiveTrainingEngine<T extends TrainingItem> {
   showFeedback = $state(false);
   lastAnswerCorrect: boolean | null = $state(null);
   selectedAnswer: string | null = $state(null);
-  
+  private lastProcessedState: InteractivePlayState | null = null;
+
   // Statistics
   stats: InteractiveStats = $state({
     totalAnswers: 0,
@@ -45,7 +39,7 @@ export class InteractiveTrainingEngine<T extends TrainingItem> {
   private playingItemId: string | null = null;
   private selectionStartTime: number | null = null;
 
-  constructor(private mode: TrainingMode<T>) {
+  constructor(private mode: TrainingMode) {
     this.loadStats();
   }
 
@@ -78,17 +72,13 @@ export class InteractiveTrainingEngine<T extends TrainingItem> {
   // Get answer options for current item (for multiple choice)
   get answerOptions(): string[] {
     if (!this.currentItem) return [];
-    
+
     // Get all possible answers from the current level or all items
-    const allItems = this.mode.settings.playMode === 'incremental' 
-      ? this.itemsInLevel 
-      : this.activeItems;
-    
+    const allItems = this.mode.settings.playMode === 'incremental' ? this.itemsInLevel : this.activeItems;
+
     const correctAnswer = this.mode.getDisplayText(this.currentItem);
-    const otherAnswers = allItems
-      .filter(item => this.mode.getDisplayText(item) !== correctAnswer)
-      .map(item => this.mode.getDisplayText(item)); // Take all available options
-    
+    const otherAnswers = allItems.filter((item) => this.mode.getDisplayText(item) !== correctAnswer).map((item) => this.mode.getDisplayText(item)); // Take all available options
+
     // Create all unique options and sort them consistently
     const allOptions = Array.from(new Set([correctAnswer, ...otherAnswers]));
     return this.sortChordNames(allOptions);
@@ -97,41 +87,41 @@ export class InteractiveTrainingEngine<T extends TrainingItem> {
   private sortChordNames(chordNames: string[]): string[] {
     // Define the musical order for chord types
     const chordOrder = [
-      'maj',     // Major
-      'm',       // Minor  
-      'dim',     // Diminished
-      'aug',     // Augmented
-      '5',       // Power chord
-      'sus2',    // Suspended 2nd
-      'sus4',    // Suspended 4th
-      '7',       // Dominant 7th
-      'maj7',    // Major 7th
-      'm7',      // Minor 7th
-      'm7♭5',    // Half-diminished 7th
-      'dim7',    // Diminished 7th
-      'mMaj7',   // Minor Major 7th
-      '9',       // Dominant 9th
-      'maj9',    // Major 9th
-      'm9',      // Minor 9th
-      'maj11',   // Major 11th
-      'm11',     // Minor 11th
-      'add9',    // Add 9th
-      'add13'    // Add 13th
+      'maj', // Major
+      'm', // Minor
+      'dim', // Diminished
+      'aug', // Augmented
+      '5', // Power chord
+      'sus2', // Suspended 2nd
+      'sus4', // Suspended 4th
+      '7', // Dominant 7th
+      'maj7', // Major 7th
+      'm7', // Minor 7th
+      'm7♭5', // Half-diminished 7th
+      'dim7', // Diminished 7th
+      'mMaj7', // Minor Major 7th
+      '9', // Dominant 9th
+      'maj9', // Major 9th
+      'm9', // Minor 9th
+      'maj11', // Major 11th
+      'm11', // Minor 11th
+      'add9', // Add 9th
+      'add13' // Add 13th
     ];
-    
+
     return chordNames.sort((a, b) => {
       const indexA = chordOrder.indexOf(a);
       const indexB = chordOrder.indexOf(b);
-      
+
       // If both chords are in our order list, sort by that order
       if (indexA !== -1 && indexB !== -1) {
         return indexA - indexB;
       }
-      
+
       // If only one is in the list, prioritize it
       if (indexA !== -1) return -1;
       if (indexB !== -1) return 1;
-      
+
       // If neither is in the list, sort alphabetically
       return a.localeCompare(b);
     });
@@ -172,10 +162,10 @@ export class InteractiveTrainingEngine<T extends TrainingItem> {
     const responseTime = this.selectionStartTime ? Date.now() - this.selectionStartTime : 0;
 
     this.lastAnswerCorrect = isCorrect;
-    
+
     // Update statistics
     this.updateStats(this.currentItem, answer, correctAnswer, isCorrect, responseTime);
-    
+
     // Progress the exercise
     if (this.mode.settings.playMode !== 'custom' && this.started) {
       this.mode.settings.progress += 1;
@@ -186,7 +176,7 @@ export class InteractiveTrainingEngine<T extends TrainingItem> {
 
   private updateStats(item: T, selectedAnswer: string, correctAnswer: string, isCorrect: boolean, responseTime: number) {
     this.stats.totalAnswers++;
-    
+
     if (isCorrect) {
       this.stats.correctAnswers++;
       this.stats.currentStreak++;
@@ -204,19 +194,17 @@ export class InteractiveTrainingEngine<T extends TrainingItem> {
 
     // Add to responses history
     this.stats.responses.push({
-      item,
-      selectedAnswer,
-      correctAnswer,
-      isCorrect,
-      responseTime,
-      timestamp: Date.now()
+      timestamp: Date.now(),
+      itemId: item.id,
+      correct: isCorrect,
+      responseTime
     });
 
     // Keep only last 100 responses
     if (this.stats.responses.length > 100) {
       this.stats.responses.shift();
     }
-    
+
     // Save stats to localStorage
     this.saveStats();
   }
@@ -245,7 +233,7 @@ export class InteractiveTrainingEngine<T extends TrainingItem> {
 
   private loadStats() {
     if (typeof window === 'undefined') return;
-    
+
     const stored = storage.load();
     if (stored?.interactiveStats?.[this.mode.name as keyof typeof stored.interactiveStats]) {
       this.stats = stored.interactiveStats[this.mode.name as keyof typeof stored.interactiveStats];
@@ -256,7 +244,7 @@ export class InteractiveTrainingEngine<T extends TrainingItem> {
 
   private saveStats() {
     if (typeof window === 'undefined') return;
-    
+
     const existing = storage.load() || {};
     if (!existing.interactiveStats) {
       existing.interactiveStats = {
@@ -266,7 +254,7 @@ export class InteractiveTrainingEngine<T extends TrainingItem> {
         progressions: createDefaultStats()
       };
     }
-    
+
     existing.interactiveStats[this.mode.name as keyof typeof existing.interactiveStats] = this.stats;
     storage.save(existing);
   }
@@ -385,10 +373,27 @@ export class InteractiveTrainingEngine<T extends TrainingItem> {
 
   // Effect handlers - these should be called from $effect in components
   handleStateEffects() {
-    this.handleGenerating();
-    this.handlePlaying();
-    this.handleFeedback();
-    this.handleIdle();
+    // Only process if state has actually changed
+    if (this.playState === this.lastProcessedState) {
+      return;
+    }
+
+    this.lastProcessedState = this.playState;
+
+    switch (this.playState) {
+      case 'generating':
+        this.handleGenerating();
+        break;
+      case 'playing':
+        this.handlePlaying();
+        break;
+      case 'feedback':
+        this.handleFeedback();
+        break;
+      case 'idle':
+        this.handleIdle();
+        break;
+    }
   }
 
   // Effect for play mode sync
@@ -399,5 +404,4 @@ export class InteractiveTrainingEngine<T extends TrainingItem> {
       this.mode.settings.playMode = 'custom';
     }
   }
-
 }

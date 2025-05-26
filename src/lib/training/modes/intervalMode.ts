@@ -3,7 +3,7 @@ import { intervalLevels, intervals, type IntervalData } from '$lib/settings.svel
 import { intervalSettings } from '$lib/state.svelte';
 import type { AudioPlayOptions, TrainingMode } from '../types';
 
-export const intervalMode: TrainingMode<IntervalData> = {
+export const intervalMode: TrainingMode = {
   name: 'intervals',
   title: 'Interval Training',
   items: intervals,

@@ -1,5 +1,5 @@
-import type { TrainingSettings } from './training/types';
 import { createPersistedState } from './storage.svelte';
+import type { TrainingSettings } from './training/types';
 
 interface GlobalSettings {
   velocity: number;
@@ -7,10 +7,7 @@ interface GlobalSettings {
 }
 
 // Create persisted global settings
-const globalSettingsState = createPersistedState(
-  'guided-ear-global-settings',
-  { velocity: 127, voiceVolume: 0.5 } as GlobalSettings
-);
+const globalSettingsState = createPersistedState('guided-ear-global-settings', { velocity: 127, voiceVolume: 0.5 } as GlobalSettings);
 
 export const globalSettings = globalSettingsState;
 
