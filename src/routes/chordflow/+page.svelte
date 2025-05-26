@@ -103,19 +103,17 @@
         chordFlowState.settings.customProgression
       );
       executeChordChange(current, next);
-
-      // Play chord audio on chord change (only when chords actually change)
-      if (chordAudioSettings.enabled) {
-        playChord(current);
-      }
+      // Don't play audio here - let handleBeatChange do it to avoid overlap
     }
   }
 
   function handleBeatChange(beat: number) {
-    // Play chord audio on each beat 1 if enabled and playOnBeat1Only is false
-    // Only play if we're NOT changing chords this beat to avoid double playback
-    if (chordAudioSettings.enabled && !chordAudioSettings.playOnBeat1Only && beat === 0 && !chordFlowState.isChordChangeReady) {
-      playChord(chordFlowState.settings.currentChord);
+    // Play chord audio on beat 1 if enabled
+    if (chordAudioSettings.enabled && beat === 0) {
+      // Always play current chord on beat 1 (whether it just changed or not)
+      if (!chordAudioSettings.playOnBeat1Only || chordFlowState.barsSinceLastChord === 0) {
+        playChord(chordFlowState.settings.currentChord);
+      }
     }
   }
 </script>
