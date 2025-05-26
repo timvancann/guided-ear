@@ -1,10 +1,43 @@
 <script lang="ts">
-  import { chordFlowState, setDiatonicOption } from '$lib/chordflow/state.svelte';
+  import { chordFlowState, setDiatonicOption, executeChordChange } from '$lib/chordflow/state.svelte';
+  import type { MetronomeEngine } from '$lib/chordflow/metronome.svelte';
+  import type { ChordGenerator } from '$lib/chordflow/chordGenerator.svelte';
+
+  interface Props {
+    metronome: MetronomeEngine | null;
+    chordGenerator: ChordGenerator;
+  }
+
+  let { metronome, chordGenerator }: Props = $props();
 
   let selectedOption = $derived(chordFlowState.settings.diatonicOption);
 
   function handleOptionChange(option: 'incremental' | 'random') {
+    // Stop playback when changing progression order
+    if (metronome?.currentState.isPlaying) {
+      metronome.stop();
+    }
+
+    // Reset metronome state
+    if (metronome) {
+      metronome.reset();
+    }
+
+    // Change the option
     setDiatonicOption(option);
+
+    // Reset chord generators
+    chordGenerator.resetAll();
+
+    // Generate new initial chords for the new option
+    const { current, next } = chordGenerator.getNextChord(
+      'diatonic',
+      chordFlowState.settings.selectedQualities,
+      chordFlowState.settings.diatonicKey,
+      option,
+      chordFlowState.settings.customProgression
+    );
+    executeChordChange(current, next);
   }
 </script>
 

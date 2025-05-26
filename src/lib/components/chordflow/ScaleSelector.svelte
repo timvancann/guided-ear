@@ -1,5 +1,14 @@
 <script lang="ts">
-  import { chordFlowState, setDiatonicKey } from '$lib/chordflow/state.svelte';
+  import { chordFlowState, setDiatonicKey, executeChordChange } from '$lib/chordflow/state.svelte';
+  import type { MetronomeEngine } from '$lib/chordflow/metronome.svelte';
+  import type { ChordGenerator } from '$lib/chordflow/chordGenerator.svelte';
+
+  interface Props {
+    metronome: MetronomeEngine | null;
+    chordGenerator: ChordGenerator;
+  }
+
+  let { metronome, chordGenerator }: Props = $props();
 
   const allKeys = [
     { key: 'C', display: 'C Major' },
@@ -19,7 +28,31 @@
   let selectedKey = $derived(chordFlowState.settings.diatonicKey);
 
   function handleKeyChange(key: string) {
+    // Stop playback when changing key
+    if (metronome?.currentState.isPlaying) {
+      metronome.stop();
+    }
+
+    // Reset metronome state
+    if (metronome) {
+      metronome.reset();
+    }
+
+    // Change the key
     setDiatonicKey(key);
+
+    // Reset chord generators
+    chordGenerator.resetAll();
+
+    // Generate new initial chords for the new key
+    const { current, next } = chordGenerator.getNextChord(
+      'diatonic',
+      chordFlowState.settings.selectedQualities,
+      key,
+      chordFlowState.settings.diatonicOption,
+      chordFlowState.settings.customProgression
+    );
+    executeChordChange(current, next);
   }
 
   // Group keys for easier selection

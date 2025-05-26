@@ -107,8 +107,14 @@
           // Generate only a new next chord
           const { next } = chordGenerator.generateNextRandomChord(current, chordFlowState.settings.selectedQualities);
           executeChordChange(current, next);
+        } else if (chordFlowState.settings.progressionType === 'diatonic' && chordFlowState.settings.diatonicOption === 'random') {
+          // For diatonic random mode, use the existing next chord as current
+          const current = chordFlowState.settings.nextChord;
+          // Generate only a new next chord from the same key
+          const { next } = chordGenerator.generateNextDiatonicChord(current, chordFlowState.settings.diatonicKey);
+          executeChordChange(current, next);
         } else {
-          // For other modes, use the normal flow
+          // For other modes (fourths, diatonic incremental, custom), use the normal flow
           const { current, next } = chordGenerator.getNextChord(
             chordFlowState.settings.progressionType,
             chordFlowState.settings.selectedQualities,

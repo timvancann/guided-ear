@@ -143,12 +143,15 @@
       <QualitySelector />
     </div>
   {:else if currentMode === 'diatonic'}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="space-y-4">
+      <!-- Key Selection -->
       <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
-        <ScaleSelector />
+        <ScaleSelector {metronome} {chordGenerator} />
       </div>
+
+      <!-- Progression Order -->
       <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
-        <DiatonicOptions />
+        <DiatonicOptions {metronome} {chordGenerator} />
       </div>
     </div>
   {:else if currentMode === 'custom'}

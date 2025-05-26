@@ -103,37 +103,83 @@ export class ChordGenerator {
    * Generate diatonic chord progression
    */
   generateDiatonicChord(key: string, option: 'incremental' | 'random'): { current: string; next: string } {
-    // Get the major scale for the key
-    const scaleName = `${key} major`;
-    const scaleChords = Scale.scaleChords(scaleName);
+    // Get the major scale notes
+    const scale = Scale.get(`${key} major`);
 
-    if (scaleChords.length === 0) {
+    if (!scale.notes || scale.notes.length < 7) {
       // Fallback if scale not found
       return { current: key, next: key };
     }
+
+    // Build diatonic triads: I, ii, iii, IV, V, vi, vii°
+    const diatonicChords = [
+      scale.notes[0], // I - Major
+      scale.notes[1] + 'm', // ii - minor
+      scale.notes[2] + 'm', // iii - minor
+      scale.notes[3], // IV - Major
+      scale.notes[4], // V - Major
+      scale.notes[5] + 'm', // vi - minor
+      scale.notes[6] + 'dim' // vii° - diminished
+    ];
 
     let currentChord: string;
     let nextChord: string;
 
     if (option === 'incremental') {
       // Sequential progression through scale degrees
-      currentChord = scaleChords[this.currentDiatonicIndex];
-      this.currentDiatonicIndex = (this.currentDiatonicIndex + 1) % scaleChords.length;
-      nextChord = scaleChords[this.currentDiatonicIndex];
+      currentChord = diatonicChords[this.currentDiatonicIndex];
+      this.currentDiatonicIndex = (this.currentDiatonicIndex + 1) % diatonicChords.length;
+      nextChord = diatonicChords[this.currentDiatonicIndex];
     } else {
       // Random selection from diatonic chords
-      const currentIndex = Math.floor(Math.random() * scaleChords.length);
-      currentChord = scaleChords[currentIndex];
+      const currentIndex = Math.floor(Math.random() * diatonicChords.length);
+      currentChord = diatonicChords[currentIndex];
 
       // Pick a different chord for next
       let nextIndex = currentIndex;
-      while (nextIndex === currentIndex && scaleChords.length > 1) {
-        nextIndex = Math.floor(Math.random() * scaleChords.length);
+      while (nextIndex === currentIndex && diatonicChords.length > 1) {
+        nextIndex = Math.floor(Math.random() * diatonicChords.length);
       }
-      nextChord = scaleChords[nextIndex];
+      nextChord = diatonicChords[nextIndex];
     }
 
     return { current: currentChord, next: nextChord };
+  }
+
+  /**
+   * Generate only the next diatonic chord (for random diatonic mode)
+   */
+  generateNextDiatonicChord(currentChord: string, key: string): { next: string } {
+    // Get the major scale notes
+    const scale = Scale.get(`${key} major`);
+
+    if (!scale.notes || scale.notes.length < 7) {
+      return { next: key };
+    }
+
+    // Build diatonic triads
+    const diatonicChords = [
+      scale.notes[0], // I - Major
+      scale.notes[1] + 'm', // ii - minor
+      scale.notes[2] + 'm', // iii - minor
+      scale.notes[3], // IV - Major
+      scale.notes[4], // V - Major
+      scale.notes[5] + 'm', // vi - minor
+      scale.notes[6] + 'dim' // vii° - diminished
+    ];
+
+    // Find current chord index
+    const currentIndex = diatonicChords.indexOf(currentChord);
+
+    // Pick a different chord for next
+    let nextIndex = currentIndex;
+    let attempts = 0;
+    while (nextIndex === currentIndex && attempts < 10) {
+      nextIndex = Math.floor(Math.random() * diatonicChords.length);
+      attempts++;
+    }
+
+    return { next: diatonicChords[nextIndex] };
   }
 
   /**
