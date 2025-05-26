@@ -1,6 +1,7 @@
 <script lang="ts">
   import { ChevronDown, ChevronRight } from '@lucide/svelte';
   import type { MetronomeEngine } from '$lib/chordflow/metronome.svelte';
+  import type { ChordGenerator } from '$lib/chordflow/chordGenerator.svelte';
   import ModeSelector from './ModeSelector.svelte';
   import MetronomeSettings from './MetronomeSettings.svelte';
   import AudioControls from './AudioControls.svelte';
@@ -9,9 +10,10 @@
 
   interface Props {
     metronome: MetronomeEngine;
+    chordGenerator: ChordGenerator;
   }
 
-  let { metronome }: Props = $props();
+  let { metronome, chordGenerator }: Props = $props();
 
   // Collapsible sections
   let sectionsOpen = $state({
@@ -46,7 +48,7 @@
 
     {#if sectionsOpen.practiceMode}
       <div class="px-5 pb-5">
-        <ModeSelector />
+        <ModeSelector {metronome} {chordGenerator} />
       </div>
     {/if}
   </div>

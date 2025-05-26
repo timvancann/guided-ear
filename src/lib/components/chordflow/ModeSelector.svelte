@@ -1,15 +1,47 @@
 <script lang="ts">
-  import { chordFlowState, setProgressionType } from '$lib/chordflow/state.svelte';
+  import { chordFlowState, setProgressionType, executeChordChange } from '$lib/chordflow/state.svelte';
+  import type { MetronomeEngine } from '$lib/chordflow/metronome.svelte';
+  import type { ChordGenerator } from '$lib/chordflow/chordGenerator.svelte';
   import QualitySelector from './QualitySelector.svelte';
   import ScaleSelector from './ScaleSelector.svelte';
   import DiatonicOptions from './DiatonicOptions.svelte';
   import CustomProgressionInput from './CustomProgressionInput.svelte';
   import ProgressionPresets from './ProgressionPresets.svelte';
 
+  interface Props {
+    metronome: MetronomeEngine | null;
+    chordGenerator: ChordGenerator;
+  }
+
+  let { metronome, chordGenerator }: Props = $props();
   let currentMode = $derived(chordFlowState.settings.progressionType);
 
   function handleModeChange(mode: 'fourths' | 'random' | 'diatonic' | 'custom') {
+    // Stop playback when changing modes
+    if (metronome?.currentState.isPlaying) {
+      metronome.stop();
+    }
+
+    // Reset metronome state
+    if (metronome) {
+      metronome.reset();
+    }
+
+    // Change the progression type
     setProgressionType(mode);
+
+    // Reset all chord generators to start fresh
+    chordGenerator.resetAll();
+
+    // Generate new initial chords for the selected mode
+    const { current, next } = chordGenerator.getNextChord(
+      mode,
+      chordFlowState.settings.selectedQualities,
+      chordFlowState.settings.diatonicKey,
+      chordFlowState.settings.diatonicOption,
+      chordFlowState.settings.customProgression
+    );
+    executeChordChange(current, next);
   }
 
   function handleSelectProgression(progression: string) {

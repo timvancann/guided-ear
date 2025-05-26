@@ -74,6 +74,32 @@ export class ChordGenerator {
   }
 
   /**
+   * Generate only the next random chord, ensuring it's different from the current
+   */
+  generateNextRandomChord(currentChord: string, selectedQualities: string[] = ['']): { next: string } {
+    const allRoots = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const qualities = selectedQualities.length > 0 ? selectedQualities : [''];
+
+    // Parse current chord to avoid duplicates
+    const currentMatch = currentChord.match(/^([A-G][#b]?)(.*)$/);
+    const currentRoot = currentMatch ? currentMatch[1] : '';
+    const currentQuality = currentMatch ? currentMatch[2] : '';
+
+    let nextRoot = currentRoot;
+    let nextQuality = currentQuality;
+    let attempts = 0;
+
+    // Generate a different chord
+    while (nextRoot === currentRoot && nextQuality === currentQuality && attempts < 10) {
+      nextRoot = allRoots[Math.floor(Math.random() * allRoots.length)];
+      nextQuality = qualities[Math.floor(Math.random() * qualities.length)];
+      attempts++;
+    }
+
+    return { next: nextRoot + nextQuality };
+  }
+
+  /**
    * Generate diatonic chord progression
    */
   generateDiatonicChord(key: string, option: 'incremental' | 'random'): { current: string; next: string } {
@@ -176,6 +202,15 @@ export class ChordGenerator {
    * Reset custom progression to start (first chord)
    */
   resetCustom() {
+    this.currentCustomIndex = 0;
+  }
+
+  /**
+   * Reset all progression indices when switching modes
+   */
+  resetAll() {
+    this.currentFourthsIndex = 0;
+    this.currentDiatonicIndex = 0;
     this.currentCustomIndex = 0;
   }
 

@@ -101,14 +101,23 @@
 
       // Check if it's time to change chords after advancing
       if (chordFlowState.barsSinceLastChord >= chordFlowState.settings.barsPerChord) {
-        const { current, next } = chordGenerator.getNextChord(
-          chordFlowState.settings.progressionType,
-          chordFlowState.settings.selectedQualities,
-          chordFlowState.settings.diatonicKey,
-          chordFlowState.settings.diatonicOption,
-          chordFlowState.settings.customProgression
-        );
-        executeChordChange(current, next);
+        // For random mode, use the existing next chord as current
+        if (chordFlowState.settings.progressionType === 'random') {
+          const current = chordFlowState.settings.nextChord;
+          // Generate only a new next chord
+          const { next } = chordGenerator.generateNextRandomChord(current, chordFlowState.settings.selectedQualities);
+          executeChordChange(current, next);
+        } else {
+          // For other modes, use the normal flow
+          const { current, next } = chordGenerator.getNextChord(
+            chordFlowState.settings.progressionType,
+            chordFlowState.settings.selectedQualities,
+            chordFlowState.settings.diatonicKey,
+            chordFlowState.settings.diatonicOption,
+            chordFlowState.settings.customProgression
+          );
+          executeChordChange(current, next);
+        }
       }
     }
   }
@@ -181,7 +190,7 @@
 
   {#snippet settingsPanel()}
     {#if metronome}
-      <SettingsPanel {metronome} />
+      <SettingsPanel {metronome} {chordGenerator} />
     {/if}
   {/snippet}
 
