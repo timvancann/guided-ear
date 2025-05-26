@@ -36,6 +36,10 @@ export class MetronomeEngine {
   private scheduleAheadTime = 0.1; // How far ahead to schedule audio (seconds)
   private events: MetronomeEvents = {};
 
+  // Internal scheduling state (ahead of visual state)
+  private schedulingBeat = 0;
+  private schedulingBar = 0;
+
   constructor(events: MetronomeEvents = {}) {
     this.events = events;
     this.setupAudioContext();
@@ -103,6 +107,8 @@ export class MetronomeEngine {
     this.stop();
     this.state.currentBeat = 0;
     this.state.currentBar = 0;
+    this.schedulingBeat = 0;
+    this.schedulingBar = 0;
     this.nextBeatTime = 0;
   }
 
@@ -126,6 +132,9 @@ export class MetronomeEngine {
   private scheduleNote() {
     if (!audioState.audioContext) return;
 
+    // Store the beat we're scheduling before it gets incremented
+    const scheduledBeat = this.schedulingBeat;
+
     // Create metronome click sound
     const clickOsc = audioState.audioContext.createOscillator();
     const clickGain = audioState.audioContext.createGain();
@@ -134,7 +143,7 @@ export class MetronomeEngine {
     clickGain.connect(audioState.audioContext.destination);
 
     // Different frequency and volume for downbeat vs other beats
-    const isDownbeat = this.state.currentBeat === 0;
+    const isDownbeat = scheduledBeat === 0;
     clickOsc.frequency.value = isDownbeat ? 1200 : 800;
 
     const volume = this.state.clickVolume * (isDownbeat ? 1.5 : 1.0);
@@ -146,16 +155,26 @@ export class MetronomeEngine {
 
     // Schedule visual update to happen at the exact same time as audio
     const visualUpdateDelay = (this.nextBeatTime - audioState.audioContext.currentTime) * 1000;
+    const scheduledBar = this.schedulingBar;
+
     setTimeout(
       () => {
-        // Call beat event when the audio actually plays (for the current beat)
-        if (this.events.onBeat) {
-          this.events.onBeat(this.state.currentBeat);
+        // Update the visible beat state when the audio actually plays
+        this.state.currentBeat = scheduledBeat;
+
+        // Update bar counter when we're on beat 0
+        if (scheduledBeat === 0) {
+          this.state.currentBar = scheduledBar;
         }
 
-        // Check if this is the start of a new bar (beat 0)
-        if (this.state.currentBeat === 0 && this.events.onBar) {
-          this.events.onBar(this.state.currentBar);
+        // Check if this is the start of a new bar (beat 0) - call bar event FIRST
+        if (scheduledBeat === 0 && this.events.onBar) {
+          this.events.onBar(scheduledBar);
+        }
+
+        // Call beat event after bar event (so chord changes happen before audio plays)
+        if (this.events.onBeat) {
+          this.events.onBeat(scheduledBeat);
         }
       },
       Math.max(0, visualUpdateDelay)
@@ -166,12 +185,12 @@ export class MetronomeEngine {
     const secondsPerBeat = 60.0 / this.state.bpm;
     this.nextBeatTime += secondsPerBeat;
 
-    // Update state to reflect the next beat that will be played
-    this.state.currentBeat++;
+    // Update internal scheduling state (not visible state)
+    this.schedulingBeat++;
 
-    if (this.state.currentBeat >= this.state.beatsPerBar) {
-      this.state.currentBeat = 0;
-      this.state.currentBar++;
+    if (this.schedulingBeat >= this.state.beatsPerBar) {
+      this.schedulingBeat = 0;
+      this.schedulingBar++;
     }
   }
 

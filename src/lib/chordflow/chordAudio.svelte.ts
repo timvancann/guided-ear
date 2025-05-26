@@ -4,14 +4,12 @@ import { Chord } from 'tonal';
 export interface ChordAudioSettings {
   enabled: boolean;
   volume: number;
-  playOnBeat1Only: boolean;
   voicing: 'close' | 'open' | 'shell';
 }
 
 export const chordAudioSettings = $state<ChordAudioSettings>({
   enabled: true,
   volume: 0.5,
-  playOnBeat1Only: true,
   voicing: 'close'
 });
 
@@ -123,8 +121,4 @@ export function setChordVolume(volume: number) {
 
 export function setChordVoicing(voicing: 'close' | 'open' | 'shell') {
   chordAudioSettings.voicing = voicing;
-}
-
-export function togglePlayOnBeat1Only() {
-  chordAudioSettings.playOnBeat1Only = !chordAudioSettings.playOnBeat1Only;
 }

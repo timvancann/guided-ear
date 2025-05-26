@@ -92,7 +92,6 @@
       clickVolume: 0.5,
       chordAudioEnabled: true,
       chordVolume: 0.7,
-      playOnBeat1Only: false,
       voicing: 'close' as const
     };
 

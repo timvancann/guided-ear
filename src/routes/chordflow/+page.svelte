@@ -8,7 +8,7 @@
   import StatusBar from '$lib/components/chordflow/StatusBar.svelte';
   import { MetronomeEngine, type MetronomeEvents } from '$lib/chordflow/metronome.svelte';
   import { ChordGenerator } from '$lib/chordflow/chordGenerator.svelte';
-  import { chordFlowState, advanceBar, executeChordChange } from '$lib/chordflow/state.svelte';
+  import { chordFlowState, advanceBar, executeChordChange, resetChordProgress } from '$lib/chordflow/state.svelte';
   import { playChord, chordAudioSettings } from '$lib/chordflow/chordAudio.svelte';
   import { chordFlowSettings } from '$lib/chordflow/settings.svelte';
 
@@ -20,6 +20,9 @@
   onMount(() => {
     // Initialize settings system
     chordFlowSettings.initialize();
+
+    // Reset chord progress counters to ensure clean start
+    resetChordProgress();
 
     // Set up initial chord progression
     const { current, next } = chordGenerator.getNextChord(
@@ -90,30 +93,31 @@
     window.removeEventListener('chordflow:tap-tempo', () => {});
   });
 
-  function handleBarChange() {
-    advanceBar();
+  function handleBarChange(barNumber: number) {
+    // Don't advance on the very first bar (bar 0) when starting
+    if (barNumber > 0) {
+      // Advance the bar counter
+      advanceBar();
 
-    // Check if it's time to change chords
-    if (chordFlowState.isChordChangeReady) {
-      const { current, next } = chordGenerator.getNextChord(
-        chordFlowState.settings.progressionType,
-        chordFlowState.settings.selectedQualities,
-        chordFlowState.settings.diatonicKey,
-        chordFlowState.settings.diatonicOption,
-        chordFlowState.settings.customProgression
-      );
-      executeChordChange(current, next);
-      // Don't play audio here - let handleBeatChange do it to avoid overlap
+      // Check if it's time to change chords after advancing
+      if (chordFlowState.barsSinceLastChord >= chordFlowState.settings.barsPerChord) {
+        const { current, next } = chordGenerator.getNextChord(
+          chordFlowState.settings.progressionType,
+          chordFlowState.settings.selectedQualities,
+          chordFlowState.settings.diatonicKey,
+          chordFlowState.settings.diatonicOption,
+          chordFlowState.settings.customProgression
+        );
+        executeChordChange(current, next);
+      }
     }
   }
 
   function handleBeatChange(beat: number) {
     // Play chord audio on beat 1 if enabled
     if (chordAudioSettings.enabled && beat === 0) {
-      // Always play current chord on beat 1 (whether it just changed or not)
-      if (!chordAudioSettings.playOnBeat1Only || chordFlowState.barsSinceLastChord === 0) {
-        playChord(chordFlowState.settings.currentChord);
-      }
+      // Always play current chord on beat 1
+      playChord(chordFlowState.settings.currentChord);
     }
   }
 </script>
@@ -124,58 +128,56 @@
 </svelte:head>
 
 <PracticeLayout>
-  {#snippet children()}
-    <!-- Header -->
-    <header class="mb-8 text-center">
-      <h1 class="text-4xl font-bold text-emerald-400 mb-2">🎸 ChordFlow</h1>
-      <p class="text-gray-300 text-lg">Guitar chord progression practice with metronome</p>
-    </header>
+  <!-- Header -->
+  <header class="mb-8 text-center">
+    <h1 class="text-4xl font-bold text-emerald-400 mb-2">🎸 ChordFlow</h1>
+    <p class="text-gray-300 text-lg">Guitar chord progression practice with metronome</p>
+  </header>
 
-    <!-- Main Practice Area -->
-    <div class="max-w-6xl mx-auto">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Chord Display Section -->
-        <div class="lg:col-span-1">
-          <div class="bg-gray-900 rounded-lg p-8 shadow-xl">
-            <ChordDisplay currentChord={chordFlowState.settings.currentChord} nextChord={chordFlowState.settings.nextChord} isChordChangeReady={chordFlowState.isChordChangeReady} />
-          </div>
+  <!-- Main Practice Area -->
+  <div class="max-w-6xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Chord Display Section -->
+      <div class="lg:col-span-1">
+        <div class="bg-gray-900 rounded-lg p-8 shadow-xl">
+          <ChordDisplay currentChord={chordFlowState.settings.currentChord} nextChord={chordFlowState.settings.nextChord} isChordChangeReady={chordFlowState.isChordChangeReady} />
         </div>
+      </div>
 
-        <!-- Metronome Section -->
-        <div class="lg:col-span-1">
-          <div class="bg-gray-900 rounded-lg p-8 shadow-xl">
-            {#if metronome}
-              <Metronome {metronome} />
-            {/if}
-          </div>
+      <!-- Metronome Section -->
+      <div class="lg:col-span-1">
+        <div class="bg-gray-900 rounded-lg p-8 shadow-xl">
+          {#if metronome}
+            <Metronome {metronome} />
+          {/if}
         </div>
+      </div>
 
-        <!-- Progress Section -->
-        <div class="lg:col-span-1">
-          <div class="bg-gray-900 rounded-lg p-8 shadow-xl">
-            {#if metronome}
-              <ProgressBar
-                currentBeat={metronome.currentState.currentBeat}
-                beatsPerBar={metronome.currentState.beatsPerBar}
-                currentBar={chordFlowState.currentBar}
-                barsPerChord={chordFlowState.settings.barsPerChord}
-                barsSinceLastChord={chordFlowState.barsSinceLastChord}
-              />
-            {/if}
-          </div>
+      <!-- Progress Section -->
+      <div class="lg:col-span-1">
+        <div class="bg-gray-900 rounded-lg p-8 shadow-xl">
+          {#if metronome}
+            <ProgressBar
+              currentBeat={metronome.currentState.currentBeat}
+              beatsPerBar={metronome.currentState.beatsPerBar}
+              currentBar={chordFlowState.currentBar}
+              barsPerChord={chordFlowState.settings.barsPerChord}
+              barsSinceLastChord={chordFlowState.barsSinceLastChord}
+            />
+          {/if}
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Footer -->
-    <footer class="mt-12 text-center text-gray-500">
-      <p class="flex items-center justify-center space-x-2">
-        <span>Practice guitar chord progressions with precision timing</span>
-        <span class="text-gray-600">•</span>
-        <span class="text-emerald-400">Press ? for shortcuts</span>
-      </p>
-    </footer>
-  {/snippet}
+  <!-- Footer -->
+  <footer class="mt-12 text-center text-gray-500">
+    <p class="flex items-center justify-center space-x-2">
+      <span>Practice guitar chord progressions with precision timing</span>
+      <span class="text-gray-600">•</span>
+      <span class="text-emerald-400">Press ? for shortcuts</span>
+    </p>
+  </footer>
 
   {#snippet settingsPanel()}
     {#if metronome}

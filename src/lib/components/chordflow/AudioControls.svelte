@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { chordAudioSettings, toggleChordAudio, setChordVolume, setChordVoicing, togglePlayOnBeat1Only, playChord } from '$lib/chordflow/chordAudio.svelte';
+  import { chordAudioSettings, toggleChordAudio, setChordVolume, setChordVoicing, playChord } from '$lib/chordflow/chordAudio.svelte';
   import { chordFlowState } from '$lib/chordflow/state.svelte';
   import { Volume2, VolumeX, Play } from '@lucide/svelte';
 
@@ -75,19 +75,6 @@
       <div class="text-xs text-gray-500">
         {chordAudioSettings.voicing === 'close' ? 'Notes close together' : chordAudioSettings.voicing === 'open' ? 'Notes spread wider' : 'Root + 7th only'}
       </div>
-    </div>
-
-    <!-- Play Timing -->
-    <div class="flex items-center space-x-3">
-      <label class="flex items-center space-x-2 cursor-pointer">
-        <input
-          type="checkbox"
-          checked={chordAudioSettings.playOnBeat1Only}
-          onchange={togglePlayOnBeat1Only}
-          class="w-4 h-4 text-emerald-600 bg-gray-700 border-gray-600 rounded focus:ring-emerald-500 focus:ring-2"
-        />
-        <span class="text-sm text-gray-300">Play on beat 1 only</span>
-      </label>
     </div>
 
     <!-- Test Button -->

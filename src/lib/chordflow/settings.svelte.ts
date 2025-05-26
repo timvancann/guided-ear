@@ -22,7 +22,6 @@ export interface ChordFlowPreset {
     // Audio settings
     chordAudioEnabled: boolean;
     chordVolume: number;
-    playOnBeat1Only: boolean;
     voicing: 'close' | 'open' | 'shell';
   };
   createdAt: number;
@@ -55,7 +54,6 @@ const DEFAULT_PRESETS: ChordFlowPreset[] = [
       clickVolume: 0.3,
       chordAudioEnabled: true,
       chordVolume: 0.8,
-      playOnBeat1Only: false,
       voicing: 'shell'
     },
     createdAt: Date.now(),
@@ -78,7 +76,6 @@ const DEFAULT_PRESETS: ChordFlowPreset[] = [
       clickVolume: 0.3,
       chordAudioEnabled: true,
       chordVolume: 0.6,
-      playOnBeat1Only: true,
       voicing: 'close'
     },
     createdAt: Date.now(),
@@ -101,7 +98,6 @@ const DEFAULT_PRESETS: ChordFlowPreset[] = [
       clickVolume: 0.4,
       chordAudioEnabled: true,
       chordVolume: 0.7,
-      playOnBeat1Only: true,
       voicing: 'open'
     },
     createdAt: Date.now(),
@@ -124,7 +120,6 @@ const DEFAULT_PRESETS: ChordFlowPreset[] = [
       clickVolume: 0.3,
       chordAudioEnabled: true,
       chordVolume: 0.5,
-      playOnBeat1Only: true,
       voicing: 'close'
     },
     createdAt: Date.now(),
@@ -147,7 +142,6 @@ const DEFAULT_PRESETS: ChordFlowPreset[] = [
       clickVolume: 0.2,
       chordAudioEnabled: false,
       chordVolume: 0.5,
-      playOnBeat1Only: true,
       voicing: 'close'
     },
     createdAt: Date.now(),
