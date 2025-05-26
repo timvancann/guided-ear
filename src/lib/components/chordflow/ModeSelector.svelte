@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { chordFlowState, setProgressionType, executeChordChange } from '$lib/chordflow/state.svelte';
+  import { chordFlowState, setProgressionType, executeChordChange, updateChordFlowSettings } from '$lib/chordflow/state.svelte';
   import type { MetronomeEngine } from '$lib/chordflow/metronome.svelte';
   import type { ChordGenerator } from '$lib/chordflow/chordGenerator.svelte';
   import QualitySelector from './QualitySelector.svelte';
@@ -45,7 +45,23 @@
   }
 
   function handleSelectProgression(progression: string) {
+    // Update the custom progression
     chordFlowState.settings.customProgression = progression;
+
+    // Persist the settings change
+    updateChordFlowSettings();
+
+    // If we're already in custom mode, generate new chords for the selected progression
+    if (currentMode === 'custom') {
+      const { current, next } = chordGenerator.getNextChord(
+        'custom',
+        chordFlowState.settings.selectedQualities,
+        chordFlowState.settings.diatonicKey,
+        chordFlowState.settings.diatonicOption,
+        progression
+      );
+      executeChordChange(current, next);
+    }
   }
 </script>
 
@@ -136,10 +152,13 @@
       </div>
     </div>
   {:else if currentMode === 'custom'}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="space-y-4">
+      <!-- Custom Progression Input -->
       <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
         <CustomProgressionInput />
       </div>
+
+      <!-- Progression Presets in a more compact layout -->
       <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
         <ProgressionPresets onSelectProgression={handleSelectProgression} />
       </div>

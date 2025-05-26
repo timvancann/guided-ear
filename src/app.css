@@ -29,9 +29,7 @@
     @apply flex justify-between gap-4;
   }
 
-  .chord-display {
-    @apply relative mb-8 flex h-60 w-60 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-rosePineDawn-highlightMed shadow-md;
-  }
+  /* Removed old chord-display style - now handled by ChordDisplay component */
 
   .revealing {
     @apply border-[var(--accent-color)] bg-[var(--accent-color)]/10 shadow-[0px_0px_20px_8px_var(--accent-color)];

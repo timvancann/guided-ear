@@ -14,12 +14,12 @@
   let nextDisplayName = $derived(ChordGenerator.getDisplayName(nextChord));
 </script>
 
-<div class="flex flex-col items-center space-y-6">
+<div class="flex flex-col items-center space-y-6 w-full">
   <!-- Current Chord Display -->
-  <div class="text-center">
+  <div class="text-center w-full">
     <h2 class="text-lg font-medium text-gray-300 mb-2">Current Chord</h2>
-    <div class="bg-gray-800 rounded-xl p-12 border-2 transition-all duration-300 {isChordChangeReady ? 'border-emerald-400 bg-emerald-900/20 scale-105' : 'border-gray-600'}">
-      <div class="text-7xl md:text-8xl font-bold text-white font-mono tracking-wider leading-none">
+    <div class="bg-gray-800 rounded-xl p-6 md:p-8 border-2 transition-all duration-300 overflow-hidden {isChordChangeReady ? 'border-emerald-400 bg-emerald-900/20 scale-105' : 'border-gray-600'}">
+      <div class="chord-display text-white font-mono font-bold leading-tight">
         {currentDisplayName}
       </div>
     </div>
@@ -35,10 +35,10 @@
   </div>
 
   <!-- Next Chord Display -->
-  <div class="text-center">
+  <div class="text-center w-full">
     <h3 class="text-lg font-medium text-gray-300 mb-3">Next Chord</h3>
-    <div class="bg-gray-900 rounded-xl p-8 border border-gray-700 hover:border-gray-600 transition-colors">
-      <div class="text-5xl md:text-6xl font-bold text-gray-400 font-mono tracking-wider">
+    <div class="bg-gray-900 rounded-xl p-4 md:p-6 border border-gray-700 hover:border-gray-600 transition-colors overflow-hidden">
+      <div class="chord-display-next text-gray-400 font-mono font-bold leading-tight">
         {nextDisplayName}
       </div>
     </div>
@@ -49,5 +49,30 @@
   /* Add subtle glow effect for chord change ready state */
   .border-emerald-400 {
     box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+  }
+
+  /* Responsive chord display sizing */
+  .chord-display {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .chord-display-next {
+    font-size: clamp(1.875rem, 6vw, 3.75rem);
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* For very long chord names, ensure they fit */
+  @media (max-width: 640px) {
+    .chord-display {
+      font-size: clamp(2rem, 7vw, 3rem);
+    }
+    .chord-display-next {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+    }
   }
 </style>
