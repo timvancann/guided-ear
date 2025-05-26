@@ -94,27 +94,6 @@ Thank you for your interest in contributing to Guided Ear Training! This documen
    - TypeScript types
    - File integrity
 
-### Commit Message Convention
-
-We follow [Conventional Commits](https://www.conventionalcommits.org/):
-
-- `feat:` New feature
-- `fix:` Bug fix
-- `docs:` Documentation changes
-- `style:` Code style changes (formatting, semicolons, etc)
-- `refactor:` Code refactoring
-- `perf:` Performance improvements
-- `test:` Adding or updating tests
-- `chore:` Maintenance tasks
-
-Examples:
-
-```
-feat: add interval training statistics
-fix: resolve audio playback timing issue
-docs: update README with new features
-```
-
 ## 🔍 Code Quality Standards
 
 ### Pre-commit Hooks
@@ -146,22 +125,6 @@ All pull requests must pass:
 - **Type Checking** - TypeScript validation
 - **Building** - Successful production build
 - **Node Compatibility** - Tests on Node.js 20.x and 22.x
-
-## 📁 Project Structure
-
-```
-src/
-├── lib/
-│   ├── training/          # Training system core
-│   ├── chordflow/         # ChordFlow practice system
-│   ├── components/        # Reusable UI components
-│   ├── services/          # External service integrations
-│   └── storage.svelte.ts  # localStorage utilities
-└── routes/               # SvelteKit pages
-    ├── handsfree/        # Voice-guided training
-    ├── interactive/      # Click-based training
-    └── chordflow/        # Chord progression practice
-```
 
 ## 🎨 Coding Guidelines
 
@@ -205,31 +168,6 @@ Before submitting a PR, test:
 - [ ] Responsive design on mobile/tablet
 - [ ] Keyboard shortcuts function
 - [ ] No console errors
-
-### Browser Compatibility
-
-Test on:
-
-- Chrome/Edge (latest)
-- Firefox (latest)
-- Safari (latest)
-- Mobile browsers
-
-## 📝 Documentation
-
-### Code Documentation
-
-- Add JSDoc comments for complex functions
-- Document component props with TypeScript
-- Include usage examples for utilities
-- Update README.md for new features
-
-### User Documentation
-
-- Update feature descriptions
-- Add screenshots for UI changes
-- Document new keyboard shortcuts
-- Include migration guides if needed
 
 ## 🎯 Adding New Features
 
